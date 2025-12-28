@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="pt-ao">
+
+<head>
+    <meta charset="utf-8">
+    <title>{{ title || "Your default title" }}</title>
+    @if ($slots.meta)
+    {{{ await $slots.meta() }}}
+    @endif
+@vite(['resources/css/app.css', 'resources/js/app.js'])
+@stack('dumper')
+</head>
+
+<body class="min-h-screen w-screen font-sans">
+    {{{ await $slots.main() }}}
+    <script src="https://cdn.jsdelivr.net/npm/flowbite@4.0.1/dist/flowbite.min.js"></script>
+</body>
+
+</html>
