@@ -1,0 +1,40 @@
+services:
+  db:
+    image: postgres:17-alpine3.21
+    container_name: mwangole-postgres
+    restart: always
+    volumes:
+      - .docker/db/data:/var/lib/postgresql/data
+      - .docker/db/sql:/docker-entrypoint-initdb.d
+    ports:
+      - 5432:5432
+    environment:
+      - POSTGRES_DB=${DB_DATABASE}
+      - POSTGRES_USER=${DB_USER}
+      - POSTGRES_PASSWORD=${DB_PASSWORD}
+      
+  adminer:
+    image: adminer
+    container_name: mwangole-adminer
+    restart: always
+    ports:
+      - 9090:8080
+
+  redis:
+    image: redis:latest
+    command: redis-server --appendonly yes
+    container_name: mwangole-redis
+    volumes:
+      - .docker/redis/data:/data
+    ports:
+      - 6379:6379
+
+  mail:
+    image: axllent/mailpit:latest
+    container_name: mwangole-mailpit
+    restart: unless-stopped
+    volumes:
+      - .docker/mailpit/data:/data
+    ports:
+      - 8025:8025
+      - 1025:1025
