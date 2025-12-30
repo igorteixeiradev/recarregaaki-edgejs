@@ -7,8 +7,8 @@
     @if ($slots.meta)
     {{{ await $slots.meta() }}}
     @endif
-@vite(['resources/css/app.css', 'resources/js/app.js'])
-@stack('dumper')
+    @vite(['resources/css/app.css', 'resources/js/app.js'])
+    @stack('dumper')
 </head>
 
 <body class="min-h-screen w-screen font-sans">

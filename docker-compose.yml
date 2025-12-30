@@ -1,7 +1,7 @@
 services:
   db:
     image: postgres:17-alpine3.21
-    container_name: mwangole-postgres
+    container_name: recarregaaki-postgres
     restart: always
     volumes:
       - .docker/db/data:/var/lib/postgresql/data
@@ -15,7 +15,7 @@ services:
       
   adminer:
     image: adminer
-    container_name: mwangole-adminer
+    container_name: recarregaaki-adminer
     restart: always
     ports:
       - 9090:8080
@@ -23,7 +23,7 @@ services:
   redis:
     image: redis:latest
     command: redis-server --appendonly yes
-    container_name: mwangole-redis
+    container_name: recarregaaki-redis
     volumes:
       - .docker/redis/data:/data
     ports:
@@ -31,7 +31,7 @@ services:
 
   mail:
     image: axllent/mailpit:latest
-    container_name: mwangole-mailpit
+    container_name: recarregaaki-mailpit
     restart: unless-stopped
     volumes:
       - .docker/mailpit/data:/data
