@@ -1,0 +1,92 @@
+@layout.app({ title: "Contactos" })
+@slot('meta')
+<meta name="description" content="Pagina de Contactos da Recarregaaki" />
+@endslot
+
+@slot('main')
+@include('partials/navbar')
+<div class="py-10 max-w-7xl container mx-auto lg:px-0 px-4">
+
+    <section class="text-gray-900  dark:text-white text-justify">
+        <div>
+            <h2
+                class="mb-8 text-start text-4xl leading-tight font-extrabold tracking-tight text-gray-900 md:text-5xl dark:text-white">
+                Contactos
+            </h2>
+
+            <div class="max-w-4xl space-y-10">
+                <div>
+                    <p class="text-lg leading-relaxed text-gray-700 dark:text-gray-300">
+                        A equipa da
+                        <span class="font-semibold text-gray-900 dark:text-white">Recarregaaki</span>
+                        está sempre disponível para te ajudar. Se tiveres dúvidas, sugestões ou precisares
+                        de apoio técnico, entra em contacto connosco através de um dos meios abaixo.
+                    </p>
+
+                    <div class="mt-6 space-y-3 text-gray-700 dark:text-gray-300">
+                        <p>
+                            <strong class="text-gray-900 dark:text-white">Email:</strong>
+                            <a href="mailto:suporte@recarregaaki.com"
+                                class="text-blue-600 transition-colors hover:text-blue-500 hover:underline dark:text-blue-400 dark:hover:text-blue-300">
+                                suporte@recarregaaki.com
+                            </a>
+                        </p>
+                        <p>
+                            <strong class="text-gray-900 dark:text-white">Telefone:</strong>
+                            <a href="tel:+244900000000"
+                                class="text-blue-600 transition-colors hover:text-blue-500 hover:underline dark:text-blue-400 dark:hover:text-blue-300">
+                                +244 900 000 000
+                            </a>
+                        </p>
+                        <p>
+                            <strong class="text-gray-900 dark:text-white">WhatsApp:</strong>
+                            <a href="https://wa.me/244900000000" target="_blank" rel="noopener noreferrer"
+                                class="text-green-600 transition-colors hover:text-green-500 hover:underline dark:text-green-400 dark:hover:text-green-300">
+                                +244 900 000 000
+                            </a>
+                        </p>
+                    </div>
+                </div>
+
+                <div>
+                    <h3 class="mb-4 text-2xl font-bold text-gray-900 dark:text-white">
+                        Envia-nos uma mensagem
+                    </h3>
+
+                    <form class="space-y-4">
+                        <div>
+                            <label class="block mb-2.5 text-sm font-medium text-heading">Nome</label>
+                            <input type="text"
+                                class="bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-base focus:ring-brand focus:border-brand block w-full px-3 py-2.5 shadow-xs placeholder:text-body"
+                                placeholder="O seu nome..." />
+                        </div>
+
+                        <div>
+                            <label class="block mb-2.5 text-sm font-medium text-heading">Email</label>
+                            <input type="email"
+                                class="bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-base focus:ring-brand focus:border-brand block w-full px-3 py-2.5 shadow-xs placeholder:text-body"
+                                placeholder="teuemail@exemplo.com" />
+                        </div>
+
+                        <div>
+                            <label class="block mb-2.5 text-sm font-medium text-heading">Mensagem</label>
+                            <textarea rows="6" cols="10"
+                                class="bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-base focus:ring-brand focus:border-brand block w-full px-3 py-2.5 shadow-xs placeholder:text-body"
+                                placeholder="Escreve a tua mensagem..."></textarea>
+                        </div>
+
+                        <button type="submit"
+                            class="rounded-full bg-linear-to-r from-violet-500 via-[#9938CA] to-[#E0724A] px-8 py-3 text-sm font-semibold text-white transition-all duration-200 hover:opacity-90 hover:shadow-lg active:scale-95">
+                            Enviar Mensagem
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+
+@include('partials/footer')
+
+@endslot
+@end

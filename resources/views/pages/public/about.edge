@@ -1,0 +1,79 @@
+@layout.app({ title: "Sobre nós" })
+@slot('meta')
+<meta name="description" content="Pagina de Sobre nós da Recarregaaki" />
+@endslot
+
+@slot('main')
+@include('partials/navbar')
+<div class="py-10 max-w-7xl container mx-auto lg:px-0 px-4">
+
+    <section class="text-gray-900 dark:text-white text-justify">
+        <div>
+            <h2
+                class="mb-4 text-start text-4xl leading-tight font-extrabold tracking-tight text-gray-900 md:text-5xl lg:text-5xl dark:text-white">
+                Sobre nós
+            </h2>
+
+            <div class="py-5">
+                <div class="max-w-4xl space-y-8">
+                    <p class="text-lg leading-relaxed text-gray-700 dark:text-gray-300">
+                        A <span class="text-primary font-semibold">Recarregaaki</span>é uma plataforma
+                        digital angolana criada para simplificar o processo de pagamento e recarga de
+                        serviços online. Oferecemos uma forma rápida, segura e acessível de efetuar
+                        pagamentos para plataformas como <strong>Free Fire, Netflix, HBO MAX</strong>e
+                        muitas outras — tudo num só lugar.
+                    </p>
+
+                    <div>
+                        <h3 class="mb-3 text-2xl font-bold text-gray-900 dark:text-white">
+                            A nossa missão
+                        </h3>
+                        <p class="text-lg leading-relaxed text-gray-700 dark:text-gray-300">
+                            A nossa missão é tornar os pagamentos digitais mais simples e disponíveis para
+                            todos os angolanos, promovendo a inclusão financeira e tecnológica. Trabalhamos
+                            todos os dias para garantir que recarregar ou pagar serviços seja algo rápido,
+                            transparente e sem complicações.
+                        </p>
+                    </div>
+
+                    <div>
+                        <h3 class="mb-3 text-2xl font-bold text-gray-900 dark:text-white">
+                            Os nossos valores
+                        </h3>
+                        <ul class="list-inside list-disc space-y-2 text-gray-700 dark:text-gray-300">
+                            <li>
+                                <strong>Confiança:</strong>Garantimos segurança em todas as transações.
+                            </li>
+                            <li>
+                                <strong>Inovação:</strong>Procuramos constantemente novas formas de facilitar a
+                                tua vida digital.
+                            </li>
+                            <li>
+                                <strong>Transparência:</strong>Comunicação clara e sem taxas escondidas.
+                            </li>
+                            <li>
+                                <strong>Compromisso:</strong>Apoio constante ao cliente e melhoria contínua.
+                            </li>
+                        </ul>
+                    </div>
+
+                    <div>
+                        <h3 class="mb-3 text-2xl font-bold text-gray-900 dark:text-white">
+                            O que fazemos
+                        </h3>
+                        <p class="text-lg leading-relaxed text-gray-700 dark:text-gray-300">
+                            Oferecemos recargas automáticas, pagamentos instantâneos e uma experiência digital
+                            moderna. Com a <span class="text-primary font-semibold">Recarregaaki</span>,
+                            podes gerir todos os teus serviços de forma rápida, segura e sem sair de casa.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+
+@include('partials/footer')
+
+@endslot
+@end
