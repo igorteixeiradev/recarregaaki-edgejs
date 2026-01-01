@@ -21,7 +21,7 @@ export default class User extends compose(BaseModel, AuthFinder) {
   declare email: string
 
   @column()
-  declare avatarUrl: string
+  declare avatarUrl: string | null
 
   @column()
   declare isAdmin: boolean
@@ -30,7 +30,7 @@ export default class User extends compose(BaseModel, AuthFinder) {
   declare phoneCode: string
 
   @column()
-  declare phoneNumber: string
+  declare phoneNumber: string | null
 
   @column()
   declare verifyEmail: boolean

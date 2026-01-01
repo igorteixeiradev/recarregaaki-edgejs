@@ -18,7 +18,7 @@ export const createUserValidator = vine.compile(
       .normalizeEmail(),
     password: vine.string().trim().minLength(8).maxLength(32),
     passwordConfirmation: vine.string().trim().minLength(8).maxLength(32).sameAs('password'),
-    avatarUrl: vine.string().url().optional(),
+    avatarUrl: vine.string().optional(),
     isAdmin: vine.boolean().optional(),
     phoneCode: vine.string().optional(),
     phoneNumber: vine.string().optional(),

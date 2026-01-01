@@ -20,6 +20,10 @@
           </h1>
           <form class="space-y-4 md:space-y-6" method="post" action="{{route('auth.store')}}" >
             {{ csrfField() }}
+              <div>
+                @!component('components/label', { text: 'Nome completo',name:"fullName" })
+                @!component('components/input', { placeholder: 'Nome completo',name:"fullName", type:"text" })
+              </div>
             <div>
               @!component('components/label', { text: 'Email',name:"email" })
               @!component('components/input', { placeholder: 'Email',name:"email", type:"email" })
