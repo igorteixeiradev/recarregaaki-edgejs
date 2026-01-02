@@ -13,6 +13,8 @@ import app from '@adonisjs/core/services/app'
 import { sep, normalize } from 'node:path'
 const AuthController = () => import('#controllers/auth_controller')
 const PrivatesController = () => import('#controllers/privates_controller')
+const CategoriesController = () => import('#controllers/categories_controller')
+
 const PATH_TRAVERSAL_REGEX = /(?:^|[\\/])\.\.(?:[\\/]|$)/
 
 router.get('/uploads/*', ({ request, response }) => {
@@ -70,7 +72,8 @@ router
 
 router
   .group(() => {
-    router.get('', [PrivatesController, 'index']).as('private.index')
+    router.get('', [PrivatesController, 'index']).as('dashboard.index')
+    router.resource('categorias', CategoriesController).as('categories')
   })
   .prefix('dashboard')
   .use(middleware.auth())

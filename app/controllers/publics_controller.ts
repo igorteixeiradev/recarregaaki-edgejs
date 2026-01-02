@@ -1,3 +1,7 @@
-// import type { HttpContext } from '@adonisjs/core/http'
+import type { HttpContext } from '@adonisjs/core/http'
 
-export default class PublicsController {}
+export default class PublicsController {
+  async index({}: HttpContext) {}
+  async shop({}: HttpContext) {}
+  async show({}: HttpContext) {}
+}
