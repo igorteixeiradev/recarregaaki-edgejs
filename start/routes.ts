@@ -46,8 +46,10 @@ router
   .as('auth.forgot-password.view')
   .use(middleware.guest())
 router
-  .on('/resetar-palavra-passe')
-  .render('pages/public/auth/reset-password')
+  .get('/resetar-palavra-passe', async (ctx) => {
+    const token = ctx.request.input('token')
+   return ctx.view.render('pages/public/auth/reset-password', { token })
+  })
   .as('auth.reset-password.view')
   .use(middleware.guest())
 
