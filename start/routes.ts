@@ -12,7 +12,7 @@ import { middleware } from '#start/kernel'
 import app from '@adonisjs/core/services/app'
 import { sep, normalize } from 'node:path'
 const AuthController = () => import('#controllers/auth_controller')
-
+const PrivatesController = () => import('#controllers/privates_controller')
 const PATH_TRAVERSAL_REGEX = /(?:^|[\\/])\.\.(?:[\\/]|$)/
 
 router.get('/uploads/*', ({ request, response }) => {
@@ -48,7 +48,7 @@ router
 router
   .get('/resetar-palavra-passe', async (ctx) => {
     const token = ctx.request.input('token')
-   return ctx.view.render('pages/public/auth/reset-password', { token })
+    return ctx.view.render('pages/public/auth/reset-password', { token })
   })
   .as('auth.reset-password.view')
   .use(middleware.guest())
@@ -67,3 +67,10 @@ router
   })
   .use(middleware.auth())
   .as('auth.logout')
+
+router
+  .group(() => {
+    router.get('', [PrivatesController, 'index']).as('private.index')
+  })
+  .prefix('dashboard')
+  .use(middleware.auth())

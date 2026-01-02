@@ -1,0 +1,30 @@
+<div class="flex items-center ms-3">
+            <div>
+              <button type="button" class="flex text-sm bg-gray-800 rounded-full focus:ring-4 focus:ring-gray-300 dark:focus:ring-gray-600" aria-expanded="false" data-dropdown-toggle="dropdown-user">
+                <span class="sr-only">Open user menu</span>
+                <img class="w-8 h-8 rounded-full" src="https://flowbite.com/docs/images/people/profile-picture-5.jpg" alt="user photo">
+              </button>
+            </div>
+            <div class="z-50 hidden bg-neutral-primary-medium border border-default-medium rounded-base shadow-lg w-44" id="dropdown-user">
+              <div class="px-4 py-3 border-b border-default-medium" role="none">
+                <p class="text-sm font-medium text-heading" role="none">
+                {{ auth.user.fullName }}
+                </p>
+                <p class="text-sm text-body truncate" role="none">
+               {{ auth.user.email }}
+                </p>
+              </div>
+              <ul class="p-2 text-sm text-body font-medium" role="none">
+                <li>
+                  <a href="{{route('private.index')}}" class="inline-flex items-center w-full p-2 hover:bg-neutral-tertiary-medium hover:text-heading rounded" role="menuitem">Dashboard</a>
+                </li>
+                <li>
+                  <a href="{{route('web.profile')}}" class="inline-flex items-center w-full p-2 hover:bg-neutral-tertiary-medium hover:text-heading rounded" role="menuitem">Perfil</a>
+                </li>
+                
+                <li>
+                  <a href="{{ route('auth.logout')}}" class="inline-flex items-center w-full p-2 hover:bg-neutral-tertiary-medium hover:text-heading rounded" role="menuitem">Sair da conta</a>
+                </li>
+              </ul>
+            </div>
+            </div>
