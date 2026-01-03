@@ -47,7 +47,13 @@ export default class Refill extends BaseModel {
   }
 
   static async findRefillById(id: string) {
-    return await this.query().where('id', id).preload('category').preload('packages').firstOrFail()
+    return await this.query()
+      .where('id', id)
+      .preload('category')
+      .preload('packages', (query) => {
+        query.orderBy('price', 'asc')
+      })
+      .firstOrFail()
   }
 
   static async findManyRefillByIsActive(isActive: boolean) {

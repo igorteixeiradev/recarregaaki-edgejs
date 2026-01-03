@@ -15,8 +15,9 @@ export default class PublicsController {
     const refills = await Refill.findManyRefillsBySearchTerm(page, limit, q)
     return view.render('pages/public/shop', { categories, refills })
   }
-  async show({ params, view }: HttpContext) {
+  async show({ params, view, request }: HttpContext) {
+    const selectedId = request.input('selectItem', '')
     const refill = await Refill.findRefillById(params.id)
-    return view.render('pages/public/show', { refill })
+    return view.render('pages/public/show', { refill, selectedId })
   }
 }

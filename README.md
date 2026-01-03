@@ -33,7 +33,7 @@ npm run dev
 ## 📸 Screenshots
 
 <p align="center">
-  <img src="./assets/screenshot.png" alt="Logo" width="1200" />
+  <img src="./public/screenshot.png" alt="Logo" width="1200" />
 </p>
 
 ## 📄 Licença
