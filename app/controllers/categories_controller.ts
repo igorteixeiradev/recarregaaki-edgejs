@@ -1,3 +1,4 @@
+import { isAdmin } from '#abilities/main'
 import Category from '#models/category'
 import { createCategoryValidator, updateCategoryValidator } from '#validators/category'
 import type { HttpContext } from '@adonisjs/core/http'
@@ -24,6 +25,9 @@ export default class CategoriesController {
    * Handle form submission for the create action
    */
   async store({ request }: HttpContext) {
+    if (await request.ctx?.bouncer.denies(isAdmin)) {
+      return request.ctx?.response.forbidden()
+    }
     const payload = await request.validateUsing(createCategoryValidator)
     await Category.create(payload)
 
@@ -54,6 +58,9 @@ export default class CategoriesController {
    * Handle form submission for the edit action
    */
   async update({ params, request }: HttpContext) {
+    if (await request.ctx?.bouncer.denies(isAdmin)) {
+      return request.ctx?.response.forbidden()
+    }
     const payload = await request.validateUsing(updateCategoryValidator)
     const category = await Category.findByOrFail('id', params.id)
     category.merge(payload)
@@ -70,9 +77,16 @@ export default class CategoriesController {
   /**
    * Delete record
    */
-  async destroy({ params, response }: HttpContext) {
+  async destroy({ params, request }: HttpContext) {
+    if (await request.ctx?.bouncer.denies(isAdmin)) {
+      return request.ctx?.response.forbidden()
+    }
     const category = await Category.findByOrFail('id', params.id)
     await category.delete()
-    return response.redirect().toRoute('categories.index')
+    request.ctx?.session.flash('notification', {
+      type: 'success',
+      message: 'Categoria com sucesso',
+    })
+    return request.ctx?.response.redirect().toRoute('categories.index')
   }
 }

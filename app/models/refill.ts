@@ -32,6 +32,19 @@ export default class Refill extends BaseModel {
   @belongsTo(() => Category)
   declare category: BelongsTo<typeof Category>
 
+  static async findManyRefills(page: number, limit: number) {
+    const reffils = await this.query()
+      .orderBy('createdAt', 'desc')
+      .preload('category')
+      .paginate(page, limit)
+    reffils.baseUrl('/dashboard/recargas')
+    return reffils
+  }
+
+  static async findRefillById(id: string) {
+    return await this.query().where('id', id).firstOrFail()
+  }
+
   @beforeCreate()
   static assignUuid(refill: Refill) {
     refill.id = randomUUID()

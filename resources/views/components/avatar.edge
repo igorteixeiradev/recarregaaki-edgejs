@@ -15,9 +15,14 @@
                 </p>
               </div>
               <ul class="p-2 text-sm text-body font-medium" role="none">
-                <li>
-                  <a href="{{route('dashboard.index')}}" class="inline-flex items-center w-full p-2 hover:bg-neutral-tertiary-medium hover:text-heading rounded" role="menuitem">Dashboard</a>
-                </li>
+                @if(auth.user.isAdmin) 
+                  <li>
+                    <a href="{{route('dashboard.index')}}"
+                      class="inline-flex items-center w-full p-2 hover:bg-neutral-tertiary-medium hover:text-heading rounded"
+                      role="menuitem">Dashboard</a>
+                  </li>
+                @end
+                
                 <li>
                   <a href="{{route('web.profile')}}" class="inline-flex items-center w-full p-2 hover:bg-neutral-tertiary-medium hover:text-heading rounded" role="menuitem">Perfil</a>
                 </li>

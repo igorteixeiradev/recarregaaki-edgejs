@@ -14,10 +14,11 @@ import { sep, normalize } from 'node:path'
 const AuthController = () => import('#controllers/auth_controller')
 const PrivatesController = () => import('#controllers/privates_controller')
 const CategoriesController = () => import('#controllers/categories_controller')
+const RefillsController = () => import('#controllers/refills_controller')
 
 const PATH_TRAVERSAL_REGEX = /(?:^|[\\/])\.\.(?:[\\/]|$)/
 
-router.get('/uploads/*', ({ request, response }) => {
+router.get('uploads/*', ({ request, response }) => {
   const filePath = request.param('*').join(sep)
   const normalizedPath = normalize(filePath)
 
@@ -74,6 +75,7 @@ router
   .group(() => {
     router.get('', [PrivatesController, 'index']).as('dashboard.index')
     router.resource('categorias', CategoriesController).as('categories')
+    router.resource('recargas', RefillsController).as('refills')
   })
   .prefix('dashboard')
   .use(middleware.auth())

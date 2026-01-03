@@ -33,8 +33,11 @@ export default class Category extends BaseModel {
     return categories
   }
 
-  static async findManyCategoriesByActive(page: number, limit: number) {
-    return await this.query().where('isActive', true).preload('refills').paginate(page, limit)
+  static async findManyCategoriesByActive(isActive: boolean) {
+    return await this.query()
+      .where('isActive', isActive)
+      .orderBy('createdAt', 'desc')
+      .preload('refills')
   }
 
   static async findCategoryById(id: string) {
