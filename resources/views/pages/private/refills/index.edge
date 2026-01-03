@@ -18,6 +18,10 @@
         <th scope="col" class="px-6 py-3 font-medium">
           Categoria
         </th>
+
+        <th scope="col" class="px-6 py-3 font-medium">
+          Total de pacotes
+        </th>
         <th scope="col" class="px-6 py-3 font-medium">
           Estado
         </th>
@@ -40,6 +44,10 @@
         <td class="px-6 py-4">
           {{ refill.category.name }}
         </td>
+
+        <td class="px-6 py-4">
+          {{ refill.packages.length }}
+        </td>
         <td class="px-6 py-4">
           @if(refill.isActive)
           <span class="bg-success-soft text-fg-success-strong text-xs font-medium px-1.5 py-0.5 rounded">Activo</span>
@@ -50,7 +58,7 @@
 
         <td class="px-6 py-4">
           <div class="flex items-center gap-5">
-            <a href="#" class="font-medium text-blue-700 hover:underline">Ver pacotes</a>
+            <a href="{{ route('packages.index', { refillId: refill.id }) }}" class="font-medium text-blue-700 hover:underline">Ver pacotes</a>
             <a href="{{ route('refills.edit', { id: refill.id }) }}"
               class="font-medium text-green-700 hover:underline">Editar</a>
             @!component('components/modal', {

@@ -1,8 +1,9 @@
 import { DateTime } from 'luxon'
-import { BaseModel, beforeCreate, belongsTo, column } from '@adonisjs/lucid/orm'
+import { BaseModel, beforeCreate, belongsTo, column, hasMany } from '@adonisjs/lucid/orm'
 import { randomUUID } from 'node:crypto'
-import { type BelongsTo } from '@adonisjs/lucid/types/relations'
+import { type HasMany, type BelongsTo } from '@adonisjs/lucid/types/relations'
 import Category from '#models/category'
+import Package from '#models/package'
 
 export default class Refill extends BaseModel {
   @column({ isPrimary: true })
@@ -32,17 +33,43 @@ export default class Refill extends BaseModel {
   @belongsTo(() => Category)
   declare category: BelongsTo<typeof Category>
 
+  @hasMany(() => Package)
+  declare packages: HasMany<typeof Package>
+
   static async findManyRefills(page: number, limit: number) {
-    const reffils = await this.query()
+    const refills = await this.query()
       .orderBy('createdAt', 'desc')
       .preload('category')
+      .preload('packages')
       .paginate(page, limit)
-    reffils.baseUrl('/dashboard/recargas')
-    return reffils
+    refills.baseUrl('/dashboard/recargas')
+    return refills
   }
 
   static async findRefillById(id: string) {
-    return await this.query().where('id', id).firstOrFail()
+    return await this.query().where('id', id).preload('category').preload('packages').firstOrFail()
+  }
+
+  static async findManyRefillByIsActive(isActive: boolean) {
+    return await this.query()
+      .orderBy('createdAt', 'desc')
+      .where('isActive', isActive)
+      .preload('category')
+      .preload('packages')
+  }
+
+  static async findManyRefillsBySearchTerm(page: number, limit: number, q: string) {
+    const refills = await this.query()
+      .orderBy('createdAt', 'desc')
+      .where('isActive', true)
+      .whereILike('name', `%${q}%`)
+      .orWhereILike('description', `%${q}%`)
+      .preload('category')
+      .paginate(page, limit)
+
+    refills.baseUrl('/loja')
+
+    return refills
   }
 
   @beforeCreate()

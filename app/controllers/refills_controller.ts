@@ -49,9 +49,8 @@ export default class RefillsController {
   /**
    * Show individual record
    */
-  async show({ params, view }: HttpContext) {
-    const refill = await Refill.findRefillById(params.id)
-    return view.render('pages/private/refills/show', { refill })
+  async show({ params }: HttpContext) {
+    return await Refill.findRefillById(params.id)
   }
 
   /**

@@ -26,7 +26,12 @@
                 </button>
             </div>
             <!-- Modal body -->
-            <form method="POST" action="{{ route(url, { id }) }}?_method=DELETE">
+            @if(extraId)
+                <form method="POST" action="{{ route(url, { id, refillId:extraId }) }}?_method=DELETE"></form>
+            @else
+                <form method="POST" action="{{ route(url, { id }) }}?_method=DELETE"></form>
+            @end
+            
                {{ csrfField() }}
                 <div class="space-y-4 md:space-y-6 py-4 md:py-6">
                     <p class="leading-relaxed text-body">

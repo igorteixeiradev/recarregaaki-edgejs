@@ -13,8 +13,10 @@ import app from '@adonisjs/core/services/app'
 import { sep, normalize } from 'node:path'
 const AuthController = () => import('#controllers/auth_controller')
 const PrivatesController = () => import('#controllers/privates_controller')
+const PublicsController = () => import('#controllers/publics_controller')
 const CategoriesController = () => import('#controllers/categories_controller')
 const RefillsController = () => import('#controllers/refills_controller')
+const PackagesController = () => import('#controllers/packages_controller')
 
 const PATH_TRAVERSAL_REGEX = /(?:^|[\\/])\.\.(?:[\\/]|$)/
 
@@ -30,10 +32,11 @@ router.get('uploads/*', ({ request, response }) => {
   return response.download(absolutePath)
 })
 
-router.on('/').render('pages/public/home').as('web.home')
+router.get('/', [PublicsController, 'index']).as('web.home')
 router.on('/sobre-nos').render('pages/public/about').as('web.about')
 router.on('/contactos').render('pages/public/contact').as('web.contact')
-router.on('/loja').render('pages/public/shop').as('web.shop')
+router.get('/loja', [PublicsController, 'shop']).as('web.shop')
+router.get('/loja/:id', [PublicsController, 'show']).as('web.show')
 router.on('/perfil').render('pages/public/profile').as('web.profile').use(middleware.auth())
 
 // Paginas de Autenticação
@@ -76,6 +79,7 @@ router
     router.get('', [PrivatesController, 'index']).as('dashboard.index')
     router.resource('categorias', CategoriesController).as('categories')
     router.resource('recargas', RefillsController).as('refills')
+    router.resource('/:refillId/pacotes', PackagesController).as('packages')
   })
   .prefix('dashboard')
   .use(middleware.auth())

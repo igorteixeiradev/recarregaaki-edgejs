@@ -1,12 +1,94 @@
-@layout.app({ title: "Home" })
+@layout.app({ title: "Loja" })
 @slot('meta')
-<meta name="description" content="Bem-vindo à Recarregaaki, a sua plataforma de recargas digitais em Angola.">
+<meta name="description" content="Pagina da Loja da Recarregaaki" />
 @endslot
 
 @slot('main')
 @include('partials/navbar')
-<div class="my-20 max-w-7xl  mx-auto lg:px-0 px-4">
+<div class="py-10 max-w-7xl mx-auto lg:px-0 px-4">
+    <section>
+        <div class="mx-auto 2xl:px-0">
+            <div class="lg:grid lg:grid-cols-2 lg:gap-8 xl:gap-16">
+                <div class="mx-aut shrink-0">
+                    <img class="w-full rounded-md" src="/{{refill.image}}" alt="Capa do pacote"
+                        />
+                </div>
+                <div class="mt-6 sm:mt-8 lg:mt-0">
+                    <h1 class="text-xl font-semibold text-gray-900 sm:text-2xl dark:text-white">
+                        {{refill.name}} -{{refill.category.name}}
+                    </h1>
+                <div class="py-5 text-xs">
+                
+                    @if(!refill.packages || refill.packages.length === 0)
+                    <div class="py-10 text-center text-lg font-light text-gray-900 dark:text-white">
+                        Pacotes não encontrados
+                    </div>
+                    @else
+                
+                
+                    <div class="mb-6 grid grid-cols-2 gap-4 lg:grid-cols-4">
+                        @each(pkg in refill.packages.filter(p => !p.isSpecialOffer && p.isActive))
+                        <a href="#"  class="rounded-xl whitespace-nowrap border-2 px-4 py-2 text-left transition-all active:scale-95
+                        {{ selectedId === pkg.id
+                          ? 'bg-linear-to-r from-violet-500 via-[#9938CA] to-[#E0724A] text-white'
+                          : 'border-violet-500 hover:bg-[#9938CA] hover:text-white'
+                        }}">
+                            <div class="font-bold dark:text-white">{{ pkg.name }}</div>
+                            <div class="text-green-400 dark:text-green-300">
+                                AOA {{ pkg.price }}
+                            </div>
+                        </a>
+                        @endeach
+                    </div>
+                
+               
+                    @if(refill.packages.filter(p => p.isSpecialOffer && p.isActive).length > 0)
+                    <div>
+                        <div class="mb-4 flex items-end gap-2">
+                            <div class="h-5 w-1 rounded-full bg-amber-500"></div>
+                            <h3 class="text-lg font-bold text-amber-500 dark:text-amber-400">
+                                Ofertas Especiais
+                            </h3>
+                        </div>
+                
+                        <div class="grid grid-cols-2 gap-4 lg:grid-cols-4">
+                            @each(pkg in refill.packages.filter(p => p.isSpecialOffer && p.isActive))
+                            <a href="#" class="relative whitespace-nowrap rounded-xl border-2 px-4 py-2 text-left transition-all active:scale-95
+                            {{ selectedId === pkg.id
+                              ? 'border-amber-500 bg-linear-to-r from-amber-500 via-orange-500 to-red-500 text-white'
+                              : 'border-amber-500 bg-amber-50 hover:bg-amber-500 hover:text-white dark:bg-amber-900/20 dark:hover:bg-amber-600'
+                            }}">
+                                <div class="font-bold dark:text-white">{{ pkg.name }}</div>
+                                <div class="text-green-400 dark:text-green-300">
+                                    AOA {{ pkg.price }}
+                                </div>
+                            </a>
+                            @endeach
+                        </div>
+                    </div>
+                    @endif
+                
+                    @endif
+                
+                </div>
 
+                    <hr class="my-6 border-gray-200 md:my-8 dark:border-gray-800" />
+                    
+                    <p class="mb-6 text-justify text-gray-900 dark:text-white">
+                       {{refill.description}}
+                    </p>
+                    
+                    <p class="text-justify text-gray-900 dark:text-white">
+                        A sua recarga só será processada após a confirmação do pagamento da referência via
+                        ATM, Multicaixa Express, BAI Directo e entre outros meio de pagamento validos em
+                        Angola, será lhe enviado pelo Email ou Whatsapp a referência e confirmação do
+                        pagamento.
+                    </p>
+                </div>
+            </div>
+        </div>
+
+    </section>
 </div>
 
 @include('partials/footer')
