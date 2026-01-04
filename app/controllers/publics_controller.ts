@@ -17,7 +17,9 @@ export default class PublicsController {
   }
   async show({ params, view, request }: HttpContext) {
     const selectedId = request.input('selectItem', '')
+    const name = request.input('name', '')
+    const price = request.input('price', '')
     const refill = await Refill.findRefillById(params.id)
-    return view.render('pages/public/show', { refill, selectedId })
+    return view.render('pages/public/show', { refill, selectedId, name, price })
   }
 }

@@ -25,11 +25,7 @@ export const updateCategoryValidator = vine.compile(
   vine.object({
     name: vine
       .string()
-      .exists(async (db, value) => {
-        if (!value) return true
 
-        return !!(await db.from('categories').where('name', value).first())
-      })
       .optional(),
     isActive: vine.boolean().optional(),
   })
