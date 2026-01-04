@@ -27,9 +27,9 @@
             </div>
             <!-- Modal body -->
             @if(extraId)
-                <form method="POST" action="{{ route(url, { id, refillId:extraId }) }}?_method=DELETE"></form>
+                <form method="POST" action="{{ route(url, { id, refillId:extraId }) }}?_method=DELETE">
             @else
-                <form method="POST" action="{{ route(url, { id }) }}?_method=DELETE"></form>
+                <form method="POST" action="{{ route(url, { id }) }}?_method=DELETE">
             @end
             
                {{ csrfField() }}

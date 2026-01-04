@@ -1,0 +1,40 @@
+@layout.app({ title: "Dashboard" })
+@slot('main')
+@sidebar()
+@slot('content')
+<h2 class="my-5 text-2xl font-semibold lg:text-3xl dark:text-white">
+    Consumidores
+</h2>
+<form class="space-y-4 md:space-y-6" method="post" action="{{route('users.store')}}">
+    {{ csrfField() }}
+    <div class="grid lg:grid-cols-3 gap-5 items-center">
+        <div>
+            @!component('components/label', { text: 'Nome completo',name:"fullName" })
+            @!component('components/input', { placeholder: 'Nome completo',name:"fullName", type:"text" })
+        </div>
+        <div>
+            @!component('components/label', { text: 'Email',name:"email" })
+            @!component('components/input', { placeholder: 'Email',name:"email", type:"email" })
+        </div>
+        <div>
+            @!component('components/label', { text: 'Palavra-passe',name:"password" })
+            @!component('components/input', { placeholder: '••••••••',name:"password", type:"password" })
+        </div>
+
+        <div>
+            @!component('components/label', { text: 'Confirmar palavra-passe',name:"passwordConfirmation" })
+            @!component('components/input', { placeholder: '••••••••',name:"passwordConfirmation", type:"password" })
+        </div>
+    </div>
+<button type="submit"
+    class="flex w-full items-center justify-center space-x-2 rounded-full bg-white bg-linear-to-r from-violet-500 via-[#9938CA] to-[#E0724A] px-6 py-3 p-2.5 text-center text-sm font-semibold text-white transition-all duration-200 hover:bg-green-700 hover:opacity-90 active:scale-95 sm:w-auto"">
+  Adicionar consumidor
+</button>
+</form>
+@end
+@end
+
+@end
+
+@endslot
+@end

@@ -24,7 +24,7 @@ export const createUserValidator = vine.compile(
     phoneNumber: vine.string().optional(),
     verifyEmail: vine.boolean().optional(),
     verifyPhoneNumber: vine.boolean().optional(),
-    isAccountActive: vine.boolean().optional(),
+    isBlock: vine.boolean().optional(),
   })
 )
 
@@ -49,11 +49,12 @@ export const updateUserValidator = vine.compile(
       .optional(),
     avatarUrl: vine.string().url().optional(),
     isAdmin: vine.boolean().optional(),
+    password: vine.string().trim().minLength(8).maxLength(32),
     phoneCode: vine.string().startsWith('+').optional(),
     phoneNumber: vine.string().optional(),
     verifyEmail: vine.boolean().optional(),
     verifyPhoneNumber: vine.boolean().optional(),
-    isAccountActive: vine.boolean().optional(),
+    isBlock: vine.boolean().optional(),
   })
 )
 

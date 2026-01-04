@@ -39,7 +39,7 @@ export default class User extends compose(BaseModel, AuthFinder) {
   declare verifyPhoneNumber: boolean
 
   @column()
-  declare isAccountActive: boolean
+  declare isBlock: boolean
 
   @column({ serializeAs: null })
   declare password: string

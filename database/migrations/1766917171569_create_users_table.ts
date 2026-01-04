@@ -15,7 +15,7 @@ export default class extends BaseSchema {
       table.string('phone_number', 50).unique().nullable()
       table.boolean('verify_email').defaultTo(false)
       table.boolean('verify_phone_number').defaultTo(false)
-      table.boolean('is_account_active').defaultTo(true)
+      table.boolean('is_block').defaultTo(false)
 
       table.timestamp('created_at').notNullable()
       table.timestamp('updated_at').nullable()

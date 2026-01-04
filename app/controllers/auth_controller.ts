@@ -19,6 +19,12 @@ export default class AuthController {
   async login({ auth, request, response }: HttpContext) {
     const { email, password } = await request.validateUsing(createEmailAndPasswordValidator)
     const user = await User.verifyCredentials(email, password)
+    if (user.isBlock) {
+      request.ctx?.session.flash('notification', {
+        type: 'danger',
+        message: 'Conta bloqueada',
+      })
+    }
     await auth.use('web').login(user)
     return response.redirect().toRoute('web.home')
   }
