@@ -24,6 +24,7 @@ export default class AuthController {
         type: 'danger',
         message: 'Conta bloqueada',
       })
+      return response.redirect().toRoute('auth.login.view')
     }
     await auth.use('web').login(user)
     return response.redirect().toRoute('web.home')

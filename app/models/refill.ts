@@ -58,6 +58,7 @@ export default class Refill extends BaseModel {
 
   static async findManyRefillByIsActive(isActive: boolean) {
     return await this.query()
+      .has('packages')
       .orderBy('createdAt', 'desc')
       .where('isActive', isActive)
       .preload('category')
@@ -66,6 +67,7 @@ export default class Refill extends BaseModel {
 
   static async findManyRefillsBySearchTerm(page: number, limit: number, q: string) {
     const refills = await this.query()
+      .has('packages')
       .orderBy('createdAt', 'desc')
       .where('isActive', true)
       .whereILike('name', `%${q}%`)
