@@ -17,12 +17,15 @@ export class AuthService {
       token,
       expiresAt: DateTime.now().plus({ hours: 1 }),
     })
-    await mail.send((message) => {
+    await mail.sendLater((message) => {
       message
         .to(email)
         .subject('Recuperação de palavra-passe')
         .htmlView('emails/reset_password', {
-          url: `http://${env.get('HOST')}:${env.get('PORT')}/resetar-palavra-passe?token=${token}`,
+          url:
+            env.get('NODE_ENV') === 'production'
+              ? `https://${env.get('HOST')}/resetar-palavra-passe?token=${token}`
+              : `http://${env.get('HOST')}:${env.get('PORT')}/resetar-palavra-passe?token=${token}`,
           email,
         })
     })

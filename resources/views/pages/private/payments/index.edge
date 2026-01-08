@@ -2,7 +2,94 @@
 @slot('main')
   @sidebar()
   @slot('content')
-  fg
+  <div class="flex items-center justify-between mb-5 py-4">
+    <h2 class="text-2xl font-semibold lg:text-4xl dark:text-white">Pagamentos</h2>
+  
+  </div>
+<div class="relative overflow-x-auto bg-neutral-primary-soft shadow-xs rounded-base border border-default">
+  <table class="w-full text-sm text-left rtl:text-right text-body">
+    <thead class="bg-neutral-secondary-soft border-b border-default">
+      <tr>
+        <th scope="col" class="px-6 py-3 font-medium">
+          Consumidor
+        </th>
+        <th scope="col" class="px-6 py-3 font-medium">
+          Produto
+        </th>
+        <th scope="col" class="px-6 py-3 font-medium">
+          Preço
+        </th>
+        <th scope="col" class="px-6 py-3 font-medium">
+          Estado
+        </th>
+        <th scope="col" class="px-6 py-3 font-medium">
+          Action
+        </th>
+      </tr>
+    </thead>
+    <tbody>
+      @if(payments.length > 0)
+      @each(payment in payments)
+      <tr class="odd:bg-neutral-primary even:bg-neutral-secondary-soft border-b border-default">
+        <th scope="row" class="px-6 py-4 font-medium text-heading whitespace-nowrap">
+          {{payment.user.name}}
+        </th>
+        <td class="px-6 py-4">
+          {{payment.package.name}}
+        </td>
+        <td class="px-6 py-4">
+          {{payment.package.price}} Kz
+        </td>
+
+        <td class="px-6 py-4">
+          @if(payment.status === 'PAID')
+          <span class="text-green-600 font-semibold">{{ payment.status }}</span>
+          @elseif(payment.status === 'PENDING')
+          <span class="text-yellow-500 font-semibold">{{ payment.status }}</span>
+          @elseif(payment.status === 'FAILED')
+          <span class="text-red-600 font-semibold">{{ payment.status }}</span>
+          @elseif(payment.status === 'CANCELED')
+          <span class="text-gray-500 font-semibold">{{ payment.status }}</span>
+          @endif
+
+        </td>
+        <td class="px-6 py-4">
+          <a href="#" class="font-medium text-fg-brand hover:underline">Edit</a>
+        </td>
+      </tr>
+      @end
+      @else
+      <tr class="odd:bg-neutral-primary even:bg-neutral-secondary-soft border-b border-default">
+
+        <th colspan="5" scope="row" scope="row"
+          class="px-6 py-4 font-medium text-heading whitespace-nowrap text-center text-xl">
+          <span>Nenhum dado encontrado</span>
+        </th>
+      </tr>
+      @end
+    </tbody>
+  </table>
+</div>
+
+<div class="mt-5">
+  @each(anchor in payments.getUrlsForRange(1, payments.lastPage))
+  <nav aria-label="Page navigation example" class="flex items-center space-x-4">
+    <ul class="flex -space-x-px text-sm">
+
+      <li>
+        <a href="{{ anchor.url }}"
+          class="flex items-center  rounded-full justify-center text-body bg-neutral-secondary-medium border border-default-medium hover:bg-neutral-tertiary-medium hover:text-heading shadow-xs font-medium leading-5 text-sm w-9 h-9 focus:outline-none">{{
+          anchor.page }}</a>
+      </li>
+
+
+    </ul>
+
+  </nav>
+
+
+  @endeach
+</div>
   @end
   @end
   

@@ -79,12 +79,12 @@
         </div>
 
         <div class="hidden w-full md:block">
-          <img class="w-full rounded-2xl object-contain" src="images/4.png" alt="Banner" />
+          <img class="w-full rounded-2xl object-contain" src="images/4.png" alt="Imagem do hero" />
         </div>
       </section>
 
       @if(refills.length > 0)
-        <div class="mb-5 grid grid-cols-2 gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6">
+        <div class="mb-5 grid grid-cols-2 gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">
       @each(refill in refills)
         @!component('components/card', { id:refill.id, image:refill.image,title:refill.name,category:refill.category.name })
       @end

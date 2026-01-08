@@ -11,7 +11,7 @@
             <div class="lg:grid lg:grid-cols-2 lg:gap-8 xl:gap-16">
                 <div class="mx-aut shrink-0">
                     <img class="h-56 w-full rounded-xl md:h-96 lg:h-125" src="/{{refill.image}}"
-                        alt="Imagem do {{refill.title}}" />
+                        alt="{{refill.title}}" />
                 </div>
                 <div class="mt-6 sm:mt-8 lg:mt-0">
                     <h1 class="text-xl font-semibold text-gray-900 sm:text-2xl dark:text-white">
@@ -28,14 +28,13 @@
 
                         <div class="mb-6 grid grid-cols-2 gap-4 lg:grid-cols-4">
                             @each(pkg in refill.packages.filter(p => !p.isSpecialOffer && p.isActive))
-                            <a href="{{route("web.show",{id:refill.id})}}?selectItem={{pkg.id}}&name={{encodeURIComponent(pkg.name) }}&price={{pkg.price}}" class="py-2 rounded-xl whitespace-nowrap border-2  text-center transition-all active:scale-95
-                        {{ selectedId === pkg.id
+                            <a href="{{route("web.show",{id:refill.id})}}?selectItem={{pkg.id}}&name={{encodeURIComponent(pkg.name)}}&price={{pkg.price}}" class="py-2 rounded-xl whitespace-nowrap border-2  text-center transition-all active:scale-95
+                           {{ selectedId === pkg.id
                           ? 'bg-linear-to-r from-violet-500 via-[#9938CA] to-[#E0724A] text-white'
-                          : 'border-violet-500 hover:bg-[#9938CA] hover:text-white'
-                        }}">
+                          : 'border-violet-500 hover:bg-[#9938CA] hover:text-white'}}">
                                 <div class="font-bold dark:text-white">{{ pkg.name }}</div>
                                 <div class="text-green-400 dark:text-green-300">
-                                    AOA {{ pkg.price }}
+                                    {{ pkg.price }} Kz
                                 </div>
                             </a>
                             @endeach
@@ -53,14 +52,14 @@
 
                             <div class="grid grid-cols-2 gap-4 lg:grid-cols-4">
                                 @each(pkg in refill.packages.filter(p => p.isSpecialOffer && p.isActive))
-                                <a href="{{route("web.show",{id:refill.id})}}?selectItem={{pkg.id}}&name={{encodeURIComponent(pkg.name) }}&price={{pkg.price}}"  class="relative  whitespace-nowrap rounded-xl border-2 py-2   text-center transition-all active:scale-95 w-full
+                                <a href="{{route("web.show",{id:refill.id})}}?selectItem={{pkg.id}}&name={{encodeURIComponent(pkg.name)}}&price={{pkg.price}}" class="relative  whitespace-nowrap rounded-xl border-2 py-2   text-center transition-all active:scale-95 w-full
                             {{ selectedId === pkg.id
                               ? 'border-amber-500 bg-linear-to-r from-amber-500 via-orange-500 to-red-500 text-white'
                               : 'border-amber-500 bg-amber-50 hover:bg-amber-500 hover:text-white dark:bg-amber-900/20 dark:hover:bg-amber-600'
                             }}">
                                     <div class="font-bold dark:text-white">{{ pkg.name }}</div>
                                     <div class="text-green-400 dark:text-green-300">
-                                        AOA {{ pkg.price }}
+                                        {{ pkg.price }} Kz
                                     </div>
                                 </a>
                                 @endeach
@@ -111,68 +110,71 @@
                                                 {{ name }}
                                             </p>
                                         </div>
-                                        
+
                                         <div>
                                             <p class="text-sm text-gray-500 dark:text-gray-400">Preço:</p>
                                             <p class="text-sm font-semibold text-green-500">
-                                                AOA {{ price }}
+                                                {{ price }} Kz
                                             </p>
 
-                                        @if(refill.category.name === "Jogo")
-                                        <p class="text-sm mt-5 text-gray-500 dark:text-gray-400">ID do jogo {{refill.name}}:</p>
-                                        <p class="text-sm font-medium text-gray-900 dark:text-white">
-                                        <input type="text" name="ID" id="ID"
-                                            class="bg-gray-50 mt-2 border rounded-md border-gray-300 text-gray-900  focus:ring-primary-600 focus:border-primary-600 block w-full p-2 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 text-sm"
-                                            placeholder="ID do jogo {{refill.name}}" />
-                                        </p>
-                                           
-                                            
-                                            @inputError("name")
-                                            
-                                            @each(message in $messages)
-                                            <p class="mt-2.5 text-sm text-red-400 dark:text-red-500"><span class="font-medium">{{ message}}</p>
-                                            @end
-                                            
-                                            @end
-                                        @end
-                                        <p class="leading-relaxed text-body mt-5">
-                                            Nota: Não fazemos reembolso dos valores das compras na nossa plataforma,
-                                            certifique-se
-                                            que o pacote que selecionou é oque deseja pagar...
-                                        </p>
-                                    </div>
-                                    <!-- Modal footer -->
-                                    <div class="flex items-center border-t border-default space-x-4 pt-4 md:pt-5">
+                                            @if(refill.category.name === "Jogo")
+                                            <form action="#" method="POST">
+                                                {{ csrfField() }}
+                                                <p class="text-sm mt-5 text-gray-500 dark:text-gray-400">ID do jogo
+                                                    {{refill.name}}:</p>
+                                                <p class="text-sm font-medium text-gray-900 dark:text-white">
+                                                    <input type="text" name="ID" id="ID"
+                                                        class="bg-gray-50 mt-2 border rounded-md border-gray-300 text-gray-900  focus:ring-primary-600 focus:border-primary-600 block w-full p-2 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 text-sm"
+                                                        placeholder="ID do jogo {{refill.name}}" />
+                                                </p>
 
-                                        <button data-modal-hide="default-modal" type="button" class="text-white  box-border border border-transparent hover:bg-brand-strong focus:ring-4 focus:ring-brand-medium shadow-xs font-medium leading-5 text-sm px-4 py-2.5 focus:outline-none        items-center justify-center rounded-full bg-white bg-linear-to-r from-violet-500 via-[#9938CA] to-[#E0724A] transition-all active:scale-95
+
+                                                @inputError("name")
+                                                @each(message in $messages)
+                                                <p class="mt-2.5 text-sm text-red-400 dark:text-red-500"><span
+                                                        class="font-medium">{{ message}}</p>
+                                                @end
+                                                @end
+                                            </form>
+                                            @end
+                                            <p class="leading-relaxed text-body mt-5">
+                                                Nota: Não fazemos reembolso dos valores das compras na nossa plataforma,
+                                                certifique-se
+                                                que o pacote que selecionou é oque deseja pagar...
+                                            </p>
+                                        </div>
+                                        <!-- Modal footer -->
+                                        <div class="flex items-center border-t border-default space-x-4 pt-4 md:pt-5">
+
+                                            <button data-modal-hide="default-modal" type="button" class="text-white  box-border border border-transparent hover:bg-brand-strong focus:ring-4 focus:ring-brand-medium shadow-xs font-medium leading-5 text-sm px-4 py-2.5 focus:outline-none        items-center justify-center rounded-full bg-white bg-linear-to-r from-violet-500 via-[#9938CA] to-[#E0724A] transition-all active:scale-95
                                             ">Processar pedido</button>
 
-                                        <button data-modal-hide="default-modal" type="button"
-                                            class="text-body rounded-full bg-neutral-secondary-medium box-border border border-default-medium hover:bg-neutral-tertiary-medium hover:text-heading focus:ring-4 focus:ring-neutral-tertiary shadow-xs font-medium leading-5  text-sm px-4 py-2.5 focus:outline-none">Cancelar</button>
+                                            <button data-modal-hide="default-modal" type="button"
+                                                class="text-body rounded-full bg-neutral-secondary-medium box-border border border-default-medium hover:bg-neutral-tertiary-medium hover:text-heading focus:ring-4 focus:ring-neutral-tertiary shadow-xs font-medium leading-5  text-sm px-4 py-2.5 focus:outline-none">Cancelar</button>
 
+                                        </div>
                                     </div>
                                 </div>
                             </div>
+                            @end
+
                         </div>
-                        @end
 
+                        <hr class="my-6 border-gray-200 md:my-8 dark:border-gray-800" />
+
+                        <p class="mb-6 text-justify text-gray-900 dark:text-white">
+                            {{refill.description}}
+                        </p>
+
+                        <p class="text-justify text-gray-900 dark:text-white">
+                            A sua recarga só será processada após a confirmação do pagamento da referência via
+                            ATM, Multicaixa Express, BAI Directo e entre outros meio de pagamento validos em
+                            Angola, será lhe enviado pelo Email ou Whatsapp a referência e confirmação do
+                            pagamento.
+                        </p>
                     </div>
-
-                    <hr class="my-6 border-gray-200 md:my-8 dark:border-gray-800" />
-
-                    <p class="mb-6 text-justify text-gray-900 dark:text-white">
-                        {{refill.description}}
-                    </p>
-
-                    <p class="text-justify text-gray-900 dark:text-white">
-                        A sua recarga só será processada após a confirmação do pagamento da referência via
-                        ATM, Multicaixa Express, BAI Directo e entre outros meio de pagamento validos em
-                        Angola, será lhe enviado pelo Email ou Whatsapp a referência e confirmação do
-                        pagamento.
-                    </p>
                 </div>
             </div>
-        </div>
 
     </section>
 </div>

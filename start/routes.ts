@@ -18,6 +18,7 @@ const CategoriesController = () => import('#controllers/categories_controller')
 const RefillsController = () => import('#controllers/refills_controller')
 const PackagesController = () => import('#controllers/packages_controller')
 const UsersController = () => import('#controllers/users_controller')
+const PaymentsController = () => import('#controllers/payments_controller')
 
 const PATH_TRAVERSAL_REGEX = /(?:^|[\\/])\.\.(?:[\\/]|$)/
 
@@ -82,6 +83,7 @@ router
     router.resource('recargas', RefillsController).as('refills')
     router.resource('/:refillId/pacotes', PackagesController).as('packages')
     router.resource('consumidores', UsersController).as('users')
+    router.resource('payments', PaymentsController).as('payments')
   })
   .prefix('dashboard')
   .use(middleware.auth())
