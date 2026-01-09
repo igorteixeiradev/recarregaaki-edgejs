@@ -79,6 +79,7 @@ router
 router
   .group(() => {
     router.get('', [PrivatesController, 'index']).as('dashboard.index')
+    router.get('/kwanza-hoje', [PrivatesController, 'KzToDay']).as('dashboard.kz')
     router.resource('categorias', CategoriesController).as('categories')
     router.resource('recargas', RefillsController).as('refills')
     router.resource('/:refillId/pacotes', PackagesController).as('packages')
