@@ -11,7 +11,7 @@
         <div>
             @!component('components/label', { text: 'Nome completo',name:"fullName" })
             <input type="text" name="fullName" id="fullName" value="{{user.fullName}}"
-                class="bg-gray-50 border rounded-full border-gray-300 text-gray-900  focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                class="bg-gray-50 border rounded-lg border-gray-300 text-gray-900  focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                 placeholder="Nome da categoria" />
             
             @inputError("fullName")
@@ -25,7 +25,7 @@
         <div>
             @!component('components/label', { text: 'Email',name:"email" })
             <input type="text" name="email" id="email" value="{{user.email}}"
-                class="bg-gray-50 border rounded-full border-gray-300 text-gray-900  focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                class="bg-gray-50 border rounded-lg border-gray-300 text-gray-900  focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                 placeholder="Nome da categoria" />
             
             @inputError("email")
@@ -41,7 +41,7 @@
         <div>
             @!component('components/label', { text: 'Código de telefone',name:"phoneCode" })
             <input type="text" name="phoneCode" id="phoneCode" value="{{user.phoneCode}}"
-                class="bg-gray-50 border rounded-full border-gray-300 text-gray-900  focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                class="bg-gray-50 border rounded-lg border-gray-300 text-gray-900  focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                 placeholder="Nome da categoria" />
             
             @inputError("phoneCode")
@@ -57,7 +57,7 @@
         <div>
             @!component('components/label', { text: 'Número de telefone',name:"phoneNumber" })
             <input type="text" name="phoneNumber" id="phoneNumber" value="{{user.phoneNumber || "Número não definido"}}"
-                class="bg-gray-50 border rounded-full border-gray-300 text-gray-900  focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                class="bg-gray-50 border rounded-lg border-gray-300 text-gray-900  focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                 placeholder="Nome da categoria" />
         
             @inputError("phoneNumber")
@@ -72,7 +72,7 @@
         <div>
             @!component('components/label', { text: 'Estado da conta',name:"isBlock" })
         <select name="isBlock"
-            class="block w-full rounded-full px-3 py-2.5 bg-neutral-secondary-medium border border-default-medium text-heading text-sm  focus:ring-brand focus:border-brand shadow-xs placeholder:text-body">
+            class="block w-full rounded-lg px-3 py-2.5 bg-neutral-secondary-medium border border-default-medium text-heading text-sm  focus:ring-brand focus:border-brand shadow-xs placeholder:text-body">
             <option value="{{true}}" {{ user.isBlock ? 'selected' : '' }}>Bloqueada</option>
             <option value="{{false}}" {{ !user.isBlock ? 'selected' : '' }}>Activa</option>
         
@@ -83,7 +83,7 @@
         </div>
     </div>
     <button type="submit"
-        class="flex w-full items-center justify-center space-x-2 rounded-full bg-white bg-linear-to-r from-violet-500 via-[#9938CA] to-[#E0724A] px-6 py-3 p-2.5 text-center text-sm font-semibold text-white transition-all duration-200 hover:bg-green-700 hover:opacity-90 active:scale-95 sm:w-auto"">
+        class="flex w-full items-center justify-center space-x-2 rounded-lg bg-white bg-linear-to-r from-violet-500 via-[#9938CA] to-[#E0724A] px-6 py-3 p-2.5 text-center text-sm font-semibold text-white transition-all duration-200 hover:bg-green-700 hover:opacity-90 active:scale-95 sm:w-auto"">
   Actualizar consumidor
 </button>
 </form>

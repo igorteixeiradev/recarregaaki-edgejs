@@ -70,7 +70,7 @@
                         @endif
                         @if(selectedId)
                         <button data-modal-target="default-modal" data-modal-toggle="default-modal"
-                            class="mt-5 flex w-full items-center justify-center rounded-full bg-white bg-linear-to-r from-violet-500 via-[#9938CA] to-[#E0724A] px-6 py-2 font-semibold text-white transition-all active:scale-95 lg:w-40 xl:px-9">
+                            class="mt-5 flex w-full items-center justify-center bg-white bg-linear-to-r from-violet-500 via-[#9938CA] to-[#E0724A] px-6 py-2 font-semibold text-white transition-all active:scale-95 lg:w-40 xl:px-9 rounded-lg">
                             <svg className="-ms-2 me-2 h-5 w-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
                                 width="24" height="24" fill="none" viewBox="0 0 24 24">
                                 <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2"
@@ -104,7 +104,10 @@
                                     </div>
                                     <!-- Modal body -->
                                     <div class="space-y-4 py-4 md:py-6 ">
-                                        <div>
+                                        <form action="#" method="POST">
+                                            {{ csrfField() }}
+                                            <input type="hidden" name="item" value="{{selectedId}}" />
+                                        <div class="mb-2">
                                             <p class="text-sm text-gray-500 dark:text-gray-400">Nome do pacote:</p>
                                             <p class="text-sm font-medium text-gray-900 dark:text-white">
                                                 {{ name }}
@@ -118,13 +121,13 @@
                                             </p>
 
                                             @if(refill.category.name === "Jogo")
-                                            <form action="#" method="POST">
-                                                {{ csrfField() }}
+                                            
+                                                
                                                 <p class="text-sm mt-5 text-gray-500 dark:text-gray-400">ID do jogo
                                                     {{refill.name}}:</p>
                                                 <p class="text-sm font-medium text-gray-900 dark:text-white">
                                                     <input type="text" name="ID" id="ID"
-                                                        class="bg-gray-50 mt-2 border rounded-md border-gray-300 text-gray-900  focus:ring-primary-600 focus:border-primary-600 block w-full p-2 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 text-sm"
+                                                        class="bg-gray-50 mt-2 border  border-gray-300 text-gray-900  focus:ring-primary-600 rounded-lg focus:border-primary-600 block w-full p-2 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 text-sm"
                                                         placeholder="ID do jogo {{refill.name}}" />
                                                 </p>
 
@@ -135,7 +138,7 @@
                                                         class="font-medium">{{ message}}</p>
                                                 @end
                                                 @end
-                                            </form>
+                                         
                                             @end
                                             <p class="leading-relaxed text-body mt-5">
                                                 Nota: Não fazemos reembolso dos valores das compras na nossa plataforma,
@@ -146,13 +149,14 @@
                                         <!-- Modal footer -->
                                         <div class="flex items-center border-t border-default space-x-4 pt-4 md:pt-5">
 
-                                            <button data-modal-hide="default-modal" type="button" class="text-white  box-border border border-transparent hover:bg-brand-strong focus:ring-4 focus:ring-brand-medium shadow-xs font-medium leading-5 text-sm px-4 py-2.5 focus:outline-none        items-center justify-center rounded-full bg-white bg-linear-to-r from-violet-500 via-[#9938CA] to-[#E0724A] transition-all active:scale-95
+                                            <button type="submit" class="text-white  box-border border border-transparent hover:bg-brand-strong focus:ring-4 focus:ring-brand-medium shadow-xs font-medium leading-5 text-sm px-4 py-2.5 focus:outline-none  items-center justify-center rounded-full bg-white bg-linear-to-r from-violet-500 via-[#9938CA] to-[#E0724A] transition-all active:scale-95
                                             ">Processar pedido</button>
 
                                             <button data-modal-hide="default-modal" type="button"
                                                 class="text-body rounded-full bg-neutral-secondary-medium box-border border border-default-medium hover:bg-neutral-tertiary-medium hover:text-heading focus:ring-4 focus:ring-neutral-tertiary shadow-xs font-medium leading-5  text-sm px-4 py-2.5 focus:outline-none">Cancelar</button>
 
                                         </div>
+                                        </form>
                                     </div>
                                 </div>
                             </div>

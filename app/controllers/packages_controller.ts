@@ -1,5 +1,6 @@
 import { isAdmin } from '#abilities/main'
 import Package from '#models/package'
+import Refill from '#models/refill'
 import { createPackageValidator, updatePackageValidator } from '#validators/package'
 import type { HttpContext } from '@adonisjs/core/http'
 
@@ -15,7 +16,12 @@ export default class PackagesController {
       page,
       limit
     )
-    return view.render('pages/private/packages/index', { packages, refillId: params.refillId })
+    const refill = await Refill.findByOrFail('id', params.refillId)
+    return view.render('pages/private/packages/index', {
+      packages,
+      refillId: params.refillId,
+      refill,
+    })
   }
 
   /**

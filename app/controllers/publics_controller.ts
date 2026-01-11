@@ -11,9 +11,10 @@ export default class PublicsController {
     const page = request.input('page', 1)
     const limit = request.input('limit', 20)
     const q = request.input('q', '')
+    const categoryName = request.input('categoria', '')
     const categories = await Category.findManyCategoriesByActive(true)
     const refills = await Refill.findManyRefillsBySearchTerm(page, limit, q)
-    return view.render('pages/public/shop', { categories, refills })
+    return view.render('pages/public/shop', { categories, refills, categoryName })
   }
   async show({ params, view, request }: HttpContext) {
     const selectedId = request.input('selectItem', '')
