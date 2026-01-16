@@ -20,6 +20,7 @@ const PackagesController = () => import('#controllers/packages_controller')
 const UsersController = () => import('#controllers/users_controller')
 const PaymentsController = () => import('#controllers/payments_controller')
 
+// Rota de Uploads de Imagem
 const PATH_TRAVERSAL_REGEX = /(?:^|[\\/])\.\.(?:[\\/]|$)/
 
 router.get('uploads/*', ({ request, response }) => {
@@ -34,6 +35,7 @@ router.get('uploads/*', ({ request, response }) => {
   return response.download(absolutePath)
 })
 
+// Rotas Publicas
 router.get('/', [PublicsController, 'index']).as('web.home')
 router.on('/sobre-nos').render('pages/public/about').as('web.about')
 router.on('/contactos').render('pages/public/contact').as('web.contact')
@@ -76,6 +78,7 @@ router
   .use(middleware.auth())
   .as('auth.logout')
 
+// Rotas Privadas
 router
   .group(() => {
     router.get('', [PrivatesController, 'index']).as('dashboard.index')

@@ -70,8 +70,9 @@ export default class Refill extends BaseModel {
       .has('packages')
       .orderBy('createdAt', 'desc')
       .where('isActive', true)
-      .whereILike('name', `%${q}%`)
-      .orWhereILike('description', `%${q}%`)
+      .andWhere((bulder) => {
+        bulder.whereILike('name', `%${q}%`).orWhereILike('description', `%${q}%`)
+      })
       .preload('category')
       .paginate(page, limit)
 
