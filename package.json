@@ -5,9 +5,10 @@
   "type": "module",
   "license": "MIT",
   "scripts": {
-    "start": "node bin/server.js",
+    "start": "node bin/server.js ",
     "build": "node ace build",
     "dev": "node ace serve --hmr",
+    "jobs": "node ace jobs:listen --queue=default,mail,heavy --concurrency=2,5,1",
     "test": "node ace test",
     "lint": "eslint .",
     "format": "prettier --write .",
@@ -29,7 +30,8 @@
     "#database/*": "./database/*.js",
     "#tests/*": "./tests/*.js",
     "#start/*": "./start/*.js",
-    "#config/*": "./config/*.js"
+    "#config/*": "./config/*.js",
+    "#jobs/*": "./app/jobs/*.js"
   },
   "devDependencies": {
     "@adonisjs/assembler": "^7.8.2",
@@ -63,6 +65,7 @@
     "@adonisjs/static": "^1.1.1",
     "@adonisjs/vite": "^4.0.0",
     "@vinejs/vine": "^3.0.1",
+    "adonisjs-jobs": "^0.1.5",
     "edge.js": "^6.4.0",
     "flowbite": "^4.0.1",
     "luxon": "^3.7.2",

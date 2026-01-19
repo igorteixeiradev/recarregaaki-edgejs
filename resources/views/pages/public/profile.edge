@@ -8,11 +8,11 @@
 <div class="my-20 max-w-7xl  mx-auto lg:px-0 px-4">
   <section class=" antialiased dark:bg-gray-900">
     <div class="mx-auto  px-4 2xl:px-0">
-   
+
       <h2 class="mb-4 text-start text-4xl leading-none font-extrabold tracking-tight text-gray-900 md:text-5xl lg:text-5xl dark:text-white">
                   Visão geral
                 </h2>
-   
+
       <div class="py-4 md:py-8">
         <div class="mb-4 grid gap-4 sm:grid-cols-2 sm:gap-8 lg:gap-16">
           <div class="space-y-4">
@@ -20,7 +20,7 @@
               <img class="h-16 w-16 rounded-lg" src="/images/avatar.png" alt="Helene avatar" />
               <div>
                 <span class="mb-5 inline-block rounded bg-green-100 px-2.5 py-0.5 text-xs font-medium text-green-800 dark:bg-green-900 dark:text-green-300">         {{ auth.user.isAdmin ? "Admin" : "Consumidor" }} </span>
-                <h2 class="flex items-center text-xl font-bold leading-none text-gray-900 dark:text-white sm:text-2xl">        {{ auth.user.fullName }}</h2>
+                <h2 class="flex items-center text-xl font-bold leading-none text-gray-900 dark:text-white sm:text-2xl">{{ auth.user.fullName }}</h2>
               </div>
             </div>
             <dl class="">
@@ -29,21 +29,18 @@
             </dl>
               <dl>
                 <dt class="font-semibold text-gray-900 dark:text-white">Número de Telefone</dt>
-                <dd class="text-gray-500 dark:text-gray-400">{{ auth.user.phoneCode }} {{ auth.user.phoneNumber || "N/F" }}</dd>
+                <dd class="text-gray-500 dark:text-gray-400">{{ auth.user.phoneCode }} {{ auth.user.phoneNumber || "S/N°" }}</dd>
               </dl>
                 <dl>
                   <dt class="font-semibold text-gray-900 dark:text-white">Estado da Conta</dt>
                   <dd
                     class="mb-5 inline-block rounded px-2.5 py-0.5 text-xs font-medium
-                    {{ auth.user.isAccountActive
+                    {{ !auth.user.isAccountActive
                       ? 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-300'
                       : 'bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-300' }}">
-                    {{ auth.user.isAccountActive ? 'Ativa' : 'Inativa' }}
+                    {{ !auth.user.isAccountActive ? 'Ativa' : 'Inativa' }}
                   </dd>
                 </dl>
-
-
-                
                   <dl>
                     <dt class="font-semibold text-gray-900 dark:text-white">Data de Criação da Conta</dt>
                     <dd class="text-gray-500 dark:text-gray-400">{{ auth.user.createdAt.toFormat('dd/MM/yyyy HH:mm') }} </dd>
@@ -62,7 +59,6 @@
                   </span>
                 </dd>
               </dl>
-              
               <dl>
                 <dt class="font-semibold text-gray-900 dark:text-white">Estado do Número de Telefone</dt>
                 <dd class="mt-1">
@@ -75,38 +71,35 @@
                   </span>
                 </dd>
               </dl>
-
-
-                 
             </div>
         </div>
         <button type="button" data-modal-target="accountInformationModal2" data-modal-toggle="accountInformationModal2" class="w-full rounded-full bg-white bg-linear-to-r from-violet-500 via-[#9938CA] to-[#E0724A] px-5 py-3 text-center text-sm font-semibold text-white transition-all duration-200 hover:bg-green-200 hover:opacity-90 active:scale-95 sm:w-auto dark:bg-green-900/30 dark:hover:bg-green-800/50">
-          
+
           Editar dados da conta
         </button>
       </div>
       <div class="rounded-lg border border-gray-200 bg-gray-50 p-4 dark:border-gray-700 dark:bg-gray-800 md:p-8">
-        <h3 class="mb-4 text-xl font-semibold text-gray-900 dark:text-white">Latest orders</h3>
+        <h3 class="mb-4 text-xl font-semibold text-gray-900 dark:text-white">Ultimas compras</h3>
         <div class="flex flex-wrap items-center gap-y-4 border-b border-gray-200 pb-4 dark:border-gray-700 md:pb-5">
           <dl class="w-1/2 sm:w-48">
-            <dt class="text-base font-medium text-gray-500 dark:text-gray-400">Order ID:</dt>
+            <dt class="text-base font-medium text-gray-500 dark:text-gray-400">ID:</dt>
             <dd class="mt-1.5 text-base font-semibold text-gray-900 dark:text-white">
               <a href="#" class="hover:underline">#FWB12546798</a>
             </dd>
           </dl>
-  
+
           <dl class="w-1/2 sm:w-1/4 md:flex-1 lg:w-auto">
-            <dt class="text-base font-medium text-gray-500 dark:text-gray-400">Date:</dt>
+            <dt class="text-base font-medium text-gray-500 dark:text-gray-400">Data:</dt>
             <dd class="mt-1.5 text-base font-semibold text-gray-900 dark:text-white">11.12.2023</dd>
           </dl>
-  
+
           <dl class="w-1/2 sm:w-1/5 md:flex-1 lg:w-auto">
-            <dt class="text-base font-medium text-gray-500 dark:text-gray-400">Price:</dt>
+            <dt class="text-base font-medium text-gray-500 dark:text-gray-400">Preço:</dt>
             <dd class="mt-1.5 text-base font-semibold text-gray-900 dark:text-white">$499</dd>
           </dl>
-  
+
           <dl class="w-1/2 sm:w-1/4 sm:flex-1 lg:w-auto">
-            <dt class="text-base font-medium text-gray-500 dark:text-gray-400">Status:</dt>
+            <dt class="text-base font-medium text-gray-500 dark:text-gray-400">Estado:</dt>
             <dd class="me-2 mt-1.5 inline-flex shrink-0 items-center rounded bg-yellow-100 px-2.5 py-0.5 text-xs font-medium text-yellow-800 dark:bg-yellow-900 dark:text-yellow-300">
               <svg class="me-1 h-3 w-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
                 <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h6l2 4m-8-4v8m0-8V6a1 1 0 0 0-1-1H4a1 1 0 0 0-1 1v9h2m8 0H9m4 0h2m4 0h2v-4m0 0h-5m3.5 5.5a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0Zm-10 0a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0Z"></path>
@@ -114,7 +107,7 @@
               In transit
             </dd>
           </dl>
-  
+
           <div class="w-full sm:flex sm:w-32 sm:items-center sm:justify-end sm:gap-4">
             <button
               id="actionsMenuDropdownModal10"
@@ -160,24 +153,24 @@
         </div>
         <div class="flex flex-wrap items-center gap-y-4 border-b border-gray-200 py-4 pb-4 dark:border-gray-700 md:py-5">
           <dl class="w-1/2 sm:w-48">
-            <dt class="text-base font-medium text-gray-500 dark:text-gray-400">Order ID:</dt>
+            <dt class="text-base font-medium text-gray-500 dark:text-gray-400">ID:</dt>
             <dd class="mt-1.5 text-base font-semibold text-gray-900 dark:text-white">
               <a href="#" class="hover:underline">#FWB12546777</a>
             </dd>
           </dl>
-  
+
           <dl class="w-1/2 sm:w-1/4 md:flex-1 lg:w-auto">
-            <dt class="text-base font-medium text-gray-500 dark:text-gray-400">Date:</dt>
+            <dt class="text-base font-medium text-gray-500 dark:text-gray-400">Data:</dt>
             <dd class="mt-1.5 text-base font-semibold text-gray-900 dark:text-white">10.11.2024</dd>
           </dl>
-  
+
           <dl class="w-1/2 sm:w-1/5 md:flex-1 lg:w-auto">
-            <dt class="text-base font-medium text-gray-500 dark:text-gray-400">Price:</dt>
+            <dt class="text-base font-medium text-gray-500 dark:text-gray-400">Preço:</dt>
             <dd class="mt-1.5 text-base font-semibold text-gray-900 dark:text-white">$3,287</dd>
           </dl>
-  
+
           <dl class="w-1/2 sm:w-1/4 sm:flex-1 lg:w-auto">
-            <dt class="text-base font-medium text-gray-500 dark:text-gray-400">Status:</dt>
+            <dt class="text-base font-medium text-gray-500 dark:text-gray-400">Estado:</dt>
             <dd class="mt-1.5 inline-flex items-center rounded bg-red-100 px-2.5 py-0.5 text-xs font-medium text-red-800 dark:bg-red-900 dark:text-red-300">
               <svg class="me-1 h-3 w-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
                 <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18 17.94 6M18 18 6.06 6"></path>
@@ -185,7 +178,7 @@
               Cancelled
             </dd>
           </dl>
-  
+
           <div class="w-full sm:flex sm:w-32 sm:items-center sm:justify-end sm:gap-4">
             <button
               id="actionsMenuDropdownModal11"
@@ -223,24 +216,24 @@
         </div>
         <div class="flex flex-wrap items-center gap-y-4 border-b border-gray-200 py-4 pb-4 dark:border-gray-700 md:py-5">
           <dl class="w-1/2 sm:w-48">
-            <dt class="text-base font-medium text-gray-500 dark:text-gray-400">Order ID:</dt>
+            <dt class="text-base font-medium text-gray-500 dark:text-gray-400">ID:</dt>
             <dd class="mt-1.5 text-base font-semibold text-gray-900 dark:text-white">
               <a href="#" class="hover:underline">#FWB12546846</a>
             </dd>
           </dl>
-  
+
           <dl class="w-1/2 sm:w-1/4 md:flex-1 lg:w-auto">
-            <dt class="text-base font-medium text-gray-500 dark:text-gray-400">Date:</dt>
+            <dt class="text-base font-medium text-gray-500 dark:text-gray-400">Data:</dt>
             <dd class="mt-1.5 text-base font-semibold text-gray-900 dark:text-white">07.11.2024</dd>
           </dl>
-  
+
           <dl class="w-1/2 sm:w-1/5 md:flex-1 lg:w-auto">
-            <dt class="text-base font-medium text-gray-500 dark:text-gray-400">Price:</dt>
+            <dt class="text-base font-medium text-gray-500 dark:text-gray-400">Preço:</dt>
             <dd class="mt-1.5 text-base font-semibold text-gray-900 dark:text-white">$111</dd>
           </dl>
-  
+
           <dl class="w-1/2 sm:w-1/4 sm:flex-1 lg:w-auto">
-            <dt class="text-base font-medium text-gray-500 dark:text-gray-400">Status:</dt>
+            <dt class="text-base font-medium text-gray-500 dark:text-gray-400">Estado:</dt>
             <dd class="mt-1.5 inline-flex items-center rounded bg-green-100 px-2.5 py-0.5 text-xs font-medium text-green-800 dark:bg-green-900 dark:text-green-300">
               <svg class="me-1 h-3 w-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
                 <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 11.917 9.724 16.5 19 7.5"></path>
@@ -248,7 +241,7 @@
               Completed
             </dd>
           </dl>
-  
+
           <div class="w-full sm:flex sm:w-32 sm:items-center sm:justify-end sm:gap-4">
             <button
               id="actionsMenuDropdownModal12"
@@ -286,24 +279,24 @@
         </div>
         <div class="flex flex-wrap items-center gap-y-4 pt-4 md:pt-5">
           <dl class="w-1/2 sm:w-48">
-            <dt class="text-base font-medium text-gray-500 dark:text-gray-400">Order ID:</dt>
+            <dt class="text-base font-medium text-gray-500 dark:text-gray-400">ID:</dt>
             <dd class="mt-1.5 text-base font-semibold text-gray-900 dark:text-white">
               <a href="#" class="hover:underline">#FWB12546212</a>
             </dd>
           </dl>
-  
+
           <dl class="w-1/2 sm:w-1/4 md:flex-1 lg:w-auto">
-            <dt class="text-base font-medium text-gray-500 dark:text-gray-400">Date:</dt>
+            <dt class="text-base font-medium text-gray-500 dark:text-gray-400">Data:</dt>
             <dd class="mt-1.5 text-base font-semibold text-gray-900 dark:text-white">18.10.2024</dd>
           </dl>
-  
+
           <dl class="w-1/2 sm:w-1/5 md:flex-1 lg:w-auto">
-            <dt class="text-base font-medium text-gray-500 dark:text-gray-400">Price:</dt>
+            <dt class="text-base font-medium text-gray-500 dark:text-gray-400">Preço:</dt>
             <dd class="mt-1.5 text-base font-semibold text-gray-900 dark:text-white">$756</dd>
           </dl>
-  
+
           <dl class="w-1/2 sm:w-1/4 sm:flex-1 lg:w-auto">
-            <dt class="text-base font-medium text-gray-500 dark:text-gray-400">Status:</dt>
+            <dt class="text-base font-medium text-gray-500 dark:text-gray-400">Estado:</dt>
             <dd class="mt-1.5 inline-flex items-center rounded bg-green-100 px-2.5 py-0.5 text-xs font-medium text-green-800 dark:bg-green-900 dark:text-green-300">
               <svg class="me-1 h-3 w-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
                 <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 11.917 9.724 16.5 19 7.5"></path>
@@ -311,7 +304,7 @@
               Completed
             </dd>
           </dl>
-  
+
           <div class="w-full sm:flex sm:w-32 sm:items-center sm:justify-end sm:gap-4">
             <button
               id="actionsMenuDropdownModal13"
@@ -371,17 +364,17 @@
                 <label for="pick-up-point-input" class="mb-2 block text-sm font-medium text-gray-900 dark:text-white"> Pick-up point* </label>
                 <input type="text" id="pick-up-point-input" class="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-green-500 focus:ring-green-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder:text-gray-400 dark:focus:border-green-500 dark:focus:ring-green-500" placeholder="Enter the pick-up point name" required />
               </div>
-  
+
               <div class="col-span-2 sm:col-span-1">
                 <label for="full_name_info_modal" class="mb-2 block text-sm font-medium text-gray-900 dark:text-white"> Your Full Name* </label>
                 <input type="text" id="full_name_info_modal" class="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-green-500 focus:ring-green-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder:text-gray-400 dark:focus:border-green-500 dark:focus:ring-green-500" placeholder="Enter your first name" required />
               </div>
-  
+
               <div class="col-span-2 sm:col-span-1">
                 <label for="email_info_modal" class="mb-2 block text-sm font-medium text-gray-900 dark:text-white"> Your Email* </label>
                 <input type="text" id="email_info_modal" class="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-green-500 focus:ring-green-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder:text-gray-400 dark:focus:border-green-500 dark:focus:ring-green-500" placeholder="Enter your email here" required />
               </div>
-  
+
               <div class="col-span-2">
                 <label for="phone-input_billing_modal" class="mb-2 block text-sm font-medium text-gray-900 dark:text-white"> Phone Number* </label>
                 <div class="flex items-center">
@@ -622,7 +615,7 @@
                   </div>
                 </div>
               </div>
-  
+
               <div class="col-span-2 sm:col-span-1">
                 <div class="mb-2 flex items-center gap-2">
                   <label for="select_country_input_billing_modal" class="block text-sm font-medium text-gray-900 dark:text-white"> Country* </label>
@@ -635,7 +628,7 @@
                   <option value="UK">United Kingdom</option>
                 </select>
               </div>
-  
+
               <div class="col-span-2 sm:col-span-1">
                 <div class="mb-2 flex items-center gap-2">
                   <label for="select_city_input_billing_modal" class="block text-sm font-medium text-gray-900 dark:text-white"> City* </label>
@@ -648,7 +641,7 @@
                   <option value="HU">Houston</option>
                 </select>
               </div>
-  
+
               <div class="col-span-2">
                 <label for="address_billing_modal" class="mb-2 block text-sm font-medium text-gray-900 dark:text-white"> Delivery Address* </label>
                 <textarea id="address_billing_modal" rows="4" class="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-green-500 focus:ring-green-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder:text-gray-400 dark:focus:border-green-500 dark:focus:ring-green-500" placeholder="Enter here your address"></textarea>
@@ -657,7 +650,7 @@
                 <label for="company_name" class="mb-2 block text-sm font-medium text-gray-900 dark:text-white"> Company name </label>
                 <input type="text" id="company_name" class="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-green-500 focus:ring-green-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder:text-gray-400 dark:focus:border-green-500 dark:focus:ring-green-500" placeholder="Flowbite LLC" />
               </div>
-  
+
               <div class="col-span-2 sm:col-span-1">
                 <label for="vat_number" class="mb-2 block text-sm font-medium text-gray-900 dark:text-white"> VAT number </label>
                 <input type="text" id="vat_number" class="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-green-500 focus:ring-green-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder:text-gray-400 dark:focus:border-green-500 dark:focus:ring-green-500" placeholder="DE42313253" />
@@ -671,7 +664,7 @@
         </div>
       </div>
     </div>
-  
+
     <div id="deleteOrderModal" tabindex="-1" aria-hidden="true" class="fixed left-0 right-0 top-0 z-50 hidden h-modal w-full items-center justify-center overflow-y-auto overflow-x-hidden md:inset-0 md:h-full">
         <div class="relative h-full w-full max-w-md p-4 md:h-auto">
           <!-- Modal content -->

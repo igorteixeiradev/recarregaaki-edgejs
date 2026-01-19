@@ -11,6 +11,7 @@ import router from '@adonisjs/core/services/router'
 import { middleware } from '#start/kernel'
 import app from '@adonisjs/core/services/app'
 import { sep, normalize } from 'node:path'
+import env from './env.js'
 const AuthController = () => import('#controllers/auth_controller')
 const PrivatesController = () => import('#controllers/privates_controller')
 const PublicsController = () => import('#controllers/publics_controller')
@@ -91,3 +92,7 @@ router
   })
   .prefix('dashboard')
   .use(middleware.auth())
+
+if (env.get('NODE_ENV') === 'development') {
+  router.jobs('/my-jobs-dashboard')
+}

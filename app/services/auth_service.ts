@@ -4,8 +4,7 @@ import PasswordResetToken from '#models/password_reset_token'
 import { randomBytes } from 'node:crypto'
 import { DateTime } from 'luxon'
 import logger from '@adonisjs/core/services/logger'
-import mail from '@adonisjs/mail/services/main'
-import env from '#start/env'
+import SendEmailResetPassword from '#jobs/send_email_reset_password'
 
 export class AuthService {
   async forgotPassword(payload: CreateEmailPayload) {
@@ -17,18 +16,9 @@ export class AuthService {
       token,
       expiresAt: DateTime.now().plus({ hours: 1 }),
     })
-    await mail.sendLater((message) => {
-      message
-        .to(email)
-        .subject('Recuperação de palavra-passe')
-        .htmlView('emails/reset_password', {
-          url:
-            env.get('NODE_ENV') === 'production'
-              ? `https://${env.get('HOST')}/resetar-palavra-passe?token=${token}`
-              : `http://${env.get('HOST')}:${env.get('PORT')}/resetar-palavra-passe?token=${token}`,
-          email,
-        })
-    })
+
+    await SendEmailResetPassword.dispatch({ email, token }, { queueName: 'mail' })
+
     logger.info('Password reset email sent to ' + email)
   }
 

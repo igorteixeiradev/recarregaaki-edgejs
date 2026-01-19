@@ -65,13 +65,13 @@ export default class Refill extends BaseModel {
       .preload('packages')
   }
 
-  static async findManyRefillsBySearchTerm(page: number, limit: number, q: string) {
+  static async findManyRefillsBySearchTerm(page: number, limit: number, text: string) {
     const refills = await this.query()
       .has('packages')
       .orderBy('createdAt', 'desc')
       .where('isActive', true)
-      .andWhere((bulder) => {
-        bulder.whereILike('name', `%${q}%`).orWhereILike('description', `%${q}%`)
+      .andWhere((builder) => {
+        builder.whereILike('name', `%${text}%`).orWhereILike('description', `%${text}%`)
       })
       .preload('category')
       .paginate(page, limit)

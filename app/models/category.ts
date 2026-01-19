@@ -41,7 +41,10 @@ export default class Category extends BaseModel {
   }
 
   static async findCategoryById(id: string) {
-    return await this.query().where('id', id).preload('refills').first()
+    return await this.query()
+      .where('id', id)
+      .preload('refills', (query) => query.orderBy('createdAt', 'desc'))
+      .firstOrFail()
   }
 
   @beforeCreate()
