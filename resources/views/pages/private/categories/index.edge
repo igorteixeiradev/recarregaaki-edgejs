@@ -3,12 +3,12 @@
 @sidebar()
 @slot('content')
 <div class="flex items-center justify-between mb-5 py-4">
-  <h2 class="text-2xl font-semibold lg:text-4xl dark:text-white">Categoria</h2>
-  <a href="{{route("categories.create")}}" class="text-blue-600 dark:text-blue-500 font-medium hover:underline">
-    Adicionar
+  <h2 class="text-2xl font-semibold lg:text-4xl dark:text-white">Categorias</h2>
+  <a href=" {{route("categories.create")}} " class=" text-blue-600 dark:text-blue-500 font-medium hover:underline">
+    Adicionar nova categoria
   </a>
 </div>
-<div class="relative overflow-x-auto bg-neutral-primary-soft shadow-xs rounded-base border border-default">
+<div class="relative overflow-x-auto bg-neutral-primary-soft shadow-xs rounded-base border border-default whitespace-nowrap">
   <table class="w-full text-sm text-left rtl:text-right text-body">
     <thead class="bg-neutral-secondary-soft border-b border-default">
       <tr>
@@ -47,11 +47,12 @@
 
         <td class="px-6 py-4">
           <div class="flex items-center gap-5">
-          <a href="{{ route('categories.edit', { id: category.id }) }}" class="font-medium text-green-700 hover:underline">Editar</a>
-        @!component('components/modal', {
-        url: 'categories.destroy',
-        id: category.id
-        })
+            <a href="{{ route('categories.edit', { id: category.id }) }}"
+              class="font-medium text-green-700 hover:underline">Editar</a>
+            @!component('components/modal', {
+            url: 'categories.destroy',
+            id: category.id
+            })
           </div>
         </td>
       </tr>
@@ -61,7 +62,7 @@
 
         <th colspan="4" scope="row" scope="row"
           class="px-6 py-4 font-medium text-heading whitespace-nowrap text-center text-xl">
-        <span>Nenhum dado encontrado</span>
+          <span>Nenhum dado encontrado</span>
         </th>
       </tr>
       @end
@@ -73,14 +74,14 @@
   @each(anchor in categories.getUrlsForRange(1, categories.lastPage))
   <nav aria-label="Page navigation example" class="flex items-center space-x-4">
     <ul class="flex -space-x-px text-sm">
-    
+
       <li>
         <a href="{{ anchor.url }}"
           class="flex items-center  rounded-full justify-center text-body bg-neutral-secondary-medium border border-default-medium hover:bg-neutral-tertiary-medium hover:text-heading shadow-xs font-medium leading-5 text-sm w-9 h-9 focus:outline-none">{{
           anchor.page }}</a>
       </li>
 
-     
+
     </ul>
 
   </nav>

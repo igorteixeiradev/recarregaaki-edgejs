@@ -6,10 +6,10 @@
   <h2 class="text-2xl font-semibold lg:text-4xl dark:text-white">Pacotes {{ refill.name }}</h2>
   <a href="{{route("packages.create",{refillId:refillId})}}"
     class="text-blue-600 dark:text-blue-500 font-medium hover:underline">
-    Adicionar
+    Adicionar novo pacote
   </a>
 </div>
-<div class="relative overflow-x-auto bg-neutral-primary-soft shadow-xs rounded-base border border-default">
+<div class="relative overflow-x-auto bg-neutral-primary-soft shadow-xs rounded-base border border-default whitespace-nowrap">
   <table class="w-full text-sm text-left rtl:text-right text-body">
     <thead class="bg-neutral-secondary-soft border-b border-default">
       <tr>
@@ -20,7 +20,7 @@
           Recarga
         </th>
         <th scope="col" class="px-6 py-3 font-medium">
-        Oferta Especial
+          Oferta Especial
         </th>
         <th scope="col" class="px-6 py-3 font-medium">
           Estado
@@ -56,7 +56,7 @@
           @end
         </td>
 
-       
+
 
         <td class="px-6 py-4">
           <div class="flex items-center gap-5">

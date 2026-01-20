@@ -1,101 +1,177 @@
 @layout.app({ title: "Home" })
-  @slot('meta')
-    <meta
-      name="description"
-      content="Bem-vindo à Recarregaaki, a sua plataforma de recargas digitais em Angola."
-    />
-  @endslot
-  
-  @slot('main')
-    @include('partials/navbar')
-    <div class=" max-w-7xl  mx-auto lg:px-0 px-4">
+@slot('meta')
+<meta name="description" content="Bem-vindo à Recarregaaki, a sua plataforma de recargas digitais em Angola." />
+@endslot
 
-      <section
-        class=" mx-auto flex w-full flex-col-reverse items-center justify-between gap-10 md:flex-row md:gap-0 mb-5"
-      >
-        <div class="flex flex-col items-center text-center md:items-start md:text-left">
-          <a
-            class="mt-10 mb-6 flex items-center space-x-2 rounded-full border border-green-600 px-4 py-2 pr-1.5 text-xs text-green-600 transition hover:bg-green-50 dark:hover:bg-green-900/20"
-          href="{{route("web.shop")}}"
-          >
-            <span>Recargas instantâneas com segurança.</span>
-            <span class="flex size-6 items-center justify-center rounded-full bg-green-600 p-1">
-              <svg width="14" height="11" viewBox="0 0 16 13" fill="none">
-                <path
-                  d="M1 6.5h14M9.5 1 15 6.5 9.5 12"
-                  stroke="#fff"
-                  strokeWidth="1.5"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                />
-              </svg>
-            </span>
-          </a>
+@slot('main')
+@include('partials/navbar')
+<div class=" max-w-7xl  mx-auto lg:px-0 px-4">
 
-          <h1
-            class="mb-4 text-4xl leading-tight
- font-extrabold tracking-tight text-gray-900 md:text-5xl lg:text-5xl dark:text-white"
-          >
-            Recarregue os seus <br class="hidden md:block" />
-            <span class="bg-linear-to-r from-violet-500 via-[#9938CA] to-[#E0724A] bg-clip-text text-transparent">
-              jogos e aplicativos
-                </span>
-            <br class="hidden md:block" />
-            connosco.
-          </h1>
+  <section class=" mx-auto flex w-full flex-col-reverse items-center justify-between gap-10 md:flex-row md:gap-0 mb-5">
+    <div class="flex flex-col items-center text-center md:items-start md:text-left">
+      <a class="mt-10 mb-6 flex items-center space-x-2 rounded-full border border-green-600 px-4 py-2 pr-1.5 text-xs text-green-600 transition hover:bg-green-50 dark:hover:bg-green-900/20"
+        href="{{route('web.shop')}}">
+        <span>Recargas instantâneas com segurança.</span>
+        <span class="flex size-6 items-center justify-center rounded-full bg-green-600 p-1">
+          <svg width="14" height="11" viewBox="0 0 16 13" fill="none">
+            <path d="M1 6.5h14M9.5 1 15 6.5 9.5 12" stroke="#fff" strokeWidth="1.5" strokeLinecap="round"
+              strokeLinejoin="round" />
+          </svg>
+        </span>
+      </a>
 
-          <p class="text-lg font-normal text-gray-900 lg:text-start lg:text-xl dark:text-white">
-            Temos pacotes do Free Fire, Netflix, TikTok e muito mais em poucos segundos, sem
-                complicação e 100% seguro.
-          </p>
+      <h1 class="mb-4 text-4xl leading-tight
+ font-extrabold tracking-tight text-gray-900 md:text-5xl lg:text-5xl dark:text-white">
+        Recarregue os seus <br class="hidden md:block" />
+        <span class="bg-linear-to-r from-violet-500 via-[#9938CA] to-[#E0724A] bg-clip-text text-transparent">
+          jogos e aplicativos
+        </span>
+        <br class="hidden md:block" />
+        connosco.
+      </h1>
 
-          <div class="mt-8 flex w-full flex-col items-stretch gap-4 sm:flex-row sm:items-center sm:gap-3">
-            <a
-              class="flex w-full items-center justify-center space-x-2 rounded-lg bg-white bg-linear-to-r from-violet-500 via-[#9938CA] to-[#E0724A] px-6 py-3 pr-2.5 text-center text-sm font-semibold text-white transition-all duration-200 hover:bg-green-700 hover:opacity-90 active:scale-95 sm:w-auto"
-              href="{{route("web.shop")}}"
-            >
-              <span>Ver opções na loja</span>
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
-                <path
-                  d="M4.821 11.999h13.43m0 0-6.714-6.715m6.715 6.715-6.715 6.715"
-                  stroke="#fff"
-                  strokeWidth="1.8"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                />
-              </svg>
-            </a>
-@if(auth.isAuthenticated)
-  
-                
-                @else
-                  <a href="{{route("auth.register.view")}}"
-                    class="w-full rounded-lg bg-white bg-linear-to-r from-violet-500 via-[#9938CA] to-[#E0724A] px-5 py-3 text-center text-sm font-semibold text-white transition-all duration-200 hover:bg-green-200 hover:opacity-90 active:scale-95 sm:w-auto dark:bg-green-900/30 dark:hover:bg-green-800/50"
-                  >
-                    Criar conta grátis
-                      </a>
-                @end
-          </div>
-        </div>
+      <p class="text-lg font-normal text-gray-900 lg:text-start lg:text-xl dark:text-white">
+        Temos pacotes do Free Fire, Netflix, TikTok e muito mais em poucos segundos, sem
+        complicação e 100% seguro.
+      </p>
 
-        <div class="hidden w-full md:block">
-          <img class="w-full rounded-2xl object-contain" src="images/4.png" alt="Imagem do hero" />
-        </div>
-      </section>
+      <div class="mt-8 flex w-full flex-col items-stretch gap-4 sm:flex-row sm:items-center sm:gap-3">
+        <a class="flex w-full items-center justify-center space-x-2 rounded-lg bg-white bg-linear-to-r from-violet-500 via-[#9938CA] to-[#E0724A] px-6 py-3 pr-2.5 text-center text-sm font-semibold text-white transition-all duration-200 hover:bg-green-700 hover:opacity-90 active:scale-95 sm:w-auto"
+          href="{{route('web.shop')}}">
+          <span>Ver opções na loja</span>
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+            <path d="M4.821 11.999h13.43m0 0-6.714-6.715m6.715 6.715-6.715 6.715" stroke="#fff" strokeWidth="1.8"
+              strokeLinecap="round" strokeLinejoin="round" />
+          </svg>
+        </a>
+        @if(auth.isAuthenticated)
 
-      @if(refills.length > 0)
-        <div class="mb-5 grid grid-cols-2 gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">
-      @each(refill in refills)
-        @!component('components/card', { id:refill.id, image:refill.image,title:refill.name,category:refill.category.name })
-      @end
-        </div>
-      @else
-      <h2 class="text-2xl text-center py-10 dark:text-white"> Nenhuma recarga encontrada </h2>
-      @end
-    
+
+        @else
+        <a href="{{route('auth.register.view')}}"
+          class="w-full rounded-lg bg-white bg-linear-to-r from-violet-500 via-[#9938CA] to-[#E0724A] px-5 py-3 text-center text-sm font-semibold text-white transition-all duration-200 hover:bg-green-200 hover:opacity-90 active:scale-95 sm:w-auto dark:bg-green-900/30 dark:hover:bg-green-800/50">
+          Criar conta grátis
+        </a>
+        @end
+      </div>
     </div>
 
-    @include('partials/footer')
+    <div class="hidden w-full md:block">
+      <img class="w-full rounded-2xl object-contain" src="images/4.png" alt="Imagem do hero" />
+    </div>
+  </section>
 
-  @endslot
+  @if(refills.length > 0)
+  <div class="mb-5 grid grid-cols-2 gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">
+    @each(refill in refills)
+    @!component('components/card', { id:refill.id, image:refill.image,title:refill.name,category:refill.category.name })
+    @end
+  </div>
+  @else
+  <h2 class="text-2xl text-center py-10 dark:text-white"> Nenhuma recarga encontrada </h2>
+  @end
+
+
+  <section>
+    <div class="py-8 px-4 mx-auto  text-center lg:py-16">
+      <div class="mx-auto mb-8 max-w-screen-sm lg:mb-16">
+        <h2 class="mb-4 text-4xl tracking-tight font-extrabold text-gray-900 dark:text-white">
+          Comentários dos nossos compradores
+        </h2>
+        <p class="font-light text-gray-500 sm:text-xl dark:text-gray-400">
+          Jogadores que confiam na nossa plataforma para recargas rápidas e seguras.
+        </p>
+      </div>
+
+      <div class="grid gap-8 lg:gap-16 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
+
+        <div class="text-center text-gray-500 dark:text-gray-400">
+          <img class="mx-auto mb-4 w-36 h-36 rounded-full"
+            src="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=300&q=80"
+            alt="Carlos Manuel">
+          <h3 class="mb-1 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
+            Carlos Manuel
+          </h3>
+          <p>Jogador de Free Fire</p>
+        </div>
+
+        <div class="text-center text-gray-500 dark:text-gray-400">
+          <img class="mx-auto mb-4 w-36 h-36 rounded-full"
+            src="https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&w=300&q=80"
+            alt="Ana Paula">
+          <h3 class="mb-1 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
+            Ana Paula
+          </h3>
+          <p>Jogadora de PUBG</p>
+        </div>
+
+        <div class="text-center text-gray-500 dark:text-gray-400">
+          <img class="mx-auto mb-4 w-36 h-36 rounded-full"
+            src="https://images.unsplash.com/photo-1527980965255-d3b416303d12?auto=format&fit=crop&w=300&q=80"
+            alt="João Kiala">
+          <h3 class="mb-1 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
+            João Kiala
+          </h3>
+          <p>Jogador de Call of Duty Mobile</p>
+        </div>
+
+        <div class="text-center text-gray-500 dark:text-gray-400">
+          <img class="mx-auto mb-4 w-36 h-36 rounded-full"
+            src="https://images.unsplash.com/photo-1547425260-76bcadfb4f2c?auto=format&fit=crop&w=300&q=80"
+            alt="Marta Domingos">
+          <h3 class="mb-1 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
+            Marta Domingos
+          </h3>
+          <p>Jogadora de Roblox</p>
+        </div>
+
+        <div class="text-center text-gray-500 dark:text-gray-400">
+          <img class="mx-auto mb-4 w-36 h-36 rounded-full"
+            src="https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?auto=format&fit=crop&w=300&q=80"
+            alt="Pedro Muatxissengue">
+          <h3 class="mb-1 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
+            Pedro Muatxissengue
+          </h3>
+          <p>Jogador de FIFA</p>
+        </div>
+
+        <div class="text-center text-gray-500 dark:text-gray-400">
+          <img class="mx-auto mb-4 w-36 h-36 rounded-full"
+            src="https://images.unsplash.com/photo-1545996124-0501ebae84d0?auto=format&fit=crop&w=300&q=80"
+            alt="Rosa Mateus">
+          <h3 class="mb-1 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
+            Rosa Mateus
+          </h3>
+          <p>Jogadora de Mobile Legends</p>
+        </div>
+
+        <div class="text-center text-gray-500 dark:text-gray-400">
+          <img class="mx-auto mb-4 w-36 h-36 rounded-full"
+            src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=300&q=80"
+            alt="António Sebastião">
+          <h3 class="mb-1 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
+            António Sebastião
+          </h3>
+          <p>Jogador de Fortnite</p>
+        </div>
+
+        <div class="text-center text-gray-500 dark:text-gray-400">
+          <img class="mx-auto mb-4 w-36 h-36 rounded-full"
+            src="https://images.unsplash.com/photo-1544723795-3fb6469f5b39?auto=format&fit=crop&w=300&q=80"
+            alt="Elisa Ndala">
+          <h3 class="mb-1 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
+            Elisa Ndala
+          </h3>
+          <p>Jogadora de Free Fire</p>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+</div>
+
+@include('partials/footer')
+
+@endslot
 @end

@@ -1,22 +1,29 @@
+@layout.app({ title: "404" })
+@slot('meta')
+<meta name="description" content="Pagina não encontrada" />
+@endslot
+
+@slot('main')
 <section class="flex h-screen items-center justify-center">
   <div class="max-w-screen-7xl mx-auto px-4 py-8 lg:px-6 lg:py-16">
     <div class="mx-auto max-w-screen-sm text-center">
-      <h1 class="mb-4 bg-linear-to-r from-violet-500 via-[#9938CA] to-[#E0724A] bg-clip-text text-7xl font-extrabold tracking-tight text-transparent lg:text-9xl">
+      <h1
+        class="mb-4 bg-linear-to-r from-violet-500 via-[#9938CA] to-[#E0724A] bg-clip-text text-7xl font-extrabold tracking-tight text-transparent lg:text-9xl">
         404
       </h1>
-        <p class="mb-4 text-3xl font-bold tracking-tight text-gray-900 md:text-4xl dark:text-white">
+      <p class="mb-4 text-3xl font-bold tracking-tight text-gray-900 md:text-4xl dark:text-white">
         Algo está em falta.
       </p>
-        <p class="mb-4 text-lg font-light text-gray-500 dark:text-gray-400">
+      <p class="mb-4 text-lg font-light text-gray-500 dark:text-gray-400">
         Lamentamos, não conseguimos encontrar essa página. Pode explorar muito mais na página
         inicial.
       </p>
-      <Link
-      href="/"
-      class="mr-[5px] rounded-full bg-white bg-linear-to-r from-violet-500 via-[#9938CA] to-[#E0724A] px-5 py-2.5 text-sm text-white transition-all duration-200 hover:opacity-90 active:scale-95"
-      >
+      <Link href="{{ route('web.home') }}"
+        class="mr-1.25 rounded-full bg-white bg-linear-to-r from-violet-500 via-[#9938CA] to-[#E0724A] px-5 py-2.5 text-sm text-white transition-all duration-200 hover:opacity-90 active:scale-95">
       Voltar à Página Inicial
       </Link>
     </div>
   </div>
 </section>
+@endslot
+@end
