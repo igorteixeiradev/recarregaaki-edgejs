@@ -35,6 +35,7 @@ export default class Category extends BaseModel {
 
   static async findManyCategoriesByActive(isActive: boolean) {
     return await this.query()
+      .has('refills')
       .where('isActive', isActive)
       .orderBy('createdAt', 'desc')
       .preload('refills')
