@@ -42,8 +42,8 @@ export default class Refill extends BaseModel {
       .preload('category')
       .preload('packages')
       .paginate(page, limit)
-    refills.baseUrl('/dashboard/recargas')
-    return refills
+
+    return refills.baseUrl('/dashboard/recargas')
   }
 
   static async findRefillById(id: string) {
@@ -87,9 +87,7 @@ export default class Refill extends BaseModel {
       .preload('category')
       .paginate(page, limit)
 
-    refills.baseUrl('/loja')
-
-    return refills
+    return refills.baseUrl('/loja')
   }
 
   @beforeCreate()
