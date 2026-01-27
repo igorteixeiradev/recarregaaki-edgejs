@@ -20,6 +20,7 @@ const RefillsController = () => import('#controllers/refills_controller')
 const PackagesController = () => import('#controllers/packages_controller')
 const UsersController = () => import('#controllers/users_controller')
 const PaymentsController = () => import('#controllers/payments_controller')
+const PostsController = () => import('#controllers/posts_controller')
 
 // Rota de Uploads de Imagem
 const PATH_TRAVERSAL_REGEX = /(?:^|[\\/])\.\.(?:[\\/]|$)/
@@ -41,6 +42,8 @@ router.get('/', [PublicsController, 'index']).as('web.home')
 router.on('/sobre-nos').render('pages/public/about').as('web.about')
 router.on('/contactos').render('pages/public/contact').as('web.contact')
 router.get('/loja', [PublicsController, 'shop']).as('web.shop')
+router.get('/blog', [PublicsController, 'blog']).as('web.blog')
+router.get('/blog/:id', [PublicsController, 'showBlogPost']).as('web.showBlogPost')
 router.get('/loja/:id', [PublicsController, 'show']).as('web.show')
 router.on('/perfil').render('pages/public/profile').as('web.profile').use(middleware.auth())
 
@@ -88,7 +91,8 @@ router
     router.resource('recargas', RefillsController).as('refills')
     router.resource('/:refillId/pacotes', PackagesController).as('packages')
     router.resource('consumidores', UsersController).as('users')
-    router.resource('payments', PaymentsController).as('payments')
+    router.resource('pagamentos', PaymentsController).as('payments')
+    router.resource('blog', PostsController).as('blog')
   })
   .prefix('dashboard')
   .use(middleware.auth())

@@ -1,4 +1,5 @@
 import Category from '#models/category'
+import Post from '#models/post'
 import Refill from '#models/refill'
 import type { HttpContext } from '@adonisjs/core/http'
 
@@ -50,6 +51,7 @@ export default class PublicsController {
 
     return view.render('pages/public/home', { refills, slides })
   }
+
   async shop({ view, request }: HttpContext) {
     const page = request.input('page', 1)
     const limit = request.input('limit', 20)
@@ -58,6 +60,18 @@ export default class PublicsController {
     const categories = await Category.findManyCategoriesByActive(true)
     const refills = await Refill.findManyRefillsBySearchTerm(page, limit, text, categoryId)
     return view.render('pages/public/shop', { categories, refills, categoryId })
+  }
+  async blog({ view, request }: HttpContext) {
+    const page = request.input('page', 1)
+    const limit = request.input('limit', 20)
+    const posts = await Post.query().preload('author').paginate(page, limit)
+    posts.baseUrl('/blog')
+    return view.render('pages/public/blog', { posts })
+  }
+
+  async showBlogPost({ view, params }: HttpContext) {
+    const post = await Post.query().preload('author').where('id', params.id).firstOrFail()
+    return view.render('pages/public/blog-details', { post })
   }
   async show({ params, view, request }: HttpContext) {
     const selectedId = request.input('selectItem', '')

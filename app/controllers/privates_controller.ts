@@ -1,3 +1,4 @@
+import { isAdmin } from '#abilities/main'
 import Package from '#models/package'
 import Payment from '#models/payment'
 import Refill from '#models/refill'
@@ -20,7 +21,9 @@ export default class PrivatesController {
     const payments = await Payment.findManyPayments(page, limit)
     const totalAmountPaid = await Payment.totalAmountPaid()
     const totalAmountPaidThisMonth = await Payment.totalAmountPaid(new Date())
-
+    if (await request.ctx?.bouncer.denies(isAdmin)) {
+      return request.ctx?.response.forbidden()
+    }
     return view.render('pages/private/index', {
       users,
       refills,
@@ -34,6 +37,7 @@ export default class PrivatesController {
   async KzToDay({ view }: HttpContext) {
     const response = await fetch(this.url)
     const json = await response.json()
+    //@ts-ignore
     const data = json.exchangeRates.map((rate) => ({
       ...rate,
       syncTime: new Date(rate.syncDate).toLocaleDateString('pt-PT'),

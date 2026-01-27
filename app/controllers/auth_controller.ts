@@ -34,8 +34,13 @@ export default class AuthController {
    * Handle form submission for the create new user action
    */
   async store({ request, response }: HttpContext) {
-    const { passwordConfirmation, ...rest } = await request.validateUsing(createUserValidator)
-    await User.create({ ...rest })
+    const { passwordConfirmation, isAdmin, ...rest } =
+      await request.validateUsing(createUserValidator)
+    if (isAdmin === true) {
+      await User.create({ ...rest, isBlock: true, isAdmin: false })
+      return response.redirect().toRoute('auth.login.view')
+    }
+    await User.create({ ...rest, isAdmin: false })
     return response.redirect().toRoute('auth.login.view')
   }
 

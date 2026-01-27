@@ -1,0 +1,60 @@
+@layout.app({ title: "Blog" })
+@slot('meta')
+  <meta name="description" content="Pagina de Blog da Recarregaaki" />
+@endslot
+
+@slot('main')
+  @include('partials/navbar')
+  <div class="py-10 max-w-7xl container mx-auto lg:px-0 px-4">
+    
+    <section class="text-gray-900 dark:text-white text-justify">
+      <div>
+        <h2
+        class="mb-4 text-start text-4xl leading-tight font-extrabold tracking-tight text-gray-900 md:text-5xl lg:text-5xl dark:text-white">
+        Blog
+        </h2>
+        <div>
+          
+          
+          
+          @if(posts.length > 0)
+            <div class="grid gap-12 sm:grid-cols-2 lg:grid-cols-4">
+              @each(post in posts)
+                <article >
+                  <a  href="{{ route('web.showBlogPost', { id: post.id }) }}" >
+                    <img src=" /{{post.image}} " class="mb-5 w-full h-48 rounded-lg" alt="Image 4">
+                  </a>
+                  <h2 class="mb-2 text-xl font-bold leading-tight text-gray-900 dark:text-white">
+                    <a  href="{{ route('web.showBlogPost', { id: post.id }) }}" > {{post.title}}</a>
+                  </h2>
+                  <p >Data: {{ post.createdAt.toFormat('dd/LL/yyyy HH:mm') }}</p>
+                  <p class="mb-4  text-gray-500 dark:text-gray-400 text-justify"> {{post.content.slice(0, 150)}}... </p>
+                    
+                </article>
+              @end
+            </div>
+            <div class="mt-5">
+              @each(anchor in posts.getUrlsForRange(1, posts.lastPage))
+                <nav aria-label="Page navigation example" class="flex items-center space-x-4">
+                  <ul class="flex -space-x-px text-sm">
+                    <li>
+                      <a href="{{ anchor.url }}"
+                      class="flex items-center  rounded-full justify-center text-body bg-neutral-secondary-medium border border-default-medium hover:bg-neutral-tertiary-medium hover:text-heading shadow-xs font-medium leading-5 text-sm w-9 h-9 focus:outline-none">{{
+                    anchor.page }}</a>
+                    </li>
+                  </ul>
+                </nav>
+              @endeach
+            </div>
+            
+            @else
+            <h2 class="text-2xl text-center dark:text-white h-screen"> Nenhuma postagem encontrada </h2>
+          @end
+        </div>
+    </section>
+      </div>
+      
+      @include('partials/footer')
+      
+@endslot
+@end

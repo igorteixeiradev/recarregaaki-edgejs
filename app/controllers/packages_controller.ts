@@ -17,6 +17,9 @@ export default class PackagesController {
       limit
     )
     const refill = await Refill.findByOrFail('id', params.refillId)
+    if (await request.ctx?.bouncer.denies(isAdmin)) {
+      return request.ctx?.response.forbidden()
+    }
     return view.render('pages/private/packages/index', {
       packages,
       refillId: params.refillId,
@@ -35,11 +38,10 @@ export default class PackagesController {
    * Handle form submission for the create action
    */
   async store({ request }: HttpContext) {
+    const payload = await request.validateUsing(createPackageValidator)
     if (await request.ctx?.bouncer.denies(isAdmin)) {
       return request.ctx?.response.forbidden()
     }
-
-    const payload = await request.validateUsing(createPackageValidator)
     await Package.create(payload)
 
     request.ctx?.session.flash('notification', {
@@ -53,7 +55,10 @@ export default class PackagesController {
   /**
    * Show individual record
    */
-  async show({ params }: HttpContext) {
+  async show({ params, request }: HttpContext) {
+    if (await request.ctx?.bouncer.denies(isAdmin)) {
+      return request.ctx?.response.forbidden()
+    }
     return await Package.findByOrFail('id', params.id)
   }
 
@@ -69,12 +74,11 @@ export default class PackagesController {
    * Handle form submission for the edit action
    */
   async update({ params, request }: HttpContext) {
+    const payload = await request.validateUsing(updatePackageValidator)
+    const pkg = await Package.findByOrFail('id', params.id)
     if (await request.ctx?.bouncer.denies(isAdmin)) {
       return request.ctx?.response.forbidden()
     }
-
-    const payload = await request.validateUsing(updatePackageValidator)
-    const pkg = await Package.findByOrFail('id', params.id)
     pkg.merge(payload)
     await pkg.save()
 
@@ -90,10 +94,10 @@ export default class PackagesController {
    * Delete record
    */
   async destroy({ params, request }: HttpContext) {
+    const pkg = await Package.findByOrFail('id', params.id)
     if (await request.ctx?.bouncer.denies(isAdmin)) {
       return request.ctx?.response.forbidden()
     }
-    const pkg = await Package.findByOrFail('id', params.id)
     await pkg.delete()
 
     request.ctx?.session.flash('notification', {

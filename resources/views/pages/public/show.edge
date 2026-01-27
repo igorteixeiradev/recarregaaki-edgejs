@@ -11,11 +11,11 @@
         <div class="lg:grid lg:grid-cols-2 lg:gap-8 xl:gap-16">
           <div class="mx-aut shrink-0">
             <img class="h-56 w-full rounded-xl md:h-96 lg:h-125" src="/{{refill.image}}"
-            alt="{{refill.title}}" />
+            alt="{{refill.name}}" />
           </div>
           <div class="mt-6 sm:mt-8 lg:mt-0">
             <h1 class="text-xl font-semibold text-gray-900 sm:text-2xl dark:text-white">
-              {{refill.name}} - {{refill.category.name}}
+              {{refill.name}}
             </h1>
             <div class="py-5 text-xs">
               
@@ -145,7 +145,7 @@
                             {{ price }} Kz
                           </p>
                           
-                          @if(refill.category.name === "Jogos para telemóvel")
+                          @if(refill.category.name === "Jogos para telefone")
                             <p class="text-sm mt-5 text-gray-500 dark:text-gray-400">ID do jogo
                             {{refill.name}}:</p>
                             <p class="text-sm font-medium text-gray-900 dark:text-white">

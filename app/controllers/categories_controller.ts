@@ -11,6 +11,9 @@ export default class CategoriesController {
     const page = request.input('page', 1)
     const limit = request.input('limit', 20)
     const categories = await Category.findManyCategories(page, limit)
+    if (await request.ctx?.bouncer.denies(isAdmin)) {
+      return request.ctx?.response.forbidden()
+    }
     return view.render('pages/private/categories/index', { categories })
   }
 
@@ -25,12 +28,11 @@ export default class CategoriesController {
    * Handle form submission for the create action
    */
   async store({ request }: HttpContext) {
+    const payload = await request.validateUsing(createCategoryValidator)
     if (await request.ctx?.bouncer.denies(isAdmin)) {
       return request.ctx?.response.forbidden()
     }
-    const payload = await request.validateUsing(createCategoryValidator)
     await Category.create(payload)
-
     request.ctx?.session.flash('notification', {
       type: 'success',
       message: 'Categoria adicionada com sucesso',
@@ -42,7 +44,10 @@ export default class CategoriesController {
   /**
    * Show individual record
    */
-  async show({ params }: HttpContext) {
+  async show({ params, request }: HttpContext) {
+    if (await request.ctx?.bouncer.denies(isAdmin)) {
+      return request.ctx?.response.forbidden()
+    }
     return await Category.findCategoryById(params.id)
   }
 
@@ -58,11 +63,11 @@ export default class CategoriesController {
    * Handle form submission for the edit action
    */
   async update({ params, request }: HttpContext) {
+    const payload = await request.validateUsing(updateCategoryValidator)
+    const category = await Category.findByOrFail('id', params.id)
     if (await request.ctx?.bouncer.denies(isAdmin)) {
       return request.ctx?.response.forbidden()
     }
-    const payload = await request.validateUsing(updateCategoryValidator)
-    const category = await Category.findByOrFail('id', params.id)
     category.merge(payload)
     await category.save()
 
@@ -78,10 +83,10 @@ export default class CategoriesController {
    * Delete record
    */
   async destroy({ params, request }: HttpContext) {
+    const category = await Category.findByOrFail('id', params.id)
     if (await request.ctx?.bouncer.denies(isAdmin)) {
       return request.ctx?.response.forbidden()
     }
-    const category = await Category.findByOrFail('id', params.id)
     await category.delete()
     request.ctx?.session.flash('notification', {
       type: 'success',
