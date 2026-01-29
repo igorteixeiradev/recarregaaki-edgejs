@@ -64,7 +64,10 @@ export default class PublicsController {
   async blog({ view, request }: HttpContext) {
     const page = request.input('page', 1)
     const limit = request.input('limit', 20)
-    const posts = await Post.query().preload('author').paginate(page, limit)
+    const posts = await Post.query()
+      .preload('author')
+      .orderBy('createdAt', 'desc')
+      .paginate(page, limit)
     posts.baseUrl('/blog')
     return view.render('pages/public/blog', { posts })
   }
