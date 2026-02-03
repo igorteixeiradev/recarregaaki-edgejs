@@ -1,6 +1,5 @@
 import { isAdmin } from '#abilities/main'
 import Package from '#models/package'
-import Refill from '#models/refill'
 import { createPackageValidator, updatePackageValidator } from '#validators/package'
 import type { HttpContext } from '@adonisjs/core/http'
 
@@ -11,16 +10,19 @@ export default class PackagesController {
   async index({ view, params, request }: HttpContext) {
     const page = request.input('page', 1)
     const limit = request.input('limit', 20)
-    const packages = await Package.findManyPackagesByRefillIdAndPagenation(
-      params.refillId,
-      page,
-      limit
-    )
-    const refill = await Refill.findByOrFail('id', params.refillId)
+
+    const packages = await Package.query()
+      .orderBy('createdAt', 'desc')
+      .where('refillId', params.refillId)
+      .preload('refill')
+      .paginate(page, limit)
+    packages.baseUrl(`/dashboard/${packages[0].refillId}/pacotes`)
+
+    if (await request.ctx?.bouncer.denies(isAdmin)) {
+      return request.ctx?.response.forbidden()
+    }
     return view.render('pages/private/packages/index', {
       packages,
-      refillId: params.refillId,
-      refill,
     })
   }
 
@@ -35,11 +37,10 @@ export default class PackagesController {
    * Handle form submission for the create action
    */
   async store({ request }: HttpContext) {
+    const payload = await request.validateUsing(createPackageValidator)
     if (await request.ctx?.bouncer.denies(isAdmin)) {
       return request.ctx?.response.forbidden()
     }
-
-    const payload = await request.validateUsing(createPackageValidator)
     await Package.create(payload)
 
     request.ctx?.session.flash('notification', {
@@ -53,7 +54,10 @@ export default class PackagesController {
   /**
    * Show individual record
    */
-  async show({ params }: HttpContext) {
+  async show({ params, request }: HttpContext) {
+    if (await request.ctx?.bouncer.denies(isAdmin)) {
+      return request.ctx?.response.forbidden()
+    }
     return await Package.findByOrFail('id', params.id)
   }
 
@@ -69,12 +73,11 @@ export default class PackagesController {
    * Handle form submission for the edit action
    */
   async update({ params, request }: HttpContext) {
+    const payload = await request.validateUsing(updatePackageValidator)
+    const pkg = await Package.findByOrFail('id', params.id)
     if (await request.ctx?.bouncer.denies(isAdmin)) {
       return request.ctx?.response.forbidden()
     }
-
-    const payload = await request.validateUsing(updatePackageValidator)
-    const pkg = await Package.findByOrFail('id', params.id)
     pkg.merge(payload)
     await pkg.save()
 
@@ -90,10 +93,10 @@ export default class PackagesController {
    * Delete record
    */
   async destroy({ params, request }: HttpContext) {
+    const pkg = await Package.findByOrFail('id', params.id)
     if (await request.ctx?.bouncer.denies(isAdmin)) {
       return request.ctx?.response.forbidden()
     }
-    const pkg = await Package.findByOrFail('id', params.id)
     await pkg.delete()
 
     request.ctx?.session.flash('notification', {

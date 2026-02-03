@@ -24,6 +24,9 @@ export default class Refill extends BaseModel {
   @column()
   declare categoryId: string
 
+  @column()
+  declare otherName: string | null
+
   @column.dateTime({ autoCreate: true })
   declare createdAt: DateTime
 
@@ -36,48 +39,24 @@ export default class Refill extends BaseModel {
   @hasMany(() => Package)
   declare packages: HasMany<typeof Package>
 
-  static async findManyRefills(page: number, limit: number) {
-    const refills = await this.query()
-      .orderBy('createdAt', 'desc')
-      .preload('category')
-      .preload('packages')
-      .paginate(page, limit)
-    refills.baseUrl('/dashboard/recargas')
-    return refills
-  }
-
-  static async findRefillById(id: string) {
-    return await this.query()
-      .where('id', id)
-      .preload('category')
-      .preload('packages', (query) => {
-        query.orderBy('price', 'asc')
-      })
-      .firstOrFail()
-  }
-
-  static async findManyRefillByIsActive(isActive: boolean) {
-    return await this.query()
-      .has('packages')
-      .orderBy('createdAt', 'desc')
-      .where('isActive', isActive)
-      .preload('category')
-      .preload('packages')
-  }
-
-  static async findManyRefillsBySearchTerm(page: number, limit: number, q: string) {
+  static async findManyRefillsByQ(page: number, limit: number, text?: string, categoryId?: string) {
     const refills = await this.query()
       .has('packages')
       .orderBy('createdAt', 'desc')
       .where('isActive', true)
-      .whereILike('name', `%${q}%`)
-      .orWhereILike('description', `%${q}%`)
+      .andWhere((builder) => {
+        if (text) {
+          builder.whereILike('name', `%${text}%`).orWhereILike('description', `%${text}%`)
+        }
+
+        if (categoryId) {
+          builder.where('categoryId', categoryId)
+        }
+      })
       .preload('category')
       .paginate(page, limit)
 
-    refills.baseUrl('/loja')
-
-    return refills
+    return refills.baseUrl('/loja')
   }
 
   @beforeCreate()

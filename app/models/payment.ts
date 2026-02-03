@@ -42,12 +42,6 @@ export default class Payment extends BaseModel {
   @belongsTo(() => User)
   declare user: BelongsTo<typeof User>
 
-  static async findManyPayments(page: number, limit: number) {
-    const payments = await this.query().preload('user').preload('package').paginate(page, limit)
-    payments.baseUrl('/dashboard')
-    return payments
-  }
-
   static async totalAmountPaid(date?: Date) {
     if (!date) {
       const payments = await this.query().where('status', 'PAID')

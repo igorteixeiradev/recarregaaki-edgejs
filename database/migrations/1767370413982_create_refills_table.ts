@@ -14,10 +14,11 @@ export default class extends BaseSchema {
         .inTable('categories')
         .onDelete('CASCADE')
 
-      table.string('name').notNullable()
+      table.string('name', 254).notNullable()
       table.text('description').notNullable()
-      table.string('image').notNullable()
+      table.string('image', 500).notNullable().defaultTo('images/not-content-image.png')
       table.boolean('is_active').defaultTo(true)
+      table.string('other_name', 254).unique().nullable()
 
       table.timestamp('created_at')
       table.timestamp('updated_at')

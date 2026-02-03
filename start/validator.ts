@@ -12,4 +12,5 @@ vine.messagesProvider = new SimpleMessagesProvider({
   url: 'O campo deve ser um URL válido',
   boolean: 'O campo deve ser verdadeiro ou falso',
   enum: 'O campo deve ser uma das seguintes opções: {{ enum }}',
+  exists: '{{ enum }} não existe',
 })

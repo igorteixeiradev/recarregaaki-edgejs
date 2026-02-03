@@ -7,11 +7,14 @@ import { cuid } from '@adonisjs/core/helpers'
 export class RefillService {
   async createRefillAndUploadImage(payload: CreateRefillPayload): Promise<Refill> {
     const { image, ...rest } = payload
-    const fileName = `${cuid()}.${image.extname}`
-    await image.move(app.makePath('uploads'), {
-      name: fileName,
-    })
-    return await Refill.create({ ...rest, image: 'uploads/' + fileName })
+    if (image) {
+      const fileName = `${cuid()}.${image.extname}`
+      await image.move(app.makePath('uploads'), {
+        name: fileName,
+      })
+      return await Refill.create({ ...rest, image: 'uploads/' + fileName })
+    }
+    return await Refill.create({ ...rest })
   }
 
   async updateRefillAndUploadImage(id: string, payload: UpdateRefillPayload): Promise<Refill> {
@@ -19,8 +22,12 @@ export class RefillService {
 
     const { image, ...rest } = payload
 
+    const defaultImage = 'images/not-content-image.png'
+
     if (image) {
-      await unlink(refill.image)
+      if (refill.image !== defaultImage) {
+        await unlink(refill.image)
+      }
       const fileName = `${cuid()}.${image.extname}`
       await image.move(app.makePath('uploads'), {
         name: fileName,
@@ -37,7 +44,10 @@ export class RefillService {
 
   async removeRefillAndRemoveImage(id: string): Promise<Refill> {
     const refill = await Refill.findByOrFail('id', id)
-    await unlink(refill.image)
+    const defaultImage = 'images/not-content-image.png'
+    if (refill.image !== defaultImage) {
+      await unlink(refill.image)
+    }
     await refill.delete()
     return refill
   }

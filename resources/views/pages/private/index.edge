@@ -1,137 +1,137 @@
 @layout.app({ title: "Dashboard" })
 @slot('main')
-@sidebar()
-@slot('content')
-<h2 class="mb-5 text-2xl font-semibold lg:text-3xl dark:text-white">Painel</h2>
-<div class="grid grid-cols-2 gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-4">
-
-  <div
-    class="bg-neutral-primary-soft block max-w-sm p-6 border border-default rounded-base shadow-xs hover:bg-neutral-secondary-medium">
-    <h5 class="text-sm text-gray-500 dark:text-gray-400">Total Vendas</h5>
-    <h2 class="text-2xl font-semibold whitespace-nowrap text-green-900 dark:text-green-500">
-      {{totalAmountPaid}} Kz
-    </h2>
-  </div>
-
-  <div
-    class="bg-neutral-primary-soft block max-w-sm p-6 border border-default rounded-base shadow-xs hover:bg-neutral-secondary-medium">
-    <h5 class="text-sm text-gray-500 dark:text-gray-400">Total de Vendas Mensal </h5>
-    <h2 class="text-2xl font-semibold text-green-900 dark:text-green-500">
-      {{ totalAmountPaidThisMonth}} Kz
-    </h2>
-  </div>
-
-  <div
-    class="bg-neutral-primary-soft block max-w-sm p-6 border border-default rounded-base shadow-xs hover:bg-neutral-secondary-medium">
-    <h5 class="text-sm text-gray-500 dark:text-gray-400">Total de Recargas</h5>
-    <h2 class="text-2xl font-semibold text-gray-900 dark:text-white">
-      {{refills.length}}
-    </h2>
-  </div>
-
-  <div
-    class="bg-neutral-primary-soft block max-w-sm p-6 border border-default rounded-base shadow-xs hover:bg-neutral-secondary-medium">
-    <h5 class="text-sm text-gray-500 dark:text-gray-400">Total de Pacotes</h5>
-    <h2 class="text-2xl font-semibold text-gray-900 dark:text-white">
-      {{packages.length}}
-    </h2>
-  </div>
-
-  <div
-    class="bg-neutral-primary-soft block max-w-sm p-6 border border-default rounded-base shadow-xs hover:bg-neutral-secondary-medium">
-    <h5 class="text-sm text-gray-500 dark:text-gray-400">Total de Consumidores</h5>
+  @sidebar()
+  @slot('content')
+    <h2 class="mb-5 text-2xl font-semibold lg:text-3xl dark:text-white">Painel</h2>
+      <div class="grid grid-cols-2 gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-4">
+        
+        <div
+        class="bg-neutral-primary-soft block max-w-sm p-6 border border-default rounded-base shadow-xs hover:bg-neutral-secondary-medium">
+        <h5 class="text-sm text-gray-500 dark:text-gray-400">Total Vendas</h5>
+          <h2 class="text-2xl font-semibold whitespace-nowrap text-green-900 dark:text-green-500">
+            {{totalAmountPaid}} Kz
+          </h2>
+      </div>
+      
+      <div
+      class="bg-neutral-primary-soft block max-w-sm p-6 border border-default rounded-base shadow-xs hover:bg-neutral-secondary-medium">
+        <h5 class="text-sm text-gray-500 dark:text-gray-400">Total de Vendas Mensal </h5>
+          <h2 class="text-2xl font-semibold text-green-900 dark:text-green-500">
+            {{ totalAmountPaidThisMonth}} Kz
+          </h2>
+          </div>
+          
+          <div
+          class="bg-neutral-primary-soft block max-w-sm p-6 border border-default rounded-base shadow-xs hover:bg-neutral-secondary-medium">
+        <h5 class="text-sm text-gray-500 dark:text-gray-400">Total de Recargas</h5>
+          <h2 class="text-2xl font-semibold text-gray-900 dark:text-white">
+            {{refills.length}}
+          </h2>
+          </div>
+          
+          <div
+          class="bg-neutral-primary-soft block max-w-sm p-6 border border-default rounded-base shadow-xs hover:bg-neutral-secondary-medium">
+        <h5 class="text-sm text-gray-500 dark:text-gray-400">Total de Pacotes</h5>
+          <h2 class="text-2xl font-semibold text-gray-900 dark:text-white">
+            {{packages.length}}
+          </h2>
+          </div>
+          
+          <div
+          class="bg-neutral-primary-soft block max-w-sm p-6 border border-default rounded-base shadow-xs hover:bg-neutral-secondary-medium">
+        <h5 class="text-sm text-gray-500 dark:text-gray-400">Total de Consumidores</h5>
     <h2 class="text-2xl font-semibold text-gray-900 dark:text-white"> {{users.length}} </h2>
-  </div>
-
-</div>
-<h2 class="my-5 text-2xl font-semibold lg:text-3xl dark:text-white">
-  Ultimos pagamentos
-</h2>
-<div class="relative overflow-x-auto bg-neutral-primary-soft shadow-xs rounded-base border border-default">
-  <table class="w-full text-sm text-left rtl:text-right text-body">
-    <thead class="bg-neutral-secondary-soft border-b border-default">
-      <tr>
-        <th scope="col" class="px-6 py-3 font-medium">
-          Consumidor
-        </th>
-        <th scope="col" class="px-6 py-3 font-medium">
-          Produto
-        </th>
-        <th scope="col" class="px-6 py-3 font-medium">
-          Preço
-        </th>
-        <th scope="col" class="px-6 py-3 font-medium">
-          Estado
-        </th>
-        <th scope="col" class="px-6 py-3 font-medium">
-          Action
-        </th>
-      </tr>
-    </thead>
-    <tbody>
-      @if(payments.length > 0)
-      @each(payment in payments)
-      <tr class="odd:bg-neutral-primary even:bg-neutral-secondary-soft border-b border-default">
-        <th scope="row" class="px-6 py-4 font-medium text-heading whitespace-nowrap">
-          {{payment.user.name}}
-        </th>
-        <td class="px-6 py-4">
-          {{payment.package.name}}
-        </td>
-        <td class="px-6 py-4">
-          {{payment.package.price}} Kz
-        </td>
-
-        <td class="px-6 py-4">
-          @if(payment.status === 'PAID')
-          <span class="text-green-600 font-semibold">{{ payment.status }}</span>
-          @elseif(payment.status === 'PENDING')
-          <span class="text-yellow-500 font-semibold">{{ payment.status }}</span>
-          @elseif(payment.status === 'FAILED')
-          <span class="text-red-600 font-semibold">{{ payment.status }}</span>
-          @elseif(payment.status === 'CANCELED')
-          <span class="text-gray-500 font-semibold">{{ payment.status }}</span>
-          @endif
-
-        </td>
-        <td class="px-6 py-4">
-          <a href="#" class="font-medium text-fg-brand hover:underline">Edit</a>
-        </td>
-      </tr>
-      @end
-      @else
-      <tr class="odd:bg-neutral-primary even:bg-neutral-secondary-soft border-b border-default">
-
-        <th colspan="5" scope="row" scope="row"
-          class="px-6 py-4 font-medium text-heading whitespace-nowrap text-center text-xl">
-          <span>Nenhum dado encontrado</span>
-        </th>
-      </tr>
-      @end
-    </tbody>
-  </table>
-</div>
-
-<div class="mt-5">
-  @each(anchor in  payments.getUrlsForRange(1,  payments.lastPage))
-  <nav aria-label="Page navigation example" class="flex items-center space-x-4">
-    <ul class="flex -space-x-px text-sm">
-
-      <li>
-        <a href="{{ anchor.url }}"
-          class="flex items-center  rounded-full justify-center text-body bg-neutral-secondary-medium border border-default-medium hover:bg-neutral-tertiary-medium hover:text-heading shadow-xs font-medium leading-5 text-sm w-9 h-9 focus:outline-none">{{
-          anchor.page }}</a>
-      </li>
-
-
-    </ul>
-
-  </nav>
-
-
-  @endeach
-</div>
-@end
+      </div>
+      
+      </div>
+      <h2 class="my-5 text-2xl font-semibold lg:text-3xl dark:text-white">
+        Ultimos pagamentos
+      </h2>
+      <div class="relative overflow-x-auto bg-neutral-primary-soft shadow-xs rounded-base border border-default">
+        <table class="w-full text-sm text-left rtl:text-right text-body">
+          <thead class="bg-neutral-secondary-soft border-b border-default">
+            <tr>
+              <th scope="col" class="px-6 py-3 font-medium">
+                Consumidor
+              </th>
+              <th scope="col" class="px-6 py-3 font-medium">
+                Produto
+              </th>
+              <th scope="col" class="px-6 py-3 font-medium">
+                Preço
+              </th>
+              <th scope="col" class="px-6 py-3 font-medium">
+                Estado
+              </th>
+              <th scope="col" class="px-6 py-3 font-medium">
+                Acção
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            @if(payments.length > 0)
+              @each(payment in payments)
+                <tr class="odd:bg-neutral-primary even:bg-neutral-secondary-soft border-b border-default">
+                  <th scope="row" class="px-6 py-4 font-medium text-heading whitespace-nowrap">
+                    {{payment.user.name}}
+                  </th>
+                  <td class="px-6 py-4">
+                    {{payment.package.name}}
+                  </td>
+                  <td class="px-6 py-4">
+                    {{payment.package.price}} Kz
+                  </td>
+                  
+                  <td class="px-6 py-4">
+                    @if(payment.status === 'PAID')
+                      <span class="text-green-600 font-semibold">{{ payment.status }}</span>
+                        @elseif(payment.status === 'PENDING')
+                      <span class="text-yellow-500 font-semibold">{{ payment.status }}</span>
+                        @elseif(payment.status === 'FAILED')
+                      <span class="text-red-600 font-semibold">{{ payment.status }}</span>
+                        @elseif(payment.status === 'CANCELED')
+                      <span class="text-gray-500 font-semibold">{{ payment.status }}</span>
+                    @endif
+                    
+                  </td>
+                  <td class="px-6 py-4">
+                    <a href="#" class="font-medium text-fg-brand hover:underline">Edit</a>
+                  </td>
+                </tr>
+              @end
+              @else
+              <tr class="odd:bg-neutral-primary even:bg-neutral-secondary-soft border-b border-default">
+                
+                <th colspan="5" scope="row" scope="row"
+                class="px-6 py-4 font-medium text-heading whitespace-nowrap text-center text-xl">
+                      <span>Nenhum dado encontrado</span>
+                        </th>
+              </tr>
+            @end
+          </tbody>
+        </table>
+      </div>
+      
+      <div class="mt-5">
+        @each(anchor in  payments.getUrlsForRange(1,  payments.lastPage))
+          <nav aria-label="Page navigation example" class="flex items-center space-x-4">
+            <ul class="flex -space-x-px text-sm">
+              
+              <li>
+                <a href="{{ anchor.url }}"
+                class="flex items-center  rounded-full justify-center text-body bg-neutral-secondary-medium border border-default-medium hover:bg-neutral-tertiary-medium hover:text-heading shadow-xs font-medium leading-5 text-sm w-9 h-9 focus:outline-none">{{
+                    anchor.page }}</a>
+              </li>
+              
+              
+            </ul>
+            
+          </nav>
+          
+          
+        @endeach
+      </div>
+  @end
 @end
 
 @end

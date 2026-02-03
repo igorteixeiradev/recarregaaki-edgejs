@@ -7,22 +7,17 @@ import { Infer } from '@vinejs/vine/types'
 
 export const createRefillValidator = vine.compile(
   vine.object({
-    name: vine.string().minLength(2).maxLength(255),
-    image: vine.file({
-      size: '2mb',
-      extnames: ['jpg', 'png', 'jpeg'],
-    }),
+    name: vine.string().minLength(1).maxLength(255),
+    image: vine
+      .file({
+        size: '2mb',
+        extnames: ['jpg', 'jpeg', 'png', 'webp', 'svg'],
+      })
+      .optional(),
     description: vine.string().minLength(20),
-    categoryId: vine
-      .string()
-      .minLength(2)
-      .uuid()
-      .exists(async (db, value) => {
-        if (!value) return true
-
-        return !!(await db.from('categories').where('id', value).first())
-      }),
+    categoryId: vine.string().minLength(1).uuid().exists({ table: 'categories', column: 'id' }),
     isActive: vine.boolean().optional(),
+    otherName: vine.string().maxLength(254).optional(),
   })
 )
 
@@ -35,23 +30,15 @@ export const updateRefillValidator = vine.compile(
     image: vine
       .file({
         size: '2mb',
-        extnames: ['jpg', 'png', 'jpeg'],
+        extnames: ['jpg', 'jpeg', 'png', 'webp', 'svg'],
       })
       .optional(),
     description: vine.string().optional(),
-    categoryId: vine
-      .string()
-      .minLength(2)
-      .uuid()
-      .exists(async (db, value) => {
-        if (!value) return true
-
-        return !!(await db.from('categories').where('id', value).first())
-      }),
+    categoryId: vine.string().uuid().exists({ table: 'categories', column: 'id' }).optional(),
     isActive: vine.boolean().optional(),
+    otherName: vine.string().maxLength(254).optional(),
   })
 )
 
 export type CreateRefillPayload = Infer<typeof createRefillValidator>
-
 export type UpdateRefillPayload = Infer<typeof updateRefillValidator>

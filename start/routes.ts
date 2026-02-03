@@ -11,6 +11,7 @@ import router from '@adonisjs/core/services/router'
 import { middleware } from '#start/kernel'
 import app from '@adonisjs/core/services/app'
 import { sep, normalize } from 'node:path'
+import env from './env.js'
 const AuthController = () => import('#controllers/auth_controller')
 const PrivatesController = () => import('#controllers/privates_controller')
 const PublicsController = () => import('#controllers/publics_controller')
@@ -19,7 +20,9 @@ const RefillsController = () => import('#controllers/refills_controller')
 const PackagesController = () => import('#controllers/packages_controller')
 const UsersController = () => import('#controllers/users_controller')
 const PaymentsController = () => import('#controllers/payments_controller')
+const PostsController = () => import('#controllers/posts_controller')
 
+// Rota de Uploads de Imagem
 const PATH_TRAVERSAL_REGEX = /(?:^|[\\/])\.\.(?:[\\/]|$)/
 
 router.get('uploads/*', ({ request, response }) => {
@@ -34,12 +37,15 @@ router.get('uploads/*', ({ request, response }) => {
   return response.download(absolutePath)
 })
 
+// Rotas Publicas
 router.get('/', [PublicsController, 'index']).as('web.home')
 router.on('/sobre-nos').render('pages/public/about').as('web.about')
 router.on('/contactos').render('pages/public/contact').as('web.contact')
 router.get('/loja', [PublicsController, 'shop']).as('web.shop')
+router.get('/blog', [PublicsController, 'blog']).as('web.blog')
+router.get('/blog/:id', [PublicsController, 'showBlogPost']).as('web.showBlogPost')
 router.get('/loja/:id', [PublicsController, 'show']).as('web.show')
-router.on('/perfil').render('pages/public/profile').as('web.profile').use(middleware.auth())
+router.get('/perfil', [PublicsController, 'profile']).as('web.profile').use(middleware.auth())
 
 // Paginas de Autenticação
 router.on('/entrar').render('pages/public/auth/login').as('auth.login.view').use(middleware.guest())
@@ -75,7 +81,8 @@ router
   })
   .use(middleware.auth())
   .as('auth.logout')
-
+router.get('/verificar-email', [AuthController, 'verifyEmail']).as('auth.verifyEmail')
+// Rotas Privadas
 router
   .group(() => {
     router.get('', [PrivatesController, 'index']).as('dashboard.index')
@@ -84,7 +91,12 @@ router
     router.resource('recargas', RefillsController).as('refills')
     router.resource('/:refillId/pacotes', PackagesController).as('packages')
     router.resource('consumidores', UsersController).as('users')
-    router.resource('payments', PaymentsController).as('payments')
+    router.resource('pagamentos', PaymentsController).as('payments')
+    router.resource('blog', PostsController).as('blog')
   })
   .prefix('dashboard')
   .use(middleware.auth())
+
+if (env.get('NODE_ENV') === 'development') {
+  router.jobs('/my-jobs-dashboard')
+}

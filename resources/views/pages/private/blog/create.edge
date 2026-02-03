@@ -1,0 +1,51 @@
+@layout.app({ title: "Dashboard" })
+@slot('main')
+  @sidebar()
+  @slot('content')
+    <h2 class="my-5 text-2xl font-semibold lg:text-3xl dark:text-white">
+      Adicionar postagem
+    </h2>
+    <form class="space-y-4 md:space-y-6" action="{{route("blog.store")}}" method="post" encType="multipart/form-data">
+      {{ csrfField() }}
+      <div class="grid lg:grid-cols-3 gap-5 items-center">
+        <div>
+          @!component('components/label', { text: 'Titulo da postagem',name:"title" })
+          @!component('components/input', { placeholder: 'Titulo da postagem',name:"title", type:"text" })
+        </div>
+        
+        <div>
+          @!component('components/label', { text: 'Estado da postagem',name:"isPublished" })
+          <select name="isPublished"
+          class="block w-full rounded-full px-3 py-2.5 bg-neutral-secondary-medium border border-default-medium text-heading text-sm  focus:ring-brand focus:border-brand shadow-xs placeholder:text-body">
+          <option value="{{true}}">Activo</option>
+          <option value="{{false}}">Inativo</option>
+            
+            </select>
+        </div>
+        <div class="md:pt-5">
+          @!component('components/label', { text: 'Imagem da postagem',name:"file_input" })
+          
+          <input name="image"
+          class="cursor-pointer bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-full focus:ring-brand focus:border-brand block w-full shadow-xs placeholder:text-body"
+          aria-describedby="file_input_help" id="file_input" type="file"/>
+          <p class="mt-1 text-sm text-gray-500 dark:text-gray-300" id="file_input_help">JPG, PNG, JPEG (1920x1080) </p>
+        </div>
+      </div>
+      @!component('components/label', { text: 'Descrição da postagem',name:"content" })
+      <textarea id="content" rows="10" name="content"
+      class="bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-base focus:ring-brand focus:border-brand block w-full p-3.5 shadow-xs placeholder:text-body"
+      placeholder="Descriação..."></textarea>
+      
+      
+      <button type="submit"
+      class="flex w-full items-center justify-center space-x-2 rounded-full bg-white bg-linear-to-r from-violet-500 via-[#9938CA] to-[#E0724A] px-6 py-3 p-2.5 text-center text-sm font-semibold text-white transition-all duration-200 hover:bg-green-700 hover:opacity-90 active:scale-95 sm:w-auto"">
+      Adicionar postagem
+      </button>
+    </form>
+  @end
+@end
+
+@end
+
+@endslot
+@end

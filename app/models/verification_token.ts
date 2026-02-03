@@ -2,7 +2,7 @@ import { DateTime } from 'luxon'
 import { BaseModel, beforeCreate, column } from '@adonisjs/lucid/orm'
 import { randomUUID } from 'node:crypto'
 
-export default class PasswordResetToken extends BaseModel {
+export default class VerificationToken extends BaseModel {
   @column({ isPrimary: true })
   declare id: string
 
@@ -22,7 +22,7 @@ export default class PasswordResetToken extends BaseModel {
   declare updatedAt: DateTime
 
   @beforeCreate()
-  static assignUuid(password_reset_tokens: PasswordResetToken) {
-    password_reset_tokens.id = randomUUID()
+  static assignUuid(verification_token: VerificationToken) {
+    verification_token.id = randomUUID()
   }
 }

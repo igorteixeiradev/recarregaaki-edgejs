@@ -15,7 +15,16 @@ export default class RefillsController {
   async index({ view, request }: HttpContext) {
     const page = request.input('page', 1)
     const limit = request.input('limit', 20)
-    const refills = await Refill.findManyRefills(page, limit)
+    const refills = await Refill.query()
+      .orderBy('createdAt', 'desc')
+      .preload('category')
+      .preload('packages')
+      .paginate(page, limit)
+
+    refills.baseUrl('/dashboard/recargas')
+    if (await request.ctx?.bouncer.denies(isAdmin)) {
+      return request.ctx?.response.forbidden()
+    }
     return view.render('pages/private/refills/index', { refills })
   }
 
@@ -23,7 +32,7 @@ export default class RefillsController {
    * Display form to create a new record
    */
   async create({ view }: HttpContext) {
-    const categories = await Category.findManyCategoriesByActive(true)
+    const categories = await Category.findManyBy('isActive', true)
     return view.render('pages/private/refills/create', { categories })
   }
 
@@ -31,11 +40,10 @@ export default class RefillsController {
    * Handle form submission for the create action
    */
   async store({ request }: HttpContext) {
+    const payload = await request.validateUsing(createRefillValidator)
     if (await request.ctx?.bouncer.denies(isAdmin)) {
       return request.ctx?.response.forbidden()
     }
-
-    const payload = await request.validateUsing(createRefillValidator)
     await this.refillService.createRefillAndUploadImage(payload)
 
     request.ctx?.session.flash('notification', {
@@ -50,15 +58,18 @@ export default class RefillsController {
    * Show individual record
    */
   async show({ params }: HttpContext) {
-    return await Refill.findRefillById(params.id)
+    return await Refill.findByOrFail('id', params.id)
   }
 
   /**
    * Edit individual record
    */
-  async edit({ params, view }: HttpContext) {
+  async edit({ params, view, request }: HttpContext) {
     const categories = await Category.findManyCategoriesByActive(true)
-    const refill = await Refill.findRefillById(params.id)
+    const refill = await Refill.findByOrFail('id', params.id)
+    if (await request.ctx?.bouncer.denies(isAdmin)) {
+      return request.ctx?.response.forbidden()
+    }
     return view.render('pages/private/refills/edit', { categories, refill })
   }
 
@@ -66,12 +77,10 @@ export default class RefillsController {
    * Handle form submission for the edit action
    */
   async update({ params, request }: HttpContext) {
+    const payload = await request.validateUsing(updateRefillValidator)
     if (await request.ctx?.bouncer.denies(isAdmin)) {
       return request.ctx?.response.forbidden()
     }
-
-    const payload = await request.validateUsing(updateRefillValidator)
-
     await this.refillService.updateRefillAndUploadImage(params.id, payload)
 
     request.ctx?.session.flash('notification', {
@@ -86,10 +95,10 @@ export default class RefillsController {
    * Delete record
    */
   async destroy({ params, request }: HttpContext) {
+    const refill = await Refill.findByOrFail('id', params.id)
     if (await request.ctx?.bouncer.denies(isAdmin)) {
       return request.ctx?.response.forbidden()
     }
-    const refill = await Refill.findRefillById(params.id)
     await this.refillService.removeRefillAndRemoveImage(refill.id)
     request.ctx?.session.flash('notification', {
       type: 'success',

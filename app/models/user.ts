@@ -33,13 +33,13 @@ export default class User extends compose(BaseModel, AuthFinder) {
   declare phoneNumber: string | null
 
   @column()
-  declare verifyEmail: boolean
+  declare isEmailVerified: boolean
 
   @column()
-  declare verifyPhoneNumber: boolean
+  declare isPhoneVerified: boolean
 
   @column()
-  declare isBlock: boolean
+  declare isBlocked: boolean
 
   @column({ serializeAs: null })
   declare password: string

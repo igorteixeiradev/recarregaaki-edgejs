@@ -10,6 +10,9 @@ export default class UsersController {
   async index({ request }: HttpContext) {
     const page = request.input('page', 1)
     const limit = request.input('limit', 20)
+    if (await request.ctx?.bouncer.denies(isAdmin)) {
+      return request.ctx?.response.forbidden()
+    }
     const users = await User.query().orderBy('createdAt', 'desc').paginate(page, limit)
     users.baseUrl('/dashboard/consumidores')
     return request.ctx?.view.render('pages/private/usr/index', { users })
@@ -27,6 +30,9 @@ export default class UsersController {
    */
   async store({ request }: HttpContext) {
     const { passwordConfirmation, ...rest } = await request.validateUsing(createUserValidator)
+    if (await request.ctx?.bouncer.denies(isAdmin)) {
+      return request.ctx?.response.forbidden()
+    }
     await User.create({ ...rest })
     request.ctx?.session.flash('notification', {
       type: 'success',
@@ -38,7 +44,10 @@ export default class UsersController {
   /**
    * Show individual record
    */
-  async show({ params }: HttpContext) {
+  async show({ params, request }: HttpContext) {
+    if (await request.ctx?.bouncer.denies(isAdmin)) {
+      return request.ctx?.response.forbidden()
+    }
     return await User.findByOrFail('id', params.id)
   }
 
@@ -54,12 +63,11 @@ export default class UsersController {
    * Handle form submission for the edit action
    */
   async update({ params, request }: HttpContext) {
+    const payload = await request.validateUsing(updateUserValidator)
+    const user = await User.findByOrFail('id', params.id)
     if (await request.ctx?.bouncer.denies(isAdmin)) {
       return request.ctx?.response.forbidden()
     }
-
-    const payload = await request.validateUsing(updateUserValidator)
-    const user = await User.findByOrFail('id', params.id)
     user.merge(payload)
     await user.save()
     request.ctx?.session.flash('notification', {
@@ -73,11 +81,10 @@ export default class UsersController {
    * Delete record
    */
   async destroy({ params, request }: HttpContext) {
+    const user = await User.findByOrFail('id', params.id)
     if (await request.ctx?.bouncer.denies(isAdmin)) {
       return request.ctx?.response.forbidden()
     }
-
-    const user = await User.findByOrFail('id', params.id)
     await user.delete()
 
     request.ctx?.session.flash('notification', {

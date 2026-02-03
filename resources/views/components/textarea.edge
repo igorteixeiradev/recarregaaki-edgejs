@@ -1,0 +1,10 @@
+<textarea id=" {{name}} " rows="10" name=" {{name}} "
+class="block w-full rounded-lg px-3 py-2.5 bg-neutral-secondary-medium border border-default-medium text-heading text-sm  focus:ring-brand focus:border-brand shadow-xs placeholder:text-body"
+placeholder=" {{placeholder}} ">{{value || ""}}</textarea>
+@inputError(name)
+  
+  @each(message in $messages)
+    <p class="mt-2.5 text-sm text-red-400 dark:text-red-500"><span class="font-medium">{{ message}}</p>
+  @end
+  
+@end

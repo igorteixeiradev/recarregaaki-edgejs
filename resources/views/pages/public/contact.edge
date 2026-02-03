@@ -53,18 +53,19 @@
                         Envia-nos uma mensagem
                     </h3>
 
-                    <form class="space-y-4">
+                    <form class="space-y-4" method="post">
+                        {{ csrfField() }}
                         <div>
                             <label class="block mb-2.5 text-sm font-medium text-heading">Nome</label>
                             <input type="text"
-                                class="bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-lg focus:ring-brand focus:border-brand block w-full px-3 py-2.5 shadow-xs placeholder:text-body"
+                                class="bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-lg focus:ring-brand focus:border-brand block w-full px-3 py-2.5 shadow-xs placeholder:text-body" value="{{ auth.user ?  auth.user.fullName : "" }}"
                                 placeholder="O seu nome..." />
                         </div>
 
                         <div>
                             <label class="block mb-2.5 text-sm font-medium text-heading">Email</label>
                             <input type="email"
-                                class="bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-lg focus:ring-brand focus:border-brand block w-full px-3 py-2.5 shadow-xs placeholder:text-body"
+                                class="bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-lg focus:ring-brand focus:border-brand block w-full px-3 py-2.5 shadow-xs placeholder:text-body" value="{{ auth.user ?  auth.user.email : "" }}"
                                 placeholder="teuemail@exemplo.com" />
                         </div>
 
