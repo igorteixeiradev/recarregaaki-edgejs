@@ -10,7 +10,13 @@ export default class PaymentsController {
     const page = request.input('page', 1)
     const limit = request.input('limit', 20)
 
-    const payments = await Payment.findManyPayments(page, limit)
+    const payments = await Payment.query()
+      .orderBy('createdAt', 'desc')
+      .preload('user')
+      .preload('package')
+      .paginate(page, limit)
+    payments.baseUrl('/dashboard/pagamentos')
+
     if (await request.ctx?.bouncer.denies(isAdmin)) {
       return request.ctx?.response.forbidden()
     }

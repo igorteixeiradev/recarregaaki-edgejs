@@ -49,7 +49,7 @@ export default class AuthController {
     await SendEmailVerification.dispatch({ email: rest.email }, { queueName: 'mail' })
     request.ctx?.session.flash('notification', {
       type: 'success',
-      message: 'Verifique a sua caixa de e-mail e clique no link para confirmar o e-mail.',
+      message: 'Verifique a sua caixa do email e clique no link para confirmar o email.',
     })
     return response.redirect().toRoute('auth.login.view')
   }
@@ -62,7 +62,7 @@ export default class AuthController {
     await SendEmailResetPassword.dispatch({ email: payload.email }, { queueName: 'mail' })
     request.ctx?.session.flash('notification', {
       type: 'success',
-      message: 'Verifique a sua caixa de e-mail e clique no link para resetar a sua palavra-passe.',
+      message: 'Verifique a sua caixa de email e clique no link para resetar a sua palavra-passe.',
     })
     return response.redirect().toRoute('web.home')
   }

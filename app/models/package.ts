@@ -35,21 +35,6 @@ export default class Package extends BaseModel {
   @column.dateTime({ autoCreate: true, autoUpdate: true })
   declare updatedAt: DateTime
 
-  static async findManyPackagesByRefillIdAndPagenation(
-    refillId: string,
-    page: number,
-    limit: number
-  ) {
-    const packages = await this.query()
-      .orderBy('createdAt', 'desc')
-      .where('refillId', refillId)
-      .preload('refill')
-      .paginate(page, limit)
-
-    packages.baseUrl(`/dashboard/${refillId}/pacotes`)
-    return packages
-  }
-
   @beforeCreate()
   static assignUuid(pkg: Package) {
     pkg.id = randomUUID()

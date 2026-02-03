@@ -13,39 +13,46 @@
       </h2>
       <section>
         
-        <div class="relative  shadow-md bg-neutral-primary sm:rounded-lg">
+        <div >
           <form action="  {{route('web.shop')}}  " method="get">
-            <div class="flex flex-col items-center justify-between p-4 space-y-3 md:flex-row md:space-y-0 md:space-x-4">
-              <div class="w-full md:w-1/2">
-                <div class="flex items-center" method="get">
-                  <label for="simple-search" class="sr-only">Search</label>
-                    <div class="relative w-full">
-                      <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
-                        <svg aria-hidden="true" class="w-5 h-5 text-gray-500 dark:text-gray-400" fill="currentColor"
-                        viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-                        <path fill-rule="evenodd"
-                        d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z"
-                        clip-rule="evenodd" />
-                        </svg>
-                      </div>
-                      <input type="search" name="text" id="simple-search"
-                      class="block w-full p-2 pl-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-primary-500 focus:border-primary-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                      placeholder="Procurar recargas..." />
-                    </div>
+            <div class="flex shadow-xs rounded-base -space-x-0.5">
+              <label for="search-dropdown" class="block mb-2.5 text-sm font-medium text-heading sr-only ">Search</label>
+                <button id="dropdown-button" data-dropdown-toggle="dropdown" type="button"   class="inline-flex items-center shrink-0 z-10 text-body bg-neutral-secondary-medium border border-default-medium hover:bg-neutral-tertiary-medium hover:text-heading font-medium leading-5 rounded-s-base text-sm px-4 py-2.5 ">
+                  <svg class="w-4 h-4 me-1.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24"><path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.143 4H4.857A.857.857 0 0 0 4 4.857v4.286c0 .473.384.857.857.857h4.286A.857.857 0 0 0 10 9.143V4.857A.857.857 0 0 0 9.143 4Zm10 0h-4.286a.857.857 0 0 0-.857.857v4.286c0 .473.384.857.857.857h4.286A.857.857 0 0 0 20 9.143V4.857A.857.857 0 0 0 19.143 4Zm-10 10H4.857a.857.857 0 0 0-.857.857v4.286c0 .473.384.857.857.857h4.286a.857.857 0 0 0 .857-.857v-4.286A.857.857 0 0 0 9.143 14Zm10 0h-4.286a.857.857 0 0 0-.857.857v4.286c0 .473.384.857.857.857h4.286a.857.857 0 0 0 .857-.857v-4.286a.857.857 0 0 0-.857-.857Z"/></svg>
+                    {{ categoryId
+                    ? categories.find(c => String(c.id) === categoryId)?.name
+                    : 'Categorias'
+                    }}
+                  <svg class="w-4 h-4 ms-1.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24"><path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m19 9-7 7-7-7"/></svg>
+                </button>
+                <div id="dropdown" class="z-10 hidden bg-neutral-primary-medium border border-default-medium rounded-base shadow-lg w-44">
+                  <ul class="p-2 text-sm text-body font-medium" aria-labelledby="dropdown-button">
+                    <li>
+                      <a href=" {{route('web.shop')}}" class="block p-2 hover:bg-neutral-tertiary-medium hover:text-heading rounded-md"> Todas as recargas </a>
+                    </li>
+                    @each(category in categories)
+                      <li>
+                        <a href="{{ route('web.shop') }}?categoria={{ category.id }}"
+                        class="block p-2 rounded-md
+                        @if(category.id === categoryId)
+                          bg-neutral-tertiary-medium text-heading font-semibold
+                          @else
+                          hover:bg-neutral-tertiary-medium hover:text-heading
+                        @endif
+                        ">
+                        {{ category.name }}
+                      </a>
+                      </li>
+                      
+                    @end
+                    
+                  </ul>
                 </div>
-              </div>
-              
-              <div class="flex items-center w-full space-x-3 md:w-auto">
-                <select id="countries" name="categoria"
-                class="block w-full px-3 py-2.5 bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-lg focus:ring-brand focus:border-brand shadow-xs placeholder:text-body">
-                <option value="" >Nenhuma categoria</option>
-                  @each(category in categories)
-                    <option value="{{category.id}}" {{ category.id===categoryId ? 'selected' : '' }}>{{category.name}}
-                    </option>
-                  @end
-                  </select>
-                  @!component('components/button', { text: 'Pesquisar',type:"submit" })
-              </div>
+                <input type="q" id="search-dropdown" id="input-group-1" class="px-3 py-2.5 bg-neutral-secondary-medium text-heading text-sm  block w-full placeholder:text-body" placeholder="Procurar pela recarga..." required>
+                  <button type="submit" class="inline-flex items-center  text-white  transition-all duration-200 shadow-xs font-medium leading-5 rounded-e-base text-sm px-4 py-2.5 focus:outline-none bg-linear-to-r from-violet-500 via-[#9938CA] to-[#E0724A] hover:opacity-90 active:scale-95">
+                  <svg class="w-4 h-4 me-1.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24"><path stroke="currentColor" stroke-linecap="round" stroke-width="2" d="m21 21-3.5-3.5M17 10a7 7 0 1 1-14 0 7 7 0 0 1 14 0Z"/></svg>
+                    Pesquisar
+                  </button>
             </div>
           </form>
         </div>

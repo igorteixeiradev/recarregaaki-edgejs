@@ -1,11 +1,11 @@
-<input type="{{ type }}" name="{{ name }}" id="{{ name }}" value="{{old(name) || ""}}"
-  class="bg-gray-50 border rounded-lg border-gray-300 text-gray-900  focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-  placeholder="{{ placeholder }}" />
+<input type="{{ type }}" name="{{ name }}" id="{{ name }}" value="{{value || ""}}"
+class="block w-full rounded-full px-3 py-2.5 bg-neutral-secondary-medium border border-default-medium text-heading text-sm  focus:ring-brand focus:border-brand shadow-xs placeholder:text-body"
+placeholder="{{ placeholder }}" />
 
 @inputError(name)
-
-@each(message in $messages)
-<p class="mt-2.5 text-sm text-red-400 dark:text-red-500"><span class="font-medium">{{ message}}</p>
-@end
-
+  
+  @each(message in $messages)
+    <p class="mt-2.5 text-sm text-red-400 dark:text-red-500"><span class="font-medium">{{ message}}</p>
+  @end
+  
 @end

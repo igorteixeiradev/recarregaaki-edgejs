@@ -39,41 +39,7 @@ export default class Refill extends BaseModel {
   @hasMany(() => Package)
   declare packages: HasMany<typeof Package>
 
-  static async findManyRefills(page: number, limit: number) {
-    const refills = await this.query()
-      .orderBy('createdAt', 'desc')
-      .preload('category')
-      .preload('packages')
-      .paginate(page, limit)
-
-    return refills.baseUrl('/dashboard/recargas')
-  }
-
-  static async findRefillById(id: string) {
-    return await this.query()
-      .where('id', id)
-      .preload('category')
-      .preload('packages', (query) => {
-        query.orderBy('price', 'asc')
-      })
-      .firstOrFail()
-  }
-
-  static async findManyRefillByIsActive(isActive: boolean) {
-    return await this.query()
-      .has('packages')
-      .orderBy('createdAt', 'desc')
-      .where('isActive', isActive)
-      .preload('category')
-      .preload('packages')
-  }
-
-  static async findManyRefillsBySearchTerm(
-    page: number,
-    limit: number,
-    text?: string,
-    categoryId?: string
-  ) {
+  static async findManyRefillsByQ(page: number, limit: number, text?: string, categoryId?: string) {
     const refills = await this.query()
       .has('packages')
       .orderBy('createdAt', 'desc')

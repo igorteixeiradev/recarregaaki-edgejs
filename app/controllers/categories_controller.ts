@@ -10,7 +10,12 @@ export default class CategoriesController {
   async index({ request, view }: HttpContext) {
     const page = request.input('page', 1)
     const limit = request.input('limit', 20)
-    const categories = await Category.findManyCategories(page, limit)
+    const categories = await Category.query()
+      .orderBy('createdAt', 'desc')
+      .preload('refills')
+      .paginate(page, limit)
+
+    categories.baseUrl('/dashboard/categorias')
     if (await request.ctx?.bouncer.denies(isAdmin)) {
       return request.ctx?.response.forbidden()
     }

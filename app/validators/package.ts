@@ -19,7 +19,7 @@ export const createPackageValidator = vine.compile(
  */
 export const updatePackageValidator = vine.compile(
   vine.object({
-    name: vine.string().optional(),
+    name: vine.string().maxLength(254).optional(),
     price: vine.number().decimal([0, 2]).optional(),
     refillId: vine.string().uuid().exists({ table: 'refills', column: 'id' }).optional(),
     isActive: vine.boolean().optional(),

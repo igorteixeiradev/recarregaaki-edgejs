@@ -23,7 +23,7 @@ export const createPostValidator = vine.compile(
  */
 export const updatePostValidator = vine.compile(
   vine.object({
-    title: vine.string().minLength(1).maxLength(254).optional(),
+    title: vine.string().maxLength(254).optional(),
     content: vine.string().optional(),
     image: vine
       .file({

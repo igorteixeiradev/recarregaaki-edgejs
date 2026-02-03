@@ -15,7 +15,13 @@ export default class RefillsController {
   async index({ view, request }: HttpContext) {
     const page = request.input('page', 1)
     const limit = request.input('limit', 20)
-    const refills = await Refill.findManyRefills(page, limit)
+    const refills = await Refill.query()
+      .orderBy('createdAt', 'desc')
+      .preload('category')
+      .preload('packages')
+      .paginate(page, limit)
+
+    refills.baseUrl('/dashboard/recargas')
     if (await request.ctx?.bouncer.denies(isAdmin)) {
       return request.ctx?.response.forbidden()
     }
@@ -52,7 +58,7 @@ export default class RefillsController {
    * Show individual record
    */
   async show({ params }: HttpContext) {
-    return await Refill.findRefillById(params.id)
+    return await Refill.findByOrFail('id', params.id)
   }
 
   /**
@@ -60,7 +66,7 @@ export default class RefillsController {
    */
   async edit({ params, view, request }: HttpContext) {
     const categories = await Category.findManyCategoriesByActive(true)
-    const refill = await Refill.findRefillById(params.id)
+    const refill = await Refill.findByOrFail('id', params.id)
     if (await request.ctx?.bouncer.denies(isAdmin)) {
       return request.ctx?.response.forbidden()
     }
@@ -89,7 +95,7 @@ export default class RefillsController {
    * Delete record
    */
   async destroy({ params, request }: HttpContext) {
-    const refill = await Refill.findRefillById(params.id)
+    const refill = await Refill.findByOrFail('id', params.id)
     if (await request.ctx?.bouncer.denies(isAdmin)) {
       return request.ctx?.response.forbidden()
     }

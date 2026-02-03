@@ -18,44 +18,31 @@
         </div>
         <div class="items-center">
           @!component('components/label', { text: 'Categoria da recarga',name:"categoryId" })
-          <select name="categoryId"
-          class="block w-full rounded-full px-3 py-2.5 bg-neutral-secondary-medium border border-default-medium text-heading text-sm  focus:ring-brand focus:border-brand shadow-xs placeholder:text-body">
-          @each(category in categories)
-            <option value="{{category.id}}">{{category.name}} </option>
-          @end
+          @!component('components/select', { name:"categoryId", options: categories.map(category => ({
+          value: category.id,
+          label: category.name,
+          })) })
           
-          
-          </select>
         </div>
         <div>
           @!component('components/label', { text: 'Estado da recarga',name:"isActive" })
-          <select name="isActive"
-          class="block w-full rounded-full px-3 py-2.5 bg-neutral-secondary-medium border border-default-medium text-heading text-sm  focus:ring-brand focus:border-brand shadow-xs placeholder:text-body">
-            <option value="{{true}}">Activo</option>
-            <option value="{{false}}">Inativo</option>
-              
-              </select>
+          @!component('components/select', { name:"isActive", options:[{value:true,label:"Ativo"},{value:false,label:"Inativo"}] })
         </div>
         <div>
-          @!component('components/label', { text: 'Imagem da recarga',name:"file_input" })
+          @!component('components/label', { text: 'Imagem da recarga',name:"image" })
+          @!component('components/input-file', { name:"image" })
           
           
-          <input name="image"
-          class="cursor-pointer bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-full focus:ring-brand focus:border-brand block w-full shadow-xs placeholder:text-body"
-          aria-describedby="file_input_help" id="file_input" type="file">
-          <p class="mt-1 text-sm text-gray-500 dark:text-gray-300" id="file_input_help">JPG, PNG, JPEG, WEBP, SVG</p>
         </div>
       </div>
       @!component('components/label', { text: 'Descrição da recarga',name:"description" })
-      <textarea id="description" rows="10" name="description"
-      class="bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-base focus:ring-brand focus:border-brand block w-full p-3.5 shadow-xs placeholder:text-body"
-      placeholder="Descrição..."></textarea>
+      @!component('components/textarea', { placeholder: 'Descrição da recarga...',name:"description" })
       
       
-      <button type="submit"
-      class="flex w-full items-center justify-center space-x-2 rounded-full bg-white bg-linear-to-r from-violet-500 via-[#9938CA] to-[#E0724A] px-6 py-3 p-2.5 text-center text-sm font-semibold text-white transition-all duration-200 hover:bg-green-700 hover:opacity-90 active:scale-95 sm:w-auto"">
-      Adicionar recarga
-      </button>
+      
+      
+      @!component('components/button', { text: 'Adicionar recarga'})
+      
     </form>
   @end
 @end

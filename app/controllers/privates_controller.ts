@@ -20,7 +20,16 @@ export default class PrivatesController {
         User.all(),
         Refill.all(),
         Package.all(),
-        Payment.findManyPayments(page, limit),
+        (async () => {
+          const p = await Payment.query()
+            .orderBy('createdAt', 'desc')
+            .preload('user')
+            .preload('package')
+            .paginate(page, limit)
+
+          p.baseUrl('/dashboard')
+          return p
+        })(),
         Payment.totalAmountPaid(),
         Payment.totalAmountPaid(new Date()),
       ])

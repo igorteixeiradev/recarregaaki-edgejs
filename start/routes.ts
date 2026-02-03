@@ -45,7 +45,7 @@ router.get('/loja', [PublicsController, 'shop']).as('web.shop')
 router.get('/blog', [PublicsController, 'blog']).as('web.blog')
 router.get('/blog/:id', [PublicsController, 'showBlogPost']).as('web.showBlogPost')
 router.get('/loja/:id', [PublicsController, 'show']).as('web.show')
-router.on('/perfil').render('pages/public/profile').as('web.profile').use(middleware.auth())
+router.get('/perfil', [PublicsController, 'profile']).as('web.profile').use(middleware.auth())
 
 // Paginas de Autenticação
 router.on('/entrar').render('pages/public/auth/login').as('auth.login.view').use(middleware.guest())

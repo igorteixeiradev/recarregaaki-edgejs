@@ -1,0 +1,11 @@
+<input name=" {{name}} " class="cursor-pointer bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-full focus:ring-brand focus:border-brand block w-full shadow-xs placeholder:text-body" id=" {{name}} " type="file">
+  
+  
+  @inputError(name)
+    
+    @each(message in $messages)
+      <p class="mt-2.5 text-sm text-red-400 dark:text-red-500"><span class="font-medium">{{ message}}</p>
+    @end
+    
+  @end
+  

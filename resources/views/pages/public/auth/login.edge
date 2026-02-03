@@ -1,18 +1,18 @@
 @layout.app({ title: "Entrar" })
 @slot('meta')
-<meta name="description" content="Bem-vindo à Recarregaaki, a sua plataforma de recargas digitais em Angola." />
+  <meta name="description" content="Bem-vindo à Recarregaaki, a sua plataforma de recargas digitais em Angola." />
 @endslot
 
 @slot('main')
-
-<div className="flex min-h-screen w-full">
-  <section>
-    <div class="flex flex-col items-center justify-center min-h-screen px-6 py-8 mx-auto">
-      <a href="{{route("web.home")}}"
+  
+  <div className="flex min-h-screen w-full">
+    <section>
+      <div class="flex flex-col items-center justify-center min-h-screen px-6 py-8 mx-auto">
+        <a href="{{route("web.home")}}"
         class="flex items-center mb-6 text-2xl font-semibold bg-linear-to-r from-violet-500 via-[#9938CA] to-[#E0724A] bg-clip-text text-transparent">
         Recarregaaki
-      </a>
-      <div
+        </a>
+        <div
         class="w-full bg-white rounded-lg shadow dark:border md:mt-0 sm:max-w-md xl:p-0 dark:bg-gray-800 dark:border-gray-700">
         <div class="p-6 space-y-4 md:space-y-6 sm:p-8">
           <h1 class="text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl dark:text-white">
@@ -28,23 +28,24 @@
               @!component('components/label', { text: 'Palavra-passe',name:"password" })
               @!component('components/input', { placeholder: '••••••••',name:"password", type:"password" })
             </div>
-
+            
             <div class="flex items-end justify-end">
-             
+              
               <a href="{{route("auth.forgot-password.view")}}" class="text-sm font-medium text-gray-600 hover:underline dark:text-gray-500">Esqueceu a
-                palavra-passe?</a>
+              palavra-passe?</a>
             </div>
-            @!component('components/button', { text: 'Entrar',type:"submit" })
+            <button type="submit"
+            class="w-full rounded-full bg-white bg-linear-to-r from-violet-500 via-[#9938CA] to-[#E0724A] px-5 py-3 text-center text-sm font-semibold text-white transition-all duration-200 hover:bg-green-200 hover:opacity-90 active:scale-95 dark:bg-green-900/30 dark:hover:bg-green-800/50">Entrar</button>
             <p class="text-sm font-light text-gray-500 dark:text-gray-400">
               Não tenho uma conta? <a href="{{route("auth.register.view")}}"
-                class="font-medium text-gray-600 hover:underline dark:text-gray-100">Registar-se</a>
+              class="font-medium text-gray-600 hover:underline dark:text-gray-100">Registar-se</a>
             </p>
           </form>
         </div>
       </div>
+  </div>
+    </section>
     </div>
-  </section>
-</div>
-
+    
 @endslot
 @end
