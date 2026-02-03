@@ -24,6 +24,9 @@ export default class Refill extends BaseModel {
   @column()
   declare categoryId: string
 
+  @column()
+  declare otherName: string | null
+
   @column.dateTime({ autoCreate: true })
   declare createdAt: DateTime
 

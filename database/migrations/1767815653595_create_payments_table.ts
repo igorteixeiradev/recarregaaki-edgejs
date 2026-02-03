@@ -12,7 +12,7 @@ export default class extends BaseSchema {
 
       table.enum('status', ['PENDING', 'PAID', 'FAILED', 'CANCELED']).defaultTo('PENDING')
       table.decimal('amount', 8, 2).notNullable()
-      table.string('method')
+      table.string('method').nullable()
       table.string('reference').unique().nullable()
       table.timestamp('paid_at').nullable()
       table.timestamp('created_at')

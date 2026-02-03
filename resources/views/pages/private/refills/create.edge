@@ -12,6 +12,10 @@
           @!component('components/label', { text: 'Nome da recarga',name:"name" })
           @!component('components/input', { placeholder: 'Nome da recarga',name:"name", type:"text" })
         </div>
+        <div>
+          @!component('components/label', { text: 'Outro nome',name:"otherName" })
+          @!component('components/input', { placeholder: 'Outro nome',name:"otherName", type:"text" })
+        </div>
         <div class="items-center">
           @!component('components/label', { text: 'Categoria da recarga',name:"categoryId" })
           <select name="categoryId"
@@ -39,7 +43,7 @@
           <input name="image"
           class="cursor-pointer bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-full focus:ring-brand focus:border-brand block w-full shadow-xs placeholder:text-body"
           aria-describedby="file_input_help" id="file_input" type="file">
-          <p class="mt-1 text-sm text-gray-500 dark:text-gray-300" id="file_input_help">JPG, PNG, JPEG</p>
+          <p class="mt-1 text-sm text-gray-500 dark:text-gray-300" id="file_input_help">JPG, PNG, JPEG, WEBP, SVG</p>
         </div>
       </div>
       @!component('components/label', { text: 'Descrição da recarga',name:"description" })

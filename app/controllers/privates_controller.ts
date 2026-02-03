@@ -15,12 +15,16 @@ export default class PrivatesController {
   async index({ view, request }: HttpContext) {
     const page = request.input('page', 1)
     const limit = request.input('limit', 20)
-    const users = await User.all()
-    const refills = await Refill.all()
-    const packages = await Package.all()
-    const payments = await Payment.findManyPayments(page, limit)
-    const totalAmountPaid = await Payment.totalAmountPaid()
-    const totalAmountPaidThisMonth = await Payment.totalAmountPaid(new Date())
+    const [users, refills, packages, payments, totalAmountPaid, totalAmountPaidThisMonth] =
+      await Promise.all([
+        User.all(),
+        Refill.all(),
+        Package.all(),
+        Payment.findManyPayments(page, limit),
+        Payment.totalAmountPaid(),
+        Payment.totalAmountPaid(new Date()),
+      ])
+
     if (await request.ctx?.bouncer.denies(isAdmin)) {
       return request.ctx?.response.forbidden()
     }

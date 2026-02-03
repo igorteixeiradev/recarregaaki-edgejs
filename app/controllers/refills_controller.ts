@@ -26,7 +26,7 @@ export default class RefillsController {
    * Display form to create a new record
    */
   async create({ view }: HttpContext) {
-    const categories = await Category.findManyCategoriesByActive(true)
+    const categories = await Category.findManyBy('isActive', true)
     return view.render('pages/private/refills/create', { categories })
   }
 

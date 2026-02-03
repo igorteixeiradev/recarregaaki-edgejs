@@ -17,9 +17,11 @@
           <div class="mb-4 grid gap-4 sm:grid-cols-2 sm:gap-8 lg:gap-16">
             <div class="space-y-4">
               <div class="flex space-x-4">
-                <img class="h-16 w-16 rounded-lg" src="/images/avatar.png" alt="Helene avatar" />
+                <img class="h-16 w-16 rounded-lg" src="{{ auth.user.avatarUrl }}" alt="{{ auth.user.fullName }}" />
+                
+                
                 <div>
-                  <span class="mb-5 inline-block rounded bg-green-100 px-2.5 py-0.5 text-xs font-medium text-green-800 dark:bg-green-900 dark:text-green-300">         {{ auth.user.isAdmin ? "Admin" : "Consumidor" }} </span>
+                  <span class="mb-5 inline-block rounded bg-green-500 px-2.5 py-0.5 text-xs font-medium text-green-800 dark:bg-green-900 dark:text-green-300">         {{ auth.user.isAdmin ? "Admin" : "Consumidor" }} </span>
                     <h2 class="flex items-center text-xl font-bold leading-none text-gray-900 dark:text-white sm:text-2xl">{{ auth.user.fullName }}</h2>
                 </div>
               </div>
@@ -35,10 +37,10 @@
                 <dt class="font-semibold text-gray-900 dark:text-white">Estado da Conta</dt>
                   <dd
                   class="mb-5 inline-block rounded px-2.5 py-0.5 text-xs font-medium
-                  {{ !auth.user.isAccountActive
-                  ? 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-300'
-                  : 'bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-300' }}">
-                  {{ !auth.user.isAccountActive ? 'Ativa' : 'Inativa' }}
+                  {{ !auth.user.isBlocked
+                  ? 'bg-green-500 text-green-800 dark:bg-green-900 dark:text-green-300'
+                  : 'bg-red-200 text-red-800 dark:bg-red-900 dark:text-red-300' }}">
+                  {{ !auth.user.isBlocked ? 'Ativa' : 'Inativa' }}
                   </dd>
               </dl>
               <dl>
@@ -52,10 +54,10 @@
                   <dd class="mt-1">
                     <span
                     class="inline-flex items-center rounded-full px-3 py-1 text-xs font-medium
-                    {{ auth.user.verifyEmail
-                    ? 'bg-green-100 text-gray-900 dark:bg-green-900 dark:text-white'
+                    {{ auth.user.isEmailVerified
+                    ? 'bg-green-500 text-gray-900 dark:bg-green-900 dark:text-white'
                     : 'bg-red-200 text-red-700 dark:bg-red-700 dark:text-red-300' }}">
-                    {{ auth.user.verifyEmail ? 'Confirmado' : 'Não confirmado' }}
+                    {{ auth.user.isEmailVerified ? 'Confirmado' : 'Não confirmado' }}
                   </span>
                   </dd>
               </dl>
@@ -64,10 +66,10 @@
                   <dd class="mt-1">
                     <span
                     class="inline-flex items-center rounded-full px-3 py-1 text-xs font-medium
-                    {{ auth.user.verifyPhone
-                    ? 'bg-green-100 text-gray-900 dark:bg-green-900 dark:text-white'
-                    : 'bg-red-200 text-red-700 dark:bg-red-700 dark:text-red-300' }}">
-                    {{ auth.user.verifyPhone ? 'Confirmado' : 'Não confirmado' }}
+                    {{ auth.user.isPhoneVerified
+                    ? 'bg-green-500 text-gray-900 dark:bg-green-900 dark:text-white'
+                    : 'bg-red-300 text-red-700 dark:bg-red-700 dark:text-red-300' }}">
+                    {{ auth.user.isPhoneVerified ? 'Confirmado' : 'Não confirmado' }}
                     </span>
                   </dd>
               </dl>

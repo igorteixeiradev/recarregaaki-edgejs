@@ -11,12 +11,11 @@ export default class PackagesController {
   async index({ view, params, request }: HttpContext) {
     const page = request.input('page', 1)
     const limit = request.input('limit', 20)
-    const packages = await Package.findManyPackagesByRefillIdAndPagenation(
-      params.refillId,
-      page,
-      limit
-    )
-    const refill = await Refill.findByOrFail('id', params.refillId)
+    const [packages, refill] = await Promise.all([
+      Package.findManyPackagesByRefillIdAndPagenation(params.refillId, page, limit),
+      Refill.findByOrFail('id', params.refillId),
+    ])
+
     if (await request.ctx?.bouncer.denies(isAdmin)) {
       return request.ctx?.response.forbidden()
     }

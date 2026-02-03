@@ -7,9 +7,9 @@ export default class extends BaseSchema {
     this.schema.createTable(this.tableName, (table) => {
       table.uuid('id').primary()
       table.uuid('user_id').unsigned().references('id').inTable('users').onDelete('CASCADE')
-      table.string('title', 255).notNullable()
-      table.text('content').notNullable()
-      table.text('image').nullable()
+      table.string('title', 254).notNullable()
+      table.text('content').nullable()
+      table.string('image', 500).notNullable().defaultTo('images/not-content-image.png')
       table.boolean('is_published').defaultTo(false)
       table.timestamp('created_at')
       table.timestamp('updated_at')

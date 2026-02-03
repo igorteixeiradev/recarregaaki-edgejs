@@ -4,7 +4,6 @@ import { PostService } from '#services/post_service'
 import { createPostValidator, updatePostValidator } from '#validators/post'
 import { inject } from '@adonisjs/core'
 import type { HttpContext } from '@adonisjs/core/http'
-import { console } from 'node:inspector/promises'
 
 @inject()
 export default class PostsController {
@@ -35,7 +34,6 @@ export default class PostsController {
    */
   async store({ request, auth }: HttpContext) {
     const payload = await request.validateUsing(createPostValidator)
-    console.log(payload)
     if (await request.ctx?.bouncer.denies(isAdmin)) {
       return request.ctx?.response.forbidden()
     }

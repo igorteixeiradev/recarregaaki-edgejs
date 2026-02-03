@@ -81,7 +81,7 @@ router
   })
   .use(middleware.auth())
   .as('auth.logout')
-
+router.get('/verificar-email', [AuthController, 'verifyEmail']).as('auth.verifyEmail')
 // Rotas Privadas
 router
   .group(() => {

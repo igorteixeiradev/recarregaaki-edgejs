@@ -11,10 +11,7 @@ export const createUserValidator = vine.compile(
       .string()
       .trim()
       .email()
-      .unique(async (db, value) => {
-        const user = await db.from('users').where('email', value).first()
-        return !user
-      })
+      .unique({ table: 'users', column: 'email' })
       .normalizeEmail(),
     password: vine.string().trim().minLength(8).maxLength(32),
     passwordConfirmation: vine.string().trim().minLength(8).maxLength(32).sameAs('password'),
@@ -22,9 +19,9 @@ export const createUserValidator = vine.compile(
     isAdmin: vine.boolean().optional(),
     phoneCode: vine.string().optional(),
     phoneNumber: vine.string().optional(),
-    verifyEmail: vine.boolean().optional(),
-    verifyPhoneNumber: vine.boolean().optional(),
-    isBlock: vine.boolean().optional(),
+    isEmailVerified: vine.boolean().optional(),
+    isPhoneVerified: vine.boolean().optional(),
+    isBlocked: vine.boolean().optional(),
   })
 )
 
@@ -38,13 +35,7 @@ export const updateUserValidator = vine.compile(
       .string()
       .trim()
       .email()
-      .exists(async (db, value) => {
-        if (value) {
-          const user = await db.from('users').where('email', value).first()
-          return !!user
-        }
-        return true
-      })
+      .exists({ table: 'users', column: 'email' })
       .normalizeEmail()
       .optional(),
     avatarUrl: vine.string().url().optional(),
@@ -52,9 +43,9 @@ export const updateUserValidator = vine.compile(
     password: vine.string().trim().minLength(8).maxLength(32),
     phoneCode: vine.string().startsWith('+').optional(),
     phoneNumber: vine.string().optional(),
-    verifyEmail: vine.boolean().optional(),
-    verifyPhoneNumber: vine.boolean().optional(),
-    isBlock: vine.boolean().optional(),
+    isEmailVerified: vine.boolean().optional(),
+    isPhoneVerified: vine.boolean().optional(),
+    isBlocked: vine.boolean().optional(),
   })
 )
 

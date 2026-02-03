@@ -23,6 +23,9 @@ export default class Package extends BaseModel {
   @column()
   declare refillId: string
 
+  @column()
+  declare otherName: string | null
+
   @belongsTo(() => Refill)
   declare refill: BelongsTo<typeof Refill>
 

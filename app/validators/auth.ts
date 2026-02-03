@@ -7,12 +7,10 @@ import { Infer } from '@vinejs/vine/types'
 
 export const createEmailAndPasswordValidator = vine.compile(
   vine.object({
-    email: vine.string().trim().email(),
+    email: vine.string().trim().email().maxLength(254).normalizeEmail(),
     password: vine.string().trim().minLength(8).maxLength(32),
   })
 )
-
-export type CreateEmailAndPasswordPayload = Infer<typeof createEmailAndPasswordValidator>
 
 /**
  * Validates the email creation action
@@ -20,11 +18,14 @@ export type CreateEmailAndPasswordPayload = Infer<typeof createEmailAndPasswordV
 
 export const createEmailValidator = vine.compile(
   vine.object({
-    email: vine.string().trim().email(),
+    email: vine
+      .string()
+      .trim()
+      .email()
+      .normalizeEmail()
+      .exists({ table: 'users', column: 'email' }),
   })
 )
-
-export type CreateEmailPayload = Infer<typeof createEmailValidator>
 
 /**
  * Validates the password creation action
@@ -32,10 +33,12 @@ export type CreateEmailPayload = Infer<typeof createEmailValidator>
 
 export const createPasswordValidator = vine.compile(
   vine.object({
-    token: vine.string().trim().minLength(2).maxLength(100),
+    token: vine.string().trim().minLength(1).maxLength(100),
     password: vine.string().trim().minLength(8).maxLength(32),
     passwordConfirmation: vine.string().trim().minLength(8).maxLength(32).sameAs('password'),
   })
 )
 
 export type CreatePasswordPayload = Infer<typeof createPasswordValidator>
+export type CreateEmailAndPasswordPayload = Infer<typeof createEmailAndPasswordValidator>
+export type CreateEmailPayload = Infer<typeof createEmailValidator>
