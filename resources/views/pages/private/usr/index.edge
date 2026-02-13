@@ -24,7 +24,9 @@
             <th scope="col" class="px-6 py-3 font-medium">
               Estado da conta
             </th>
-            
+            <th scope="col" class="px-6 py-3 font-medium">
+              Estado do email
+            </th>
             <th scope="col" class="px-6 py-3 font-medium">
               Acção
             </th>
@@ -52,6 +54,14 @@
                     <span class="bg-success-soft text-fg-success-strong text-xs font-medium px-1.5 py-0.5 rounded">Activa</span>
                       @else
                     <span class="bg-warning-soft text-fg-warning text-xs font-medium px-1.5 py-0.5 rounded">Bloqueada</span>
+                  @end
+                </td>
+
+                <td class="px-6 py-4">
+                  @if(user.isEmailVerified)
+                  <span class="bg-success-soft text-fg-success-strong text-xs font-medium px-1.5 py-0.5 rounded">Verificado</span>
+                  @else
+                  <span class="bg-warning-soft text-fg-warning text-xs font-medium px-1.5 py-0.5 rounded">Não verificado</span>
                   @end
                 </td>
                 

@@ -37,7 +37,8 @@ export default class AuthController {
    * Handle form submission for the create new user action
    */
   async store({ request, response }: HttpContext) {
-    const { passwordConfirmation, ...rest } = await request.validateUsing(createUserValidator)
+    const { passwordConfirmation, isAdmin, ...rest } =
+      await request.validateUsing(createUserValidator)
     const svg = multiavatar(rest.fullName)
     const avatarUrl = `data:image/svg+xml;base64,${Buffer.from(svg).toString('base64')}`
     await User.create({ ...rest, isAdmin: false, avatarUrl })
@@ -75,6 +76,9 @@ export default class AuthController {
     return response.redirect().toRoute('auth.login.view')
   }
 
+  /**
+   * Handle form submission for the verify email action
+   */
   async verifyEmail({ request, response }: HttpContext) {
     const token = request.input('token')
 

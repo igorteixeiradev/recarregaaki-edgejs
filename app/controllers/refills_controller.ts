@@ -65,7 +65,7 @@ export default class RefillsController {
    * Edit individual record
    */
   async edit({ params, view, request }: HttpContext) {
-    const categories = await Category.findManyCategoriesByActive(true)
+    const categories = await Category.findManyBy('isActive', true)
     const refill = await Refill.findByOrFail('id', params.id)
     if (await request.ctx?.bouncer.denies(isAdmin)) {
       return request.ctx?.response.forbidden()
