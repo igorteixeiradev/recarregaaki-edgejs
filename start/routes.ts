@@ -12,6 +12,7 @@ import { middleware } from '#start/kernel'
 import app from '@adonisjs/core/services/app'
 import { sep, normalize } from 'node:path'
 import env from './env.js'
+import SendEmailVerification from '#jobs/send_email_verification'
 const AuthController = () => import('#controllers/auth_controller')
 const PrivatesController = () => import('#controllers/privates_controller')
 const PublicsController = () => import('#controllers/publics_controller')
@@ -81,7 +82,7 @@ router
   })
   .use(middleware.auth())
   .as('auth.logout')
-router.get('/verificar-email', [AuthController, 'verifyEmail']).as('auth.verifyEmail')
+
 // Rotas Privadas
 router
   .group(() => {
@@ -96,6 +97,24 @@ router
   })
   .prefix('dashboard')
   .use(middleware.auth())
+
+// Eventos
+router
+  .get('/reenviar-email-verificacao', async ({ request, auth }) => {
+    await SendEmailVerification.dispatch(
+      { email: auth.getUserOrFail().email },
+      { queueName: 'mail' }
+    )
+    request.ctx?.session.flash('notification', {
+      type: 'success',
+      message: 'Verifique a sua caixa do email e clique no link para confirmar o email.',
+    })
+    request.ctx?.response.redirect().toRoute('web.profile')
+  })
+  .use(middleware.auth())
+  .as('auth.resendVerificationEmail')
+
+router.get('/verificar-email', [AuthController, 'verifyEmail']).as('auth.verifyEmail')
 
 if (env.get('NODE_ENV') === 'development') {
   router.jobs('/my-jobs-dashboard')

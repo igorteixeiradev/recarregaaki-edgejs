@@ -1,5 +1,6 @@
 import { isAdmin } from '#abilities/main'
 import Package from '#models/package'
+import Refill from '#models/refill'
 import { createPackageValidator, updatePackageValidator } from '#validators/package'
 import type { HttpContext } from '@adonisjs/core/http'
 
@@ -11,18 +12,25 @@ export default class PackagesController {
     const page = request.input('page', 1)
     const limit = request.input('limit', 20)
 
-    const packages = await Package.query()
-      .orderBy('createdAt', 'desc')
-      .where('refillId', params.refillId)
-      .preload('refill')
-      .paginate(page, limit)
-    packages.baseUrl(`/dashboard/${packages[0].refillId}/pacotes`)
+    const [packages, refill] = await Promise.all([
+      (async () => {
+        const p = await Package.query()
+          .orderBy('createdAt', 'desc')
+          .where('refillId', params.refillId)
+          .preload('refill')
+          .paginate(page, limit)
+        p.baseUrl(`/dashboard/${params.refillId}/pacotes`)
+        return p
+      })(),
+      Refill.findOrFail(params.refillId),
+    ])
 
     if (await request.ctx?.bouncer.denies(isAdmin)) {
       return request.ctx?.response.forbidden()
     }
     return view.render('pages/private/packages/index', {
       packages,
+      refill,
     })
   }
 

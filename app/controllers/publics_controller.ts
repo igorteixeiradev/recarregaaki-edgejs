@@ -29,7 +29,11 @@ export default class PublicsController {
     for (let i = 0; i < comments.length; i += 2) {
       slides.push(comments.slice(i, i + 2))
     }
-    const refills = await Refill.query().has('packages').where('isActive', true).preload('category')
+    const refills = await Refill.query()
+      .has('packages')
+      .where('isActive', true)
+      .orderBy('createdAt', 'desc')
+      .preload('category')
 
     return view.render('pages/public/home', { refills, slides })
   }

@@ -1,110 +1,111 @@
 @layout.app({ title: "Dashboard" })
 @slot('main')
-  @sidebar()
-  @slot('content')
-    <div class="flex items-center justify-between mb-5 py-4">
-      <h2 class="text-2xl font-semibold lg:text-4xl dark:text-white">Pacotes {{ packages[0].refill.name }}</h2>
-        <a href="{{route("packages.create",{refillId:packages[0].refillId})}}"
-        class="text-blue-600 dark:text-blue-500 font-medium hover:underline">
-        Adicionar novo pacote
-        </a>
-    </div>
-    <div class="relative overflow-x-auto bg-neutral-primary-soft shadow-xs rounded-base border border-default whitespace-nowrap">
-      <table class="w-full text-sm text-left rtl:text-right text-body">
-        <thead class="bg-neutral-secondary-soft border-b border-default">
-          <tr>
-            <th scope="col" class="px-6 py-3 font-medium">
-              Nome
-            </th>
-            <th scope="col" class="px-6 py-3 font-medium">
-              Recarga
-            </th>
-            <th scope="col" class="px-6 py-3 font-medium">
-              Oferta Especial
-            </th>
-            <th scope="col" class="px-6 py-3 font-medium">
-              Estado
-            </th>
-            
-            <th scope="col" class="px-6 py-3 font-medium ">
-              Acção
-            </th>
-          </tr>
-        </thead>
-        <tbody>
-          @if(packages.length > 0)
-            @each(package in packages)
-              <tr class="odd:bg-neutral-primary even:bg-neutral-secondary-soft border-b border-default">
-                <th scope="row" class="px-6 py-4 font-medium text-heading whitespace-nowrap">
-                  {{ package.name }}
-                </th>
-                <td class="px-6 py-4">
-                  {{ package.refill.name }}
-                </td>
-                <td class="px-6 py-4">
-                  @if(package.isSpecialOffer)
-                    <span class="bg-success-soft text-fg-success-strong text-xs font-medium px-1.5 py-0.5 rounded">Sim</span>
-                      @else
-                    <span class="bg-warning-soft text-fg-warning text-xs font-medium px-1.5 py-0.5 rounded">Não</span>
-                  @end
-                </td>
-                <td class="px-6 py-4">
-                  @if(package.isActive)
-                    <span class="bg-success-soft text-fg-success-strong text-xs font-medium px-1.5 py-0.5 rounded">Activo</span>
-                      @else
-                    <span class="bg-warning-soft text-fg-warning text-xs font-medium px-1.5 py-0.5 rounded">Inactivo</span>
-                  @end
-                </td>
-                
-                
-                
-                <td class="px-6 py-4">
-                  <div class="flex items-center gap-5">
-                    <a href="{{ route('packages.edit', { id: package.id,refillId:package.refillId }) }}"
-                    class="font-medium text-green-700 hover:underline">Editar</a>
-                    @!component('components/modal', {
-                    url: 'packages.destroy',
-                    id: package.id,
-                    extraId:package.refillId,
-                    name:package.name
-                    })
-                  </div>
-                </td>
-              </tr>
-            @end
-            @else
-            <tr class="odd:bg-neutral-primary even:bg-neutral-secondary-soft border-b border-default">
-              
-              <th colspan="5" scope="row" scope="row"
-              class="px-6 py-4 font-medium text-heading whitespace-nowrap text-center text-xl">
-                    <span>Nenhum dado encontrado</span>
-                      </th>
-            </tr>
+@sidebar()
+@slot('content')
+<div class="flex items-center justify-between mb-5 py-4">
+  <h2 class="text-2xl font-semibold lg:text-4xl dark:text-white">Pacotes {{ refill.name}}</h2>
+  <a href="{{route("packages.create",{refillId:refill.id})}}"
+    class="text-blue-600 dark:text-blue-500 font-medium hover:underline">
+    Adicionar novo pacote
+  </a>
+</div>
+<div
+  class="relative overflow-x-auto bg-neutral-primary-soft shadow-xs rounded-base border border-default whitespace-nowrap">
+  <table class="w-full text-sm text-left rtl:text-right text-body">
+    <thead class="bg-neutral-secondary-soft border-b border-default">
+      <tr>
+        <th scope="col" class="px-6 py-3 font-medium">
+          Nome
+        </th>
+        <th scope="col" class="px-6 py-3 font-medium">
+          Recarga
+        </th>
+        <th scope="col" class="px-6 py-3 font-medium">
+          Oferta Especial
+        </th>
+        <th scope="col" class="px-6 py-3 font-medium">
+          Estado
+        </th>
+
+        <th scope="col" class="px-6 py-3 font-medium ">
+          Acção
+        </th>
+      </tr>
+    </thead>
+    <tbody>
+      @if(packages.length > 0)
+      @each(package in packages)
+      <tr class="odd:bg-neutral-primary even:bg-neutral-secondary-soft border-b border-default">
+        <th scope="row" class="px-6 py-4 font-medium text-heading whitespace-nowrap">
+          {{ package.name }}
+        </th>
+        <td class="px-6 py-4">
+          {{ package.refill.name }}
+        </td>
+        <td class="px-6 py-4">
+          @if(package.isSpecialOffer)
+          <span class="bg-success-soft text-fg-success-strong text-xs font-medium px-1.5 py-0.5 rounded">Sim</span>
+          @else
+          <span class="bg-warning-soft text-fg-warning text-xs font-medium px-1.5 py-0.5 rounded">Não</span>
           @end
-        </tbody>
-      </table>
-    </div>
-    
-    <div class="mt-5">
-      @each(anchor in packages.getUrlsForRange(1, packages.lastPage))
-        <nav aria-label="Page navigation example" class="flex items-center space-x-4">
-          <ul class="flex -space-x-px text-sm">
-            
-            <li>
-              <a href="{{ anchor.url }}"
-              class="flex items-center  rounded-full justify-center text-body bg-neutral-secondary-medium border border-default-medium hover:bg-neutral-tertiary-medium hover:text-heading shadow-xs font-medium leading-5 text-sm w-9 h-9 focus:outline-none">{{
-              anchor.page }}</a>
-            </li>
-            
-            
-          </ul>
-          
-        </nav>
-        
-      @endeach
-    </div>
-    
-  @end
+        </td>
+        <td class="px-6 py-4">
+          @if(package.isActive)
+          <span class="bg-success-soft text-fg-success-strong text-xs font-medium px-1.5 py-0.5 rounded">Activo</span>
+          @else
+          <span class="bg-warning-soft text-fg-warning text-xs font-medium px-1.5 py-0.5 rounded">Inactivo</span>
+          @end
+        </td>
+
+
+
+        <td class="px-6 py-4">
+          <div class="flex items-center gap-5">
+            <a href="{{ route('packages.edit', { id: package.id,refillId:package.refillId }) }}"
+              class="font-medium text-green-700 hover:underline">Editar</a>
+            @!component('components/modal', {
+            url: 'packages.destroy',
+            id: package.id,
+            extraId:refill.id,
+            name:package.name
+            })
+          </div>
+        </td>
+      </tr>
+      @end
+      @else
+      <tr class="odd:bg-neutral-primary even:bg-neutral-secondary-soft border-b border-default">
+
+        <th colspan="5" scope="row" scope="row"
+          class="px-6 py-4 font-medium text-heading whitespace-nowrap text-center text-xl">
+          <span>Nenhum dado encontrado</span>
+        </th>
+      </tr>
+      @end
+    </tbody>
+  </table>
+</div>
+
+<div class="mt-5">
+  @each(anchor in packages.getUrlsForRange(1, packages.lastPage))
+  <nav aria-label="Page navigation example" class="flex items-center space-x-4">
+    <ul class="flex -space-x-px text-sm">
+
+      <li>
+        <a href="{{ anchor.url }}"
+          class="flex items-center  rounded-full justify-center text-body bg-neutral-secondary-medium border border-default-medium hover:bg-neutral-tertiary-medium hover:text-heading shadow-xs font-medium leading-5 text-sm w-9 h-9 focus:outline-none">{{
+          anchor.page }}</a>
+      </li>
+
+
+    </ul>
+
+  </nav>
+
+  @endeach
+</div>
+
+@end
 @end
 
 @end

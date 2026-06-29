@@ -1,180 +1,192 @@
 @layout.app({ title: "Perfil" })
-@slot('meta')
-  <meta name="description" content="Bem-vindo à Recarregaaki, a sua plataforma de recargas digitais em Angola.">
-@endslot
+
 
 @slot('main')
-  @include('partials/navbar')
-  <div class="my-20 max-w-7xl  mx-auto lg:px-0 px-4">
-    <section class=" antialiased dark:bg-gray-900">
-      <div class="mx-auto   2xl:px-0">
-        
-        <h2 class="mb-4 text-start text-4xl leading-none font-extrabold tracking-tight text-gray-900 md:text-5xl lg:text-5xl dark:text-white">
-          Visão geral
-        </h2>
-        
-        <div class="py-4 md:py-8">
-          <div class="mb-4 grid gap-4 sm:grid-cols-2 sm:gap-8 lg:gap-16">
-            <div class="space-y-4">
-              <div class="flex space-x-4">
-                <img class="h-16 w-16 rounded-lg" src="{{ auth.user.avatarUrl }}" alt="{{ auth.user.fullName }}" />
-                
-                
-                <div>
-                  <span class="mb-5 inline-block rounded bg-green-500 px-2.5 py-0.5 text-xs font-medium text-green-800 dark:bg-green-900 dark:text-green-300">         {{ auth.user.isAdmin ? "Admin" : "Consumidor" }} </span>
-                    <h2 class="flex items-center text-xl font-bold leading-none text-gray-900 dark:text-white sm:text-2xl">{{ auth.user.fullName }}</h2>
-                </div>
+@include('partials/navbar')
+<div class="my-20 max-w-7xl  mx-auto lg:px-0 px-4">
+  <section class=" antialiased dark:bg-gray-900">
+    <div class="mx-auto   2xl:px-0">
+
+      <h2
+        class="mb-4 text-start text-4xl leading-none font-extrabold tracking-tight text-gray-900 md:text-5xl lg:text-5xl dark:text-white">
+        Visão geral
+      </h2>
+
+      <div class="py-4 md:py-8">
+        <div class="mb-4 grid gap-4 sm:grid-cols-2 sm:gap-8 lg:gap-16">
+          <div class="space-y-4">
+            <div class="flex space-x-4">
+              <img class="h-16 w-16 rounded-lg" src="{{ auth.user.avatarUrl }}" alt="{{ auth.user.fullName }}" />
+
+
+              <div>
+                <span
+                  class="mb-5 inline-block rounded bg-green-500 px-2.5 py-0.5 text-xs font-medium text-green-800 dark:bg-green-900 dark:text-green-300">
+                  {{ auth.user.isAdmin ? "Admin" : "Consumidor" }} </span>
+                <h2 class="flex items-center text-xl font-bold leading-none text-gray-900 dark:text-white sm:text-2xl">
+                  {{ auth.user.fullName }}</h2>
               </div>
-              <dl class="">
-                <dt class="font-semibold text-gray-900 dark:text-white">Endereço de Email</dt>
-                  <dd class="text-gray-500 dark:text-gray-400">        {{ auth.user.email }}</dd>
-              </dl>
-              <dl>
-                <dt class="font-semibold text-gray-900 dark:text-white">Número de Telefone</dt>
-                  <dd class="text-gray-500 dark:text-gray-400">{{ auth.user.phoneCode }} {{ auth.user.phoneNumber || "S/N°" }}</dd>
-              </dl>
-              <dl>
-                <dt class="font-semibold text-gray-900 dark:text-white">Estado da Conta</dt>
-                  <dd
-                  class="mb-5 inline-block rounded px-2.5 py-0.5 text-xs font-medium
+            </div>
+            <dl class="">
+              <dt class="font-semibold text-gray-900 dark:text-white">Endereço de email</dt>
+              <dd class="text-gray-500 dark:text-gray-400"> {{ auth.user.email }}</dd>
+            </dl>
+            <dl>
+              <dt class="font-semibold text-gray-900 dark:text-white">Número de telefone</dt>
+              <dd class="text-gray-500 dark:text-gray-400">{{ auth.user.phoneCode }} {{ auth.user.phoneNumber || "S/N°"
+                }}</dd>
+            </dl>
+            <dl>
+              <dt class="font-semibold text-gray-900 dark:text-white">Estado da conta</dt>
+              <dd class="mb-5 inline-block rounded px-2.5 py-0.5 text-xs font-medium
                   {{ !auth.user.isBlocked
                   ? 'bg-green-500 text-green-800 dark:bg-green-900 dark:text-green-300'
                   : 'bg-red-200 text-red-800 dark:bg-red-900 dark:text-red-300' }}">
-                  {{ !auth.user.isBlocked ? 'Ativa' : 'Inativa' }}
-                  </dd>
-              </dl>
-              <dl>
-                <dt class="font-semibold text-gray-900 dark:text-white">Data de Criação da Conta</dt>
-                  <dd class="text-gray-500 dark:text-gray-400">{{ auth.user.createdAt.toFormat('dd/MM/yyyy HH:mm') }} </dd>
-              </dl>
-            </div>
-            <div class="space-y-4">
-              <dl>
-                <dt class="font-semibold text-gray-900 dark:text-white">Estado do Email</dt>
-                  <dd class="mt-1">
-                    <span
-                    class="inline-flex items-center rounded-full px-3 py-1 text-xs font-medium
-                    {{ auth.user.isEmailVerified
-                    ? 'bg-green-500 text-gray-900 dark:bg-green-900 dark:text-white'
-                    : 'bg-red-200 text-red-700 dark:bg-red-700 dark:text-red-300' }}">
-                    {{ auth.user.isEmailVerified ? 'Confirmado' : 'Não confirmado' }}
-                  </span>
-                  </dd>
-              </dl>
-              <dl>
-                <dt class="font-semibold text-gray-900 dark:text-white">Estado do Número de Telefone</dt>
-                  <dd class="mt-1">
-                    <span
-                    class="inline-flex items-center rounded-full px-3 py-1 text-xs font-medium
-                    {{ auth.user.isPhoneVerified
-                    ? 'bg-green-500 text-gray-900 dark:bg-green-900 dark:text-white'
-                    : 'bg-red-300 text-red-700 dark:bg-red-700 dark:text-red-300' }}">
-                    {{ auth.user.isPhoneVerified ? 'Confirmado' : 'Não confirmado' }}
-                    </span>
-                  </dd>
-              </dl>
-            </div>
+                {{ !auth.user.isBlocked ? 'Ativa' : 'Inativa' }}
+              </dd>
+            </dl>
+            <dl>
+              <dt class="font-semibold text-gray-900 dark:text-white">Data de criação da conta</dt>
+              <dd class="text-gray-500 dark:text-gray-400">{{ auth.user.createdAt.toFormat('dd/MM/yyyy HH:mm') }} </dd>
+            </dl>
           </div>
-          <button type="button" data-modal-target="accountInformationModal2" data-modal-toggle="accountInformationModal2" class="w-full rounded-full bg-white bg-linear-to-r from-violet-500 via-[#9938CA] to-[#E0724A] px-5 py-3 text-center text-sm font-semibold text-white transition-all duration-200 hover:bg-green-200 hover:opacity-90 active:scale-95 sm:w-auto dark:bg-green-900/30 dark:hover:bg-green-800/50">
-            
-            Editar dados da conta
-          </button>
+          <div class="space-y-4">
+            <dl>
+              <dt class="font-semibold text-gray-900 dark:text-white">Estado do email</dt>
+              <dd class="mt-1">
+                @if(auth.user.isEmailVerified)
+                <span
+                  class="bg-success-soft text-fg-success-strong text-xs font-medium px-1.5 py-0.5 rounded">Verificado</span>
+                @else
+                <span class="bg-warning-soft text-fg-warning text-xs font-medium px-1.5 py-0.5 rounded">Não
+                  verificado</span>
+                @end
+                @if(!auth.user.isEmailVerified)
+                <a href="{{route('auth.resendVerificationEmail')}}"
+                  class="ml-2 text-sm text-blue-600 hover:underline dark:text-blue-500">Reenviar
+                  verificação</a>
+                @end
+              </dd>
+
+
+            </dl>
+            <dl>
+              <dt class="font-semibold text-gray-900 dark:text-white">Estado do número de telefone</dt>
+              <dd class="mt-1">
+
+                @if(auth.user.isPhoneVerified)
+                <span
+                  class="bg-success-soft text-fg-success-strong text-xs font-medium px-1.5 py-0.5 rounded">Verificado</span>
+                @else
+                <span class="bg-warning-soft text-fg-warning text-xs font-medium px-1.5 py-0.5 rounded">Não
+                  verificado</span>
+                @end
+              </dd>
+            </dl>
+          </div>
         </div>
-        <div class="rounded-lg border border-gray-200 bg-gray-50 p-4 dark:border-gray-700 dark:bg-gray-800 md:p-8">
-          <h3 class="mb-4 text-xl font-semibold text-gray-900 dark:text-white">Últimas compras</h3>
-            @if(payments.length > 0)
-              @each(payment in payments)
-                <div class="flex flex-wrap items-center gap-y-4 border-b border-gray-200 py-4 md:py-5">
-                  <!-- ID -->
-                  <dl class="w-1/2 sm:w-48">
-                <dt class="text-base font-medium text-gray-500 dark:text-gray-400">ID:</dt>
-                  <dd class="mt-1.5 text-base font-semibold text-gray-900 dark:text-white">
-                    <a href="#" class="hover:underline">#{{ payment.id }}</a>
-                  </dd>
-                  </dl>
-                  
-                  <!-- Data -->
-                  <dl class="w-1/2 sm:w-1/4 md:flex-1 lg:w-auto">
-                <dt class="text-base font-medium text-gray-500 dark:text-gray-400">Data:</dt>
-                  <dd class="mt-1.5 text-base font-semibold text-gray-900 dark:text-white">{{ payment.paidAt ? payment.paidAt.toFormat('dd.MM.yyyy') : '-' }}</dd>
-                  </dl>
-                  
-                  <!-- Preço -->
-                  <dl class="w-1/2 sm:w-1/5 md:flex-1 lg:w-auto">
-                <dt class="text-base font-medium text-gray-500 dark:text-gray-400">Preço:</dt>
-                  <dd class="mt-1.5 text-base font-semibold text-gray-900 dark:text-white">${{ payment.amount }}</dd>
-                  </dl>
-                  
-                  <!-- Estado -->
-                  <dl class="w-1/2 sm:w-1/4 sm:flex-1 lg:w-auto">
-                <dt class="text-base font-medium text-gray-500 dark:text-gray-400">Estado:</dt>
-                  <dd class="mt-1.5 inline-flex items-center rounded px-2.5 py-0.5 text-xs font-medium
+        <button type="button" data-modal-target="accountInformationModal2" data-modal-toggle="accountInformationModal2"
+          class="w-full rounded-full bg-white bg-linear-to-r from-violet-500 via-[#9938CA] to-[#E0724A] px-5 py-3 text-center text-sm font-semibold text-white transition-all duration-200 hover:bg-green-200 hover:opacity-90 active:scale-95 sm:w-auto dark:bg-green-900/30 dark:hover:bg-green-800/50">
+
+          Editar dados da conta
+        </button>
+      </div>
+      <div class="rounded-lg border border-gray-200 bg-gray-50 p-4 dark:border-gray-700 dark:bg-gray-800 md:p-8">
+        <h3 class="mb-4 text-xl font-semibold text-gray-900 dark:text-white">Últimas compras</h3>
+        @if(payments.length > 0)
+        @each(payment in payments)
+        <div class="flex flex-wrap items-center gap-y-4 border-b border-gray-200 py-4 md:py-5">
+          <!-- ID -->
+          <dl class="w-1/2 sm:w-48">
+            <dt class="text-base font-medium text-gray-500 dark:text-gray-400">ID:</dt>
+            <dd class="mt-1.5 text-base font-semibold text-gray-900 dark:text-white">
+              <a href="#" class="hover:underline">#{{ payment.id }}</a>
+            </dd>
+          </dl>
+
+          <!-- Data -->
+          <dl class="w-1/2 sm:w-1/4 md:flex-1 lg:w-auto">
+            <dt class="text-base font-medium text-gray-500 dark:text-gray-400">Data:</dt>
+            <dd class="mt-1.5 text-base font-semibold text-gray-900 dark:text-white">{{ payment.paidAt ?
+              payment.paidAt.toFormat('dd.MM.yyyy') : '-' }}</dd>
+          </dl>
+
+          <!-- Preço -->
+          <dl class="w-1/2 sm:w-1/5 md:flex-1 lg:w-auto">
+            <dt class="text-base font-medium text-gray-500 dark:text-gray-400">Preço:</dt>
+            <dd class="mt-1.5 text-base font-semibold text-gray-900 dark:text-white">${{ payment.amount }}</dd>
+          </dl>
+
+          <!-- Estado -->
+          <dl class="w-1/2 sm:w-1/4 sm:flex-1 lg:w-auto">
+            <dt class="text-base font-medium text-gray-500 dark:text-gray-400">Estado:</dt>
+            <dd class="mt-1.5 inline-flex items-center rounded px-2.5 py-0.5 text-xs font-medium
                   {{ payment.status === 'PAID' ? 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-300' :
                   payment.status === 'PENDING' ? 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-300' :
                   payment.status === 'CANCELED' ? 'bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-300' :
                   'bg-gray-100 text-gray-800 dark:bg-gray-900 dark:text-gray-300'
                   }}">
-                  
-                  @if(payment.status === 'PAID')
-                    <svg class="me-1 h-3 w-3" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                      <path stroke-linecap="round" stroke-linejoin="round" d="M5 11.917 9.724 16.5 19 7.5"></path>
-                    </svg>
-                    Completed
-                    @elseif(payment.status === 'PENDING')
-                    <svg class="me-1 h-3 w-3" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                      <path stroke-linecap="round" stroke-linejoin="round" d="M13 7h6l2 4m-8-4v8"></path>
-                    </svg>
-                    In transit
-                    @elseif(payment.status === 'CANCELED')
-                    <svg class="me-1 h-3 w-3" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                      <path stroke-linecap="round" stroke-linejoin="round" d="M6 18 17.94 6M18 18 6.06 6"></path>
-                    </svg>
-                    Cancelled
-                    @else
-                    Unknown
-                  @endif
-                  </dd>
-                  </dl>
-                  
-                  
-                </div>
-              @endeach
+
+              @if(payment.status === 'PAID')
+              <svg class="me-1 h-3 w-3" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M5 11.917 9.724 16.5 19 7.5"></path>
+              </svg>
+              Completed
+              @elseif(payment.status === 'PENDING')
+              <svg class="me-1 h-3 w-3" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M13 7h6l2 4m-8-4v8"></path>
+              </svg>
+              In transit
+              @elseif(payment.status === 'CANCELED')
+              <svg class="me-1 h-3 w-3" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M6 18 17.94 6M18 18 6.06 6"></path>
+              </svg>
+              Cancelled
               @else
-              <tr class="odd:bg-neutral-primary even:bg-neutral-secondary-soft border-b border-default">
-                
-                <th colspan="5" scope="row" scope="row"
-                class="px-6 py-4 font-medium text-heading whitespace-nowrap text-center text-xl">
-                <span class="dark:text-white"> Nenhuma compra encontrada </span>
-                  </th>
-              </tr>
-            @end
+              Unknown
+              @endif
+            </dd>
+          </dl>
+
+
         </div>
-        <div class="mt-5">
-          @each(anchor in payments.getUrlsForRange(1, payments.lastPage))
-            <nav aria-label="Page navigation example" class="flex items-center space-x-4">
-              <ul class="flex -space-x-px text-sm">
-                
-                <li>
-                  <a href="{{ anchor.url }}"
-                  class="flex items-center  rounded-full justify-center text-body bg-neutral-secondary-medium border border-default-medium hover:bg-neutral-tertiary-medium hover:text-heading shadow-xs font-medium leading-5 text-sm w-9 h-9 focus:outline-none">{{
-                    anchor.page }}</a>
-                </li>
-                
-                
-              </ul>
-              
-            </nav>
-            
-            
-          @endeach
-        </div>
-        
+        @endeach
+        @else
+        <tr class="odd:bg-neutral-primary even:bg-neutral-secondary-soft border-b border-default">
+
+          <th colspan="5" scope="row" scope="row"
+            class="px-6 py-4 font-medium text-heading whitespace-nowrap text-center text-xl">
+            <span class="dark:text-white"> Nenhuma compra encontrada </span>
+          </th>
+        </tr>
+        @end
       </div>
-      
-    </section>
-  </div>
-  
-  @include('partials/footer')
-  
+      <div class="mt-5">
+        @each(anchor in payments.getUrlsForRange(1, payments.lastPage))
+        <nav aria-label="Page navigation example" class="flex items-center space-x-4">
+          <ul class="flex -space-x-px text-sm">
+
+            <li>
+              <a href="{{ anchor.url }}"
+                class="flex items-center  rounded-full justify-center text-body bg-neutral-secondary-medium border border-default-medium hover:bg-neutral-tertiary-medium hover:text-heading shadow-xs font-medium leading-5 text-sm w-9 h-9 focus:outline-none">{{
+                anchor.page }}</a>
+            </li>
+
+
+          </ul>
+
+        </nav>
+
+
+        @endeach
+      </div>
+
+    </div>
+
+  </section>
+</div>
+
+@include('partials/footer')
+
 @endslot
 @end

@@ -53,14 +53,14 @@ export default class CategoriesController {
     if (await request.ctx?.bouncer.denies(isAdmin)) {
       return request.ctx?.response.forbidden()
     }
-    return await Category.findCategoryById(params.id)
+    return await Category.findOrFail(params.id)
   }
 
   /**
    * Edit individual record
    */
   async edit({ params, view }: HttpContext) {
-    const category = await Category.findCategoryById(params.id)
+    const category = await Category.findOrFail(params.id)
     return view.render('pages/private/categories/edit', { category })
   }
 

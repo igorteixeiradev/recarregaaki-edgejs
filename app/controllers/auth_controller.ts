@@ -41,10 +41,6 @@ export default class AuthController {
       await request.validateUsing(createUserValidator)
     const svg = multiavatar(rest.fullName)
     const avatarUrl = `data:image/svg+xml;base64,${Buffer.from(svg).toString('base64')}`
-    if (isAdmin === true) {
-      await User.create({ ...rest, isBlocked: true, isAdmin: false, avatarUrl })
-      return response.redirect().toRoute('auth.login.view')
-    }
     await User.create({ ...rest, isAdmin: false, avatarUrl })
     await SendEmailVerification.dispatch({ email: rest.email }, { queueName: 'mail' })
     request.ctx?.session.flash('notification', {
@@ -80,11 +76,14 @@ export default class AuthController {
     return response.redirect().toRoute('auth.login.view')
   }
 
+  /**
+   * Handle form submission for the verify email action
+   */
   async verifyEmail({ request, response }: HttpContext) {
     const token = request.input('token')
 
-    const ok = await this.authService.verifyEmail({ token })
-    if (!ok) {
+    const res = await this.authService.verifyEmail({ token })
+    if (!res) {
       return response.notFound()
     }
     request.ctx?.session.flash('notification', {

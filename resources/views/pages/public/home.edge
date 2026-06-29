@@ -1,135 +1,99 @@
 @layout.app({ title: "Home" })
 @slot('meta')
-  <meta name="description" content="Bem-vindo à Recarregaaki, a sua plataforma de recargas digitais em Angola." />
+<meta name="description" content="Bem-vindo à Recarregaaki, a sua plataforma de recargas digitais em Angola." />
 @endslot
 
 @slot('main')
-  @include('partials/navbar')
-  <div class=" max-w-7xl  mx-auto lg:px-0 px-4">
-    
-    <section class=" mx-auto flex w-full flex-col-reverse items-center justify-between gap-10 md:flex-row md:gap-0 mb-5">
-      <div class="flex flex-col items-center text-center md:items-start md:text-left">
-        <a class="mt-10 mb-6 flex items-center space-x-2 rounded-full border border-green-600 px-4 py-2 pr-1.5 text-xs text-green-600 transition hover:bg-green-50 dark:hover:bg-green-900/20"
+@include('partials/navbar')
+<div class=" max-w-7xl  mx-auto lg:px-0 px-4">
+
+  <section class=" mx-auto flex w-full flex-col-reverse items-center justify-between gap-10 md:flex-row md:gap-0 mb-5">
+    <div class="flex flex-col items-center text-center md:items-start md:text-left">
+      <a class="mt-10 mb-6 flex items-center space-x-2 rounded-full border border-green-600 px-4 py-2 pr-1.5 text-xs text-green-600 transition hover:bg-green-50 dark:hover:bg-green-900/20"
         href="{{route('web.shop')}}">
         <span>Recargas instantâneas com segurança.</span>
-          <span class="flex size-6 items-center justify-center rounded-full bg-green-600 p-1">
-            <svg width="14" height="11" viewBox="0 0 16 13" fill="none">
-              <path d="M1 6.5h14M9.5 1 15 6.5 9.5 12" stroke="#fff" strokeWidth="1.5" strokeLinecap="round"
+        <span class="flex size-6 items-center justify-center rounded-full bg-green-600 p-1">
+          <svg width="14" height="11" viewBox="0 0 16 13" fill="none">
+            <path d="M1 6.5h14M9.5 1 15 6.5 9.5 12" stroke="#fff" strokeWidth="1.5" strokeLinecap="round"
               strokeLinejoin="round" />
-            </svg>
-          </span>
-          </a>
-          
-          <h1 class="mb-4 text-4xl leading-tight
+          </svg>
+        </span>
+      </a>
+
+      <h1 class="mb-4 text-4xl leading-tight
           font-extrabold tracking-tight text-gray-900 md:text-5xl lg:text-5xl dark:text-white">
-          Recarregue os seus <br class="hidden md:block" />
-          <span class="bg-linear-to-r from-violet-500 via-[#9938CA] to-[#E0724A] bg-clip-text text-transparent">
-            jogos e aplicativos
-          </span>
-          <br class="hidden md:block" />
-          connosco.
-          </h1>
-          
-          <p class="text-lg font-normal text-gray-900 lg:text-start lg:text-xl dark:text-white">
-            Temos pacotes do Free Fire, Netflix, TikTok e muito mais em poucos segundos, sem
-            complicação e 100% seguro.
-          </p>
-          
-          <div class="mt-8 flex w-full flex-col items-stretch gap-4 sm:flex-row sm:items-center sm:gap-3">
-            <a class="flex w-full items-center justify-center space-x-2 rounded-full bg-white bg-linear-to-r from-violet-500 via-[#9938CA] to-[#E0724A] px-6 py-3 pr-2.5 text-center text-sm font-semibold text-white transition-all duration-200 hover:bg-green-700 hover:opacity-90 active:scale-95 sm:w-auto"
-            href="{{route('web.shop')}}">
-        <span>Ver opções na loja</span>
+        Recarregue os seus <br class="hidden md:block" />
+        <span class="bg-linear-to-r from-violet-500 via-[#9938CA] to-[#E0724A] bg-clip-text text-transparent">
+          jogos e aplicativos
+        </span>
+        <br class="hidden md:block" />
+        connosco.
+      </h1>
+
+      <p class="text-lg font-normal text-gray-900 lg:text-start lg:text-xl dark:text-white">
+        Temos pacotes do Free Fire, Netflix, TikTok e muito mais em poucos segundos, sem
+        complicação e 100% seguro.
+      </p>
+
+      <div class="mt-8 flex w-full flex-col items-stretch gap-4 sm:flex-row sm:items-center sm:gap-3">
+        <a class="flex w-full items-center justify-center space-x-2 rounded-full bg-white bg-linear-to-r from-violet-500 via-[#9938CA] to-[#E0724A] px-6 py-3 pr-2.5 text-center text-sm font-semibold text-white transition-all duration-200 hover:bg-green-700 hover:opacity-90 active:scale-95 sm:w-auto"
+          href="{{route('web.shop')}}">
+          <span>Ver opções na loja</span>
           <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
             <path d="M4.821 11.999h13.43m0 0-6.714-6.715m6.715 6.715-6.715 6.715" stroke="#fff" strokeWidth="1.8"
-            strokeLinecap="round" strokeLinejoin="round" />
+              strokeLinecap="round" strokeLinejoin="round" />
           </svg>
-          </a>
-          @if(auth.isAuthenticated)
-            
-            
-            @else
-            <a href="{{route('auth.register.view')}}"
-            class="w-full rounded-full bg-white bg-linear-to-r from-violet-500 via-[#9938CA] to-[#E0724A] px-5 py-3 text-center text-sm font-semibold text-white transition-all duration-200 hover:bg-green-200 hover:opacity-90 active:scale-95 sm:w-auto dark:bg-green-900/30 dark:hover:bg-green-800/50">
-            Criar conta grátis
-            </a>
-          @end
-          </div>
-      </div>
-      
-      <div class="hidden w-full md:block">
-        <img class="w-full rounded-2xl object-contain" src="images/4.png" alt="Imagem do hero" />
-      </div>
-    </section>
-    
-    @if(refills.length > 0)
-      <div class="mb-5 grid grid-cols-2 gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">
-        @each(refill in refills)
-          @!component('components/card', { id:refill.id, image:refill.image,title:refill.name,category:refill.category.name })
+        </a>
+        @if(auth.isAuthenticated)
+
+
+        @else
+        <a href="{{route('auth.register.view')}}"
+          class="w-full rounded-full bg-white bg-linear-to-r from-violet-500 via-[#9938CA] to-[#E0724A] px-5 py-3 text-center text-sm font-semibold text-white transition-all duration-200 hover:bg-green-200 hover:opacity-90 active:scale-95 sm:w-auto dark:bg-green-900/30 dark:hover:bg-green-800/50">
+          Criar conta grátis
+        </a>
         @end
       </div>
-      @else
-      <h2 class="text-2xl text-center py-10 dark:text-white"> Nenhuma recarga encontrada </h2>
+    </div>
+
+    <div class="hidden w-full md:block">
+      <img class="w-full rounded-2xl object-contain" src="images/4.png" alt="Imagem do hero" />
+    </div>
+  </section>
+
+  @if(refills.length > 0)
+  <div class="mb-5 grid grid-cols-2 gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">
+    @each(refill in refills)
+    @!component('components/card', { id:refill.id, image:refill.image,title:refill.name,category:refill.category.name })
     @end
-    
-    
-    <section>
-      <div class="py-8 px-4 mx-auto  text-center lg:py-16">
-        <div class="mx-auto mb-8 max-w-screen-sm lg:mb-16">
-          <h2 class="mb-4 text-4xl tracking-tight font-extrabold text-gray-900 dark:text-white">
-            Comentários dos nossos clientes
-          </h2>
-          <p class="font-light text-gray-500 sm:text-xl dark:text-gray-400">
-            Jogadores que confiam na nossa plataforma para recargas rápidas e seguras.
-          </p>
-        </div>
-        
-        <div id="default-carousel" class="relative w-full" data-carousel="slide">
-          <!-- Carousel wrapper -->
-          <div class="relative h-56 overflow-hidden rounded-base md:h-96">
-            @each(slide in slides)
-              <div class="hidden duration-700 ease-in-out grid grid-cols-1 md:grid-cols-2 gap-6 p-6" data-carousel-item>
-                @each(comment in slide)
-                  <div class="flex flex-col items-center text-center">
-                    <img src="{{ comment.image }}" class="w-36 h-36 rounded-full mb-4" alt="{{ comment.name }}">
-                      <h3 class="text-2xl font-bold text-gray-900 dark:text-white">{{ comment.name }}</h3>
-                        <p class="font-semibold text-gray-700 dark:text-gray-300">{{ comment.title }}</p>
-                        <p class="mt-2 text-gray-600 dark:text-gray-400">{{ comment.comment }}</p>
-                  </div>
-                @endeach
-              </div>
-            @endeach
-          </div>
-          
-          <!-- Slider indicators -->
-          <div class="absolute z-30 flex -translate-x-1/2 bottom-5 left-1/2 space-x-3 rtl:space-x-reverse">
-            @each(index in slides)
-              <button type="button" class="w-3 h-3 rounded-base" aria-current="false" aria-label="Slide {{ index + 1 }}" data-carousel-slide-to="{{ index }}"></button>
-            @endeach
-          </div>
-          
-          <!-- Slider controls -->
-          <button type="button" class="absolute top-0 start-0 z-30 flex items-center justify-center h-full px-4 cursor-pointer group" data-carousel-prev>
-            <span class="inline-flex items-center justify-center w-10 h-10 rounded-base bg-white/30 group-hover:bg-white/50">
-              <svg class="w-5 h-5 text-white rtl:rotate-180" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m15 19-7-7 7-7"/></svg>
-            <span class="sr-only">Previous</span>
-            </span>
-          </button>
-          <button type="button" class="absolute top-0 end-0 z-30 flex items-center justify-center h-full px-4 cursor-pointer group" data-carousel-next>
-            <span class="inline-flex items-center justify-center w-10 h-10 rounded-base bg-white/30 group-hover:bg-white/50">
-              <svg class="w-5 h-5 text-white rtl:rotate-180" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m9 5 7 7-7 7"/></svg>
-            <span class="sr-only">Next</span>
-            </span>
-          </button>
-        </div>
-        
-        
-        
-      </div>
-    </section>
-    
   </div>
-  
-  @include('partials/footer')
-  
+  @else
+  <h2 class="text-center text-2xl tracking-tight font-extrabold text-gray-900 dark:text-white"> Nenhuma recarga
+    encontrada </h2>
+  @end
+
+
+  <section>
+    <div class="py-8 px-4 mx-auto  text-center lg:py-16">
+      <div class="mx-auto mb-8 max-w-screen-sm lg:mb-16">
+        <h2 class="mb-4 text-4xl tracking-tight font-extrabold text-gray-900 dark:text-white">
+          Comentários dos nossos clientes
+        </h2>
+        <p class="font-light text-gray-500 sm:text-xl dark:text-gray-400">
+          Jogadores que confiam na nossa plataforma para recargas rápidas e seguras.
+        </p>
+      </div>
+
+
+
+
+
+    </div>
+  </section>
+
+</div>
+
+@include('partials/footer')
+
 @endslot
 @end

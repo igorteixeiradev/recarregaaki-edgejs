@@ -1,6 +1,6 @@
 # Recarregaaki
 
-Recarregaaki é uma plataforma angolana de pagamentos digitais que permite recarregar serviços como Free Fire, Netflix e muito mais usando Kwanza.
+Recarregaaki é uma plataforma angolana que permite comprar recarregas de serviços como Free Fire, Netflix e muito mais usando Kwanza.
 
 ## 🚀 Funcionalidades
 
@@ -10,18 +10,19 @@ Recarregaaki é uma plataforma angolana de pagamentos digitais que permite recar
 
 ## 🛠️ Tecnologias
 
-- ReactJS
 - AdonisJS
-- InertiaJS
+- EdgeJS
+- TailwindCSS
+- Flowbite
 
 ## 📦 Instalação
 
 ```bash
 # Clonar o repositório
-git clone https://github.com/bigitfromdaao/recarregaaki.git
+git clone https://github.com/bigitfromdaao/recarregaaki-edgejs.git
 
 # Entrar no diretório
-cd recarregaaki
+cd recarregaaki-edgejs
 
 # Instalar dependências
 npm install
@@ -35,10 +36,6 @@ npm run dev
 <p align="center">
   <img src="./public/screenshot.png" alt="Logo" width="1200" />
 </p>
-
-## 📄 Licença
-
-Este projeto está sob a licença MIT. Veja o arquivo LICENSE para mais detalhes.
 
 ---
 
