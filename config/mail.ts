@@ -2,7 +2,7 @@ import env from '#start/env'
 import { defineConfig, transports } from '@adonisjs/mail'
 
 const mailConfig = defineConfig({
-  default: 'smtp',
+  default: env.get('MAIL_MAILER'),
 
   /**
    * The mailers object can be used to configure multiple mailers
@@ -10,9 +10,26 @@ const mailConfig = defineConfig({
    * options.
    */
   from: {
-    address: 'recarregaaki@support.com',
-    name: 'Recarregaaki',
+    address: env.get('MAIL_FROM_ADDRESS'),
+    name: env.get('MAIL_FROM_NAME'),
   },
+
+  /**
+   * The globals are shared with all the templates rendered using the
+   * configured template engine.
+   *
+   * This could be a nice place to define the logo URL, links base URL
+   * the brand name to be used within the emails
+   */
+  globals: {
+    brandName: 'Acme',
+  },
+
+  /**
+   * The mailers object can be used to configure multiple mailers
+   * each using a different transport or same transport with different
+   * options.
+   */
   mailers: {
     smtp: transports.smtp({
       host: env.get('SMTP_HOST'),

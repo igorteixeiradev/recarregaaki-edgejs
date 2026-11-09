@@ -25,7 +25,7 @@
           class="bg-neutral-primary-soft block max-w-sm p-6 border border-default rounded-base shadow-xs hover:bg-neutral-secondary-medium">
         <h5 class="text-sm text-gray-500 dark:text-gray-400">Total de Recargas</h5>
           <h2 class="text-2xl font-semibold text-gray-900 dark:text-white">
-            {{refills.length}}
+            {{totals.refills}}
           </h2>
           </div>
           
@@ -33,14 +33,14 @@
           class="bg-neutral-primary-soft block max-w-sm p-6 border border-default rounded-base shadow-xs hover:bg-neutral-secondary-medium">
         <h5 class="text-sm text-gray-500 dark:text-gray-400">Total de Pacotes</h5>
           <h2 class="text-2xl font-semibold text-gray-900 dark:text-white">
-            {{packages.length}}
+            {{totals.packages}}
           </h2>
           </div>
           
           <div
           class="bg-neutral-primary-soft block max-w-sm p-6 border border-default rounded-base shadow-xs hover:bg-neutral-secondary-medium">
         <h5 class="text-sm text-gray-500 dark:text-gray-400">Consumidores</h5>
-    <h2 class="text-2xl font-semibold text-gray-900 dark:text-white"> {{users.length}} </h2>
+    <h2 class="text-2xl font-semibold text-gray-900 dark:text-white"> {{totals.users}} </h2>
       </div>
       
       </div>
@@ -73,7 +73,7 @@
               @each(payment in payments)
                 <tr class="odd:bg-neutral-primary even:bg-neutral-secondary-soft border-b border-default">
                   <th scope="row" class="px-6 py-4 font-medium text-heading whitespace-nowrap">
-                    {{payment.user.name}}
+                    {{payment.user.fullName}}
                   </th>
                   <td class="px-6 py-4">
                     {{payment.package.name}}

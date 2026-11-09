@@ -1,53 +1,65 @@
+import { inject } from '@adonisjs/core'
 import Post from '#models/post'
-import { CreatePostPayload, UpdatePostPayload } from '#validators/post'
-import { unlink } from 'node:fs/promises'
-import app from '@adonisjs/core/services/app'
-import { cuid } from '@adonisjs/core/helpers'
-import { type Authenticators } from '@adonisjs/auth/types'
-import { type Authenticator } from '@adonisjs/auth'
+import type User from '#models/user'
+import ImageStorageService from '#services/image_storage_service'
+import type { PageParams } from '#utils/pagination'
+import type { CreatePostPayload, UpdatePostPayload } from '#validators/post'
 
-export class PostService {
-  async createPostAndUploadImage(
-    payload: CreatePostPayload,
-    auth: Authenticator<Authenticators>
-  ): Promise<Post> {
-    const { image, ...rest } = payload
-    let imagePath: string | null = null
+@inject()
+export default class PostService {
+  constructor(protected images: ImageStorageService) {}
 
-    if (image) {
-      const fileName = `${cuid()}.${image.extname}`
-      await image.move(app.makePath('uploads'), { name: fileName })
-      imagePath = 'uploads/' + fileName
-    }
-
-    return await Post.create({ ...rest, image: imagePath, userId: auth.user?.id })
+  /**
+   * Listagem do painel: inclui rascunhos.
+   */
+  paginate({ page, limit }: PageParams) {
+    return Post.query().preload('author').orderBy('createdAt', 'desc').paginate(page, limit)
   }
 
-  async updatePostAndUploadImage(id: string, payload: UpdatePostPayload): Promise<Post> {
-    const post = await Post.findByOrFail('id', id)
-    const { image, ...rest } = payload
+  findOrFail(id: string) {
+    return Post.findOrFail(id)
+  }
 
-    if (image) {
-      if (post.image) {
-        await unlink(post.image).catch(() => null)
-      }
-      const fileName = `${cuid()}.${image.extname}`
-      await image.move(app.makePath('uploads'), { name: fileName })
-      post.merge({ ...rest, image: 'uploads/' + fileName })
-    } else {
-      post.merge(rest)
+  /**
+   * Blog público: apenas posts publicados.
+   */
+  paginatePublished({ page, limit }: PageParams) {
+    return Post.query()
+      .where('isPublished', true)
+      .preload('author')
+      .orderBy('createdAt', 'desc')
+      .paginate(page, limit)
+  }
+
+  findPublishedOrFail(id: string) {
+    return Post.query().where('id', id).where('isPublished', true).preload('author').firstOrFail()
+  }
+
+  async create(author: User, { image, ...data }: CreatePostPayload) {
+    const imagePath = image ? await this.images.store(image) : undefined
+
+    // Sem imagem, a coluna usa o valor por defeito definido na migration
+    return Post.create({ ...data, userId: author.id, ...(imagePath ? { image: imagePath } : {}) })
+  }
+
+  async update(post: Post, { image, ...data }: UpdatePostPayload) {
+    post.merge(data)
+
+    if (!image) {
+      await post.save()
+      return post
     }
 
+    const previousImage = post.image
+    post.image = await this.images.store(image)
     await post.save()
+    await this.images.remove(previousImage)
+
     return post
   }
 
-  async removePostAndRemoveImage(id: string): Promise<Post> {
-    const post = await Post.findByOrFail('id', id)
-    if (post.image) {
-      await unlink(post.image).catch(() => null)
-    }
+  async delete(post: Post) {
     await post.delete()
-    return post
+    await this.images.remove(post.image)
   }
 }

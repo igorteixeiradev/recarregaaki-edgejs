@@ -1,109 +1,75 @@
-import { isAdmin } from '#abilities/main'
-import Category from '#models/category'
-import Refill from '#models/refill'
-import { RefillService } from '#services/refill_service'
-import { createRefillValidator, updateRefillValidator } from '#validators/refill'
 import { inject } from '@adonisjs/core'
 import type { HttpContext } from '@adonisjs/core/http'
+import { urlFor } from '@adonisjs/core/services/url_builder'
+import CategoryService from '#services/category_service'
+import RefillService from '#services/refill_service'
+import { notify } from '#utils/flash'
+import { pageParams } from '#utils/pagination'
+import { createRefillValidator, updateRefillValidator } from '#validators/refill'
 
 @inject()
 export default class RefillsController {
-  constructor(protected refillService: RefillService) {}
-  /**
-   * Display a list of resource
-   */
-  async index({ view, request }: HttpContext) {
-    const page = request.input('page', 1)
-    const limit = request.input('limit', 20)
-    const refills = await Refill.query()
-      .orderBy('createdAt', 'desc')
-      .preload('category')
-      .preload('packages')
-      .paginate(page, limit)
+  constructor(
+    protected refills: RefillService,
+    protected categories: CategoryService
+  ) {}
 
-    refills.baseUrl('/dashboard/recargas')
-    if (await request.ctx?.bouncer.denies(isAdmin)) {
-      return request.ctx?.response.forbidden()
-    }
+  async index({ bouncer, request, view }: HttpContext) {
+    await bouncer.with('RefillPolicy').authorize('viewList')
+
+    const refills = await this.refills.paginate(pageParams(request))
+    refills.baseUrl(urlFor('refills.index'))
+
     return view.render('pages/private/refills/index', { refills })
   }
 
-  /**
-   * Display form to create a new record
-   */
-  async create({ view }: HttpContext) {
-    const categories = await Category.findManyBy('isActive', true)
+  async create({ bouncer, view }: HttpContext) {
+    await bouncer.with('RefillPolicy').authorize('create')
+
+    const categories = await this.categories.listAll()
     return view.render('pages/private/refills/create', { categories })
   }
 
-  /**
-   * Handle form submission for the create action
-   */
-  async store({ request }: HttpContext) {
+  async store({ bouncer, request, response, session }: HttpContext) {
+    await bouncer.with('RefillPolicy').authorize('create')
+
     const payload = await request.validateUsing(createRefillValidator)
-    if (await request.ctx?.bouncer.denies(isAdmin)) {
-      return request.ctx?.response.forbidden()
-    }
-    await this.refillService.createRefillAndUploadImage(payload)
+    await this.refills.create(payload)
 
-    request.ctx?.session.flash('notification', {
-      type: 'success',
-      message: 'Recarga adicionada com sucesso',
-    })
-
-    return request.ctx?.response.redirect().toRoute('refills.index')
+    notify(session, 'success', 'Recarga adicionada com sucesso')
+    return response.redirect().toRoute('refills.index')
   }
 
-  /**
-   * Show individual record
-   */
-  async show({ params }: HttpContext) {
-    return await Refill.findByOrFail('id', params.id)
-  }
+  async edit({ bouncer, params, view }: HttpContext) {
+    await bouncer.with('RefillPolicy').authorize('update')
 
-  /**
-   * Edit individual record
-   */
-  async edit({ params, view, request }: HttpContext) {
-    const categories = await Category.findManyBy('isActive', true)
-    const refill = await Refill.findByOrFail('id', params.id)
-    if (await request.ctx?.bouncer.denies(isAdmin)) {
-      return request.ctx?.response.forbidden()
-    }
+    const [refill, categories] = await Promise.all([
+      this.refills.findOrFail(params.id),
+      this.categories.listAll(),
+    ])
     return view.render('pages/private/refills/edit', { categories, refill })
   }
 
-  /**
-   * Handle form submission for the edit action
-   */
-  async update({ params, request }: HttpContext) {
-    const payload = await request.validateUsing(updateRefillValidator)
-    if (await request.ctx?.bouncer.denies(isAdmin)) {
-      return request.ctx?.response.forbidden()
-    }
-    await this.refillService.updateRefillAndUploadImage(params.id, payload)
+  async update({ bouncer, params, request, response, session }: HttpContext) {
+    await bouncer.with('RefillPolicy').authorize('update')
 
-    request.ctx?.session.flash('notification', {
-      type: 'success',
-      message: 'Recarga actualizada com sucesso',
+    const refill = await this.refills.findOrFail(params.id)
+    const payload = await request.validateUsing(updateRefillValidator, {
+      meta: { refillId: refill.id },
     })
+    await this.refills.update(refill, payload)
 
-    return request.ctx?.response.redirect().toRoute('refills.index')
+    notify(session, 'success', 'Recarga actualizada com sucesso')
+    return response.redirect().toRoute('refills.index')
   }
 
-  /**
-   * Delete record
-   */
-  async destroy({ params, request }: HttpContext) {
-    const refill = await Refill.findByOrFail('id', params.id)
-    if (await request.ctx?.bouncer.denies(isAdmin)) {
-      return request.ctx?.response.forbidden()
-    }
-    await this.refillService.removeRefillAndRemoveImage(refill.id)
-    request.ctx?.session.flash('notification', {
-      type: 'success',
-      message: 'Recarga apagada com sucesso',
-    })
-    return request.ctx?.response.redirect().toRoute('refills.index')
+  async destroy({ bouncer, params, response, session }: HttpContext) {
+    await bouncer.with('RefillPolicy').authorize('delete')
+
+    const refill = await this.refills.findOrFail(params.id)
+    await this.refills.delete(refill)
+
+    notify(session, 'success', 'Recarga apagada com sucesso')
+    return response.redirect().toRoute('refills.index')
   }
 }

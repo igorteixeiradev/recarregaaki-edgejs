@@ -14,10 +14,10 @@
       <section>
         
         <div >
-          <form action="  {{route('web.shop')}}  " method="get">
+          <form action="{{route('web.shop')}}" method="get">
             <div class="flex shadow-xs rounded-base -space-x-0.5">
               <label for="search-dropdown" class="block mb-2.5 text-sm font-medium text-heading sr-only ">Search</label>
-                <button id="dropdown-button" data-dropdown-toggle="dropdown" type="button"   class="inline-flex items-center shrink-0 z-10 text-body bg-neutral-secondary-medium border border-default-medium hover:bg-neutral-tertiary-medium hover:text-heading font-medium leading-5 rounded-s-base text-sm px-4 py-2.5 ">
+                <button id="dropdown-button" data-dropdown-toggle="dropdown" type="button"   class="inline-flex items-center shrink-0 z-10 text-body bg-neutral-secondary-medium border border-default-medium hover:bg-neutral-tertiary-medium hover:text-heading font-medium leading-5 rounded-md text-sm px-4 py-2.5 ">
                   <svg class="w-4 h-4 me-1.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24"><path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.143 4H4.857A.857.857 0 0 0 4 4.857v4.286c0 .473.384.857.857.857h4.286A.857.857 0 0 0 10 9.143V4.857A.857.857 0 0 0 9.143 4Zm10 0h-4.286a.857.857 0 0 0-.857.857v4.286c0 .473.384.857.857.857h4.286A.857.857 0 0 0 20 9.143V4.857A.857.857 0 0 0 19.143 4Zm-10 10H4.857a.857.857 0 0 0-.857.857v4.286c0 .473.384.857.857.857h4.286a.857.857 0 0 0 .857-.857v-4.286A.857.857 0 0 0 9.143 14Zm10 0h-4.286a.857.857 0 0 0-.857.857v4.286c0 .473.384.857.857.857h4.286a.857.857 0 0 0 .857-.857v-4.286a.857.857 0 0 0-.857-.857Z"/></svg>
                     {{ categoryId
                     ? categories.find(c => String(c.id) === categoryId)?.name
@@ -25,7 +25,7 @@
                     }}
                   <svg class="w-4 h-4 ms-1.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24"><path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m19 9-7 7-7-7"/></svg>
                 </button>
-                <div id="dropdown" class="z-10 hidden bg-neutral-primary-medium border border-default-medium rounded-base shadow-lg w-44">
+                <div id="dropdown" class="z-10 hidden bg-neutral-primary-medium border border-default-medium rounded-md shadow-lg w-44">
                   <ul class="p-2 text-sm text-body font-medium" aria-labelledby="dropdown-button">
                     <li>
                       <a href=" {{route('web.shop')}}" class="block p-2 hover:bg-neutral-tertiary-medium hover:text-heading rounded-md"> Todas as recargas </a>
@@ -48,11 +48,17 @@
                     
                   </ul>
                 </div>
-                <input type="q" id="search-dropdown" id="input-group-1" class="px-3 py-2.5 bg-neutral-secondary-medium text-heading text-sm  block w-full placeholder:text-body" placeholder="Procurar pela recarga..." required>
-                  <button type="submit" class="inline-flex items-center  text-white  transition-all duration-200 shadow-xs font-medium leading-5 rounded-e-base text-sm px-4 py-2.5 focus:outline-none bg-linear-to-r from-violet-500 via-[#9938CA] to-[#E0724A] hover:opacity-90 active:scale-95">
-                  <svg class="w-4 h-4 me-1.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24"><path stroke="currentColor" stroke-linecap="round" stroke-width="2" d="m21 21-3.5-3.5M17 10a7 7 0 1 1-14 0 7 7 0 0 1 14 0Z"/></svg>
-                    Pesquisar
-                  </button>
+                <input
+                  name="q"
+                  id="search-dropdown"
+                  class="px-3 py-2.5 bg-neutral-secondary-medium text-heading text-sm block w-full placeholder:text-body
+                         border-0 outline-none ring-0 focus:border-0 focus:outline-none focus:ring-0"
+                  required
+                />
+                <button type="submit" class="inline-flex items-center  text-white  transition-all duration-200 shadow-xs font-medium leading-5 rounded-md text-sm px-4 py-2.5 focus:outline-none bg-linear-to-r from-violet-500 via-[#9938CA] to-[#E0724A] hover:opacity-90 active:scale-95">
+                  <svg class="w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24"><path stroke="currentColor" stroke-linecap="round" stroke-width="2" d="m21 21-3.5-3.5M17 10a7 7 0 1 1-14 0 7 7 0 0 1 14 0Z"/></svg>
+                    
+                </button>
             </div>
           </form>
         </div>
@@ -78,7 +84,13 @@
       </div>
       
       @else
-      <h2 class="text-center text-2xl tracking-tight font-extrabold text-gray-900 dark:text-white"> Nenhuma recarga encontrada </h2>
+        <div class="lg:py-54 py-24 flex flex-col">
+          <div class="flex-1 flex items-center justify-center">
+            <h2 class="text-center text-2xl tracking-tight font-extrabold text-gray-900 dark:text-white">
+              Nenhuma recarga encontrada
+            </h2>
+          </div>
+        </div>
     @end
       </section>
   </div>

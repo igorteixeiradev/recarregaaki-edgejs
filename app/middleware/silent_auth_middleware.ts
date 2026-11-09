@@ -1,3 +1,4 @@
+import { notify } from '#utils/flash'
 import type { HttpContext } from '@adonisjs/core/http'
 import type { NextFn } from '@adonisjs/core/types/http'
 
@@ -10,6 +11,12 @@ import type { NextFn } from '@adonisjs/core/types/http'
 export default class SilentAuthMiddleware {
   async handle(ctx: HttpContext, next: NextFn) {
     await ctx.auth.check()
+
+    // Um utilizador bloqueado perde a sessão mesmo que já estivesse autenticado
+    if (ctx.auth.user?.isBlocked) {
+      await ctx.auth.use('web').logout()
+      notify(ctx.session, 'danger', 'A sua conta está bloqueada. Contacte o suporte.')
+    }
 
     return next()
   }

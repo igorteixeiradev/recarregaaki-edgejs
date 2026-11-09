@@ -1,40 +1,55 @@
-import User from '#models/user'
-import { CreatePasswordPayload } from '#validators/auth'
-import VerificationToken from '#models/verification_token'
-import { DateTime } from 'luxon'
-import logger from '@adonisjs/core/services/logger'
+import { inject } from '@adonisjs/core'
+import type User from '#models/user'
+import SendPasswordResetEmail from '#jobs/send_password_reset_email'
+import SendVerificationEmail from '#jobs/send_verification_email'
+import UserService from '#services/user_service'
+import VerificationTokenService from '#services/verification_token_service'
+import { VerificationTokenType } from '#enums/verification_token_type'
+import type { RegisterPayload } from '#validators/auth'
 
-export class AuthService {
-  async resetPassword(payload: CreatePasswordPayload): Promise<boolean> {
-    const { password, token } = payload
-    const verificationToken = await VerificationToken.query()
-      .where('token', token)
-      .where('expiresAt', '>', DateTime.now().toSQL())
-      .first()
+@inject()
+export default class AuthService {
+  constructor(
+    protected users: UserService,
+    protected tokens: VerificationTokenService
+  ) {}
 
-    if (!verificationToken) return false
-    const user = await User.findByOrFail('email', verificationToken.email)
-    user.password = password
-    await user.save()
-    logger.info(`${verificationToken.email} update password`)
-    await verificationToken.delete()
-    logger.info('Password reset successful for ' + user.email)
+  async register(data: RegisterPayload): Promise<User> {
+    const user = await this.users.create({ ...data, isAdmin: false })
+    await SendVerificationEmail.dispatch({ email: user.email })
+    return user
+  }
+
+  /**
+   * Devolve `false` se o email já estava verificado (nada a enviar).
+   */
+  async resendVerificationEmail(user: User): Promise<boolean> {
+    if (user.isEmailVerified) return false
+
+    await SendVerificationEmail.dispatch({ email: user.email })
     return true
   }
 
-  async verifyEmail(payload: { token: string }) {
-    const verificationToken = await VerificationToken.query()
-      .where('token', payload.token)
-      .where('expiresAt', '>', DateTime.now().toSQL())
-      .first()
+  async verifyEmail(token: string): Promise<boolean> {
+    const email = await this.tokens.consume(token, VerificationTokenType.EmailVerification)
+    if (!email) return false
 
-    if (!verificationToken) return false
-    const user = await User.findByOrFail('email', verificationToken.email)
-    user.isEmailVerified = true
-    await user.save()
-    logger.info(`${verificationToken.email} email verified`)
-    await verificationToken.delete()
-    logger.info('Email verification successful for ' + user.email)
+    await this.users.markEmailVerified(email)
+    return true
+  }
+
+  async requestPasswordReset(email: string): Promise<void> {
+    await SendPasswordResetEmail.dispatch({ email })
+  }
+
+  async resetPassword(token: string, password: string): Promise<boolean> {
+    const email = await this.tokens.consume(token, VerificationTokenType.PasswordReset)
+    if (!email) return false
+
+    const user = await this.users.findByEmail(email)
+    if (!user) return false
+
+    await this.users.changePassword(user, password)
     return true
   }
 }

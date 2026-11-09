@@ -1,30 +1,11 @@
-import { DateTime } from 'luxon'
-import { BaseModel, beforeCreate, column, hasMany } from '@adonisjs/lucid/orm'
-import { randomUUID } from 'node:crypto'
-import { type HasMany } from '@adonisjs/lucid/types/relations'
+import { compose } from '@adonisjs/core/helpers'
+import { hasMany } from '@adonisjs/lucid/orm'
+import type { HasMany } from '@adonisjs/lucid/types/relations'
+import { CategorySchema } from '#database/schema'
+import { withUuid } from '#models/mixins/with_uuid'
 import Refill from '#models/refill'
 
-export default class Category extends BaseModel {
-  @column({ isPrimary: true })
-  declare id: string
-
-  @column()
-  declare name: string
-
-  @column()
-  declare isActive: boolean
-
-  @column.dateTime({ autoCreate: true })
-  declare createdAt: DateTime
-
-  @column.dateTime({ autoCreate: true, autoUpdate: true })
-  declare updatedAt: DateTime
-
+export default class Category extends compose(CategorySchema, withUuid()) {
   @hasMany(() => Refill)
   declare refills: HasMany<typeof Refill>
-
-  @beforeCreate()
-  static assignUuid(category: Category) {
-    category.id = randomUUID()
-  }
 }

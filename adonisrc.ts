@@ -1,4 +1,6 @@
+import { indexEntities } from '@adonisjs/core'
 import { defineConfig } from '@adonisjs/core/app'
+import { indexPolicies } from '@adonisjs/bouncer'
 
 export default defineConfig({
   /*
@@ -11,10 +13,6 @@ export default defineConfig({
   | during upgrade.
   |
   */
-  experimental: {
-    mergeMultipartFieldsAndFiles: true,
-    shutdownInReverseOrder: true,
-  },
 
   /*
   |--------------------------------------------------------------------------
@@ -28,9 +26,9 @@ export default defineConfig({
   commands: [
     () => import('@adonisjs/core/commands'),
     () => import('@adonisjs/lucid/commands'),
-    () => import('@adonisjs/mail/commands'),
     () => import('@adonisjs/bouncer/commands'),
-    () => import('adonisjs-jobs/commands'),
+    () => import('@adonisjs/mail/commands'),
+    () => import('@adonisjs/queue/commands'),
   ],
 
   /*
@@ -57,9 +55,11 @@ export default defineConfig({
     () => import('@adonisjs/static/static_provider'),
     () => import('@adonisjs/lucid/database_provider'),
     () => import('@adonisjs/auth/auth_provider'),
-    () => import('@adonisjs/mail/mail_provider'),
     () => import('@adonisjs/bouncer/bouncer_provider'),
-    () => import('adonisjs-jobs/jobs_provider'),
+    () => import('@adonisjs/mail/mail_provider'),
+    () => import('@adonisjs/drive/drive_provider'),
+    () => import('@adonisjs/limiter/limiter_provider'),
+    () => import('@adonisjs/queue/queue_provider'),
   ],
 
   /*
@@ -74,6 +74,10 @@ export default defineConfig({
     () => import('#start/routes'),
     () => import('#start/kernel'),
     () => import('#start/validator'),
+    {
+      file: () => import('#start/scheduler'),
+      environment: ['web'],
+    },
   ],
 
   /*
@@ -88,12 +92,12 @@ export default defineConfig({
   tests: {
     suites: [
       {
-        files: ['tests/unit/**/*.spec(.ts|.js)'],
+        files: ['tests/unit/**/*.spec.ts'],
         name: 'unit',
         timeout: 2000,
       },
       {
-        files: ['tests/functional/**/*.spec(.ts|.js)'],
+        files: ['tests/functional/**/*.spec.ts'],
         name: 'functional',
         timeout: 30000,
       },
@@ -101,6 +105,15 @@ export default defineConfig({
     forceExit: false,
   },
 
+  /*
+  |--------------------------------------------------------------------------
+  | Meta files
+  |--------------------------------------------------------------------------
+  |
+  | A collection of files you want to copy to the build folder when creating
+  | a production build.
+  |
+  */
   metaFiles: [
     {
       pattern: 'resources/views/**/*.edge',
@@ -112,8 +125,19 @@ export default defineConfig({
     },
   ],
 
-  assetsBundler: false,
+  /*
+  |--------------------------------------------------------------------------
+  | Hooks
+  |--------------------------------------------------------------------------
+  |
+  | Assembler hooks are executed by the Assembler dev tool during various
+  | stages. Assembler is responsible for running the dev-server, tests, and
+  | creating production builds. These hooks run in a separate process than
+  | the main AdonisJS app.
+  |
+  */
   hooks: {
-    onBuildStarting: [() => import('@adonisjs/vite/build_hook')],
+    init: [indexEntities(), indexPolicies()],
+    buildStarting: [() => import('@adonisjs/vite/build_hook')],
   },
 })

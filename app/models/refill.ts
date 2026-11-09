@@ -1,66 +1,15 @@
-import { DateTime } from 'luxon'
-import { BaseModel, beforeCreate, belongsTo, column, hasMany } from '@adonisjs/lucid/orm'
-import { randomUUID } from 'node:crypto'
-import { type HasMany, type BelongsTo } from '@adonisjs/lucid/types/relations'
+import { compose } from '@adonisjs/core/helpers'
+import { belongsTo, hasMany } from '@adonisjs/lucid/orm'
+import type { BelongsTo, HasMany } from '@adonisjs/lucid/types/relations'
+import { RefillSchema } from '#database/schema'
+import { withUuid } from '#models/mixins/with_uuid'
 import Category from '#models/category'
 import Package from '#models/package'
 
-export default class Refill extends BaseModel {
-  @column({ isPrimary: true })
-  declare id: string
-
-  @column()
-  declare name: string
-
-  @column()
-  declare image: string
-
-  @column()
-  declare description: string
-
-  @column()
-  declare isActive: boolean
-
-  @column()
-  declare categoryId: string
-
-  @column()
-  declare otherName: string | null
-
-  @column.dateTime({ autoCreate: true })
-  declare createdAt: DateTime
-
-  @column.dateTime({ autoCreate: true, autoUpdate: true })
-  declare updatedAt: DateTime
-
+export default class Refill extends compose(RefillSchema, withUuid()) {
   @belongsTo(() => Category)
   declare category: BelongsTo<typeof Category>
 
   @hasMany(() => Package)
   declare packages: HasMany<typeof Package>
-
-  static async findManyRefillsByQ(page: number, limit: number, text?: string, categoryId?: string) {
-    const refills = await this.query()
-      .has('packages')
-      .orderBy('createdAt', 'desc')
-      .where('isActive', true)
-      .andWhere((builder) => {
-        if (text) {
-          builder.whereILike('name', `%${text}%`).orWhereILike('description', `%${text}%`)
-        }
-
-        if (categoryId) {
-          builder.where('categoryId', categoryId)
-        }
-      })
-      .preload('category')
-      .paginate(page, limit)
-
-    return refills.baseUrl('/loja')
-  }
-
-  @beforeCreate()
-  static assignUuid(refill: Refill) {
-    refill.id = randomUUID()
-  }
 }

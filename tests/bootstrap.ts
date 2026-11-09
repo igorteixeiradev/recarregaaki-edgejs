@@ -1,37 +1,36 @@
 import { assert } from '@japa/assert'
+import { apiClient } from '@japa/api-client'
 import app from '@adonisjs/core/services/app'
 import type { Config } from '@japa/runner/types'
 import { pluginAdonisJS } from '@japa/plugin-adonisjs'
 import testUtils from '@adonisjs/core/services/test_utils'
+import { authApiClient } from '@adonisjs/auth/plugins/api_client'
+import { sessionApiClient } from '@adonisjs/session/plugins/api_client'
+import { shieldApiClient } from '@adonisjs/shield/plugins/api_client'
 
 /**
- * This file is imported by the "bin/test.ts" entrypoint file
+ * Este ficheiro é importado por 'bin/test.ts'.
  */
+export const plugins: Config['plugins'] = [
+  assert(),
+  apiClient(),
+  pluginAdonisJS(app),
+  sessionApiClient(app),
+  authApiClient(app),
+  shieldApiClient(),
+]
 
 /**
- * Configure Japa plugins in the plugins array.
- * Learn more - https://japa.dev/docs/runner-config#plugins-optional
- */
-export const plugins: Config['plugins'] = [assert(), pluginAdonisJS(app)]
-
-/**
- * Configure lifecycle function to run before and after all the
- * tests.
- *
- * The setup functions are executed before all the tests
- * The teardown functions are executed after all the tests
+ * A base de dados de teste (SQLite em tmp/test.sqlite3) é migrada antes de
+ * todos os testes e revertida no fim.
  */
 export const runnerHooks: Required<Pick<Config, 'setup' | 'teardown'>> = {
-  setup: [],
+  setup: [() => testUtils.db().migrate()],
   teardown: [],
 }
 
-/**
- * Configure suites by tapping into the test suite instance.
- * Learn more - https://japa.dev/docs/test-suites#lifecycle-hooks
- */
 export const configureSuite: Config['configureSuite'] = (suite) => {
-  if (['browser', 'functional', 'e2e'].includes(suite.name)) {
+  if (['functional', 'e2e'].includes(suite.name)) {
     return suite.setup(() => testUtils.httpServer().start())
   }
 }

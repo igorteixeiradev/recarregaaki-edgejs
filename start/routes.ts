@@ -1,121 +1,92 @@
 /*
 |--------------------------------------------------------------------------
-| Routes file
+| Rotas da aplicação
 |--------------------------------------------------------------------------
-|
-| The routes file is used for defining the HTTP routes.
-|
 */
 
 import router from '@adonisjs/core/services/router'
+import { controllers } from '#generated/controllers'
 import { middleware } from '#start/kernel'
-import app from '@adonisjs/core/services/app'
-import { sep, normalize } from 'node:path'
-import env from './env.js'
-import SendEmailVerification from '#jobs/send_email_verification'
-const AuthController = () => import('#controllers/auth_controller')
-const PrivatesController = () => import('#controllers/privates_controller')
-const PublicsController = () => import('#controllers/publics_controller')
-const CategoriesController = () => import('#controllers/categories_controller')
-const RefillsController = () => import('#controllers/refills_controller')
-const PackagesController = () => import('#controllers/packages_controller')
-const UsersController = () => import('#controllers/users_controller')
-const PaymentsController = () => import('#controllers/payments_controller')
-const PostsController = () => import('#controllers/posts_controller')
+import { loginThrottle, throttle } from '#start/limiter'
 
-// Rota de Uploads de Imagem
-const PATH_TRAVERSAL_REGEX = /(?:^|[\\/])\.\.(?:[\\/]|$)/
+// Os ids das rotas são sempre UUIDs; qualquer outro valor é um 404 (e não um erro 500)
+router.where('id', router.matchers.uuid())
+router.where('refillId', router.matchers.uuid())
 
-router.get('uploads/*', ({ request, response }) => {
-  const filePath = request.param('*').join(sep)
-  const normalizedPath = normalize(filePath)
-
-  if (PATH_TRAVERSAL_REGEX.test(normalizedPath)) {
-    return response.badRequest('Malformed path')
-  }
-
-  const absolutePath = app.makePath('uploads', normalizedPath)
-  return response.download(absolutePath)
-})
-
-// Rotas Publicas
-router.get('/', [PublicsController, 'index']).as('web.home')
+/*
+|--------------------------------------------------------------------------
+| Páginas estáticas
+|--------------------------------------------------------------------------
+*/
+router.get('/', [controllers.Public, 'home']).as('web.home')
 router.on('/sobre-nos').render('pages/public/about').as('web.about')
 router.on('/contactos').render('pages/public/contact').as('web.contact')
-router.get('/loja', [PublicsController, 'shop']).as('web.shop')
-router.get('/blog', [PublicsController, 'blog']).as('web.blog')
-router.get('/blog/:id', [PublicsController, 'showBlogPost']).as('web.showBlogPost')
-router.get('/loja/:id', [PublicsController, 'show']).as('web.show')
-router.get('/perfil', [PublicsController, 'profile']).as('web.profile').use(middleware.auth())
+router.get('/loja', [controllers.Public, 'shop']).as('web.shop')
+router.get('/loja/:id', [controllers.Public, 'show']).as('web.show')
+router.get('/blog', [controllers.Public, 'blog']).as('web.blog')
+router.get('/blog/:id', [controllers.Public, 'showBlogPost']).as('web.showBlogPost')
+router.get('/perfil', [controllers.Public, 'profile']).as('web.profile').use(middleware.auth())
 
-// Paginas de Autenticação
-router.on('/entrar').render('pages/public/auth/login').as('auth.login.view').use(middleware.guest())
-router
-  .on('/registar-se')
-  .render('pages/public/auth/register')
-  .as('auth.register.view')
-  .use(middleware.guest())
-router
-  .on('/esqueceu-palavra-passe')
-  .render('pages/public/auth/forgot-password')
-  .as('auth.forgot-password.view')
-  .use(middleware.guest())
-router
-  .get('/resetar-palavra-passe', async (ctx) => {
-    const token = ctx.request.input('token')
-    return ctx.view.render('pages/public/auth/reset-password', { token })
-  })
-  .as('auth.reset-password.view')
-  .use(middleware.guest())
-
-// Rotas HTTP de Autenticação
-router.post('/entrar', [AuthController, 'login']).as('auth.login')
-router.post('/registar-se', [AuthController, 'store']).as('auth.store')
-router
-  .post('/esqueceu-palavra-passe', [AuthController, 'forgotPassword'])
-  .as('auth.forgot-password')
-router.post('/resetar-palavra-passe', [AuthController, 'resetPassword']).as('auth.reset-password')
-router
-  .get('/logout', async (ctx) => {
-    ctx.auth.use('web').logout()
-    ctx.response.redirect().toRoute('web.home')
-  })
-  .use(middleware.auth())
-  .as('auth.logout')
-
-// Rotas Privadas
+/*
+|--------------------------------------------------------------------------
+| Autenticação
+|--------------------------------------------------------------------------
+*/
 router
   .group(() => {
-    router.get('', [PrivatesController, 'index']).as('dashboard.index')
-    router.get('/kwanza-hoje', [PrivatesController, 'KzToDay']).as('dashboard.kz')
-    router.resource('categorias', CategoriesController).as('categories')
-    router.resource('recargas', RefillsController).as('refills')
-    router.resource('/:refillId/pacotes', PackagesController).as('packages')
-    router.resource('consumidores', UsersController).as('users')
-    router.resource('pagamentos', PaymentsController).as('payments')
-    router.resource('blog', PostsController).as('blog')
+    router.on('/entrar').render('pages/public/auth/login').as('auth.login.view')
+    router.on('/registar-se').render('pages/public/auth/register').as('auth.register.view')
+    router
+      .on('/esqueceu-palavra-passe')
+      .render('pages/public/auth/forgot-password')
+      .as('auth.forgot-password.view')
+    router
+      .get('/resetar-palavra-passe', [controllers.Auth, 'showResetPassword'])
+      .as('auth.reset-password.view')
+
+    router.post('/entrar', [controllers.Auth, 'login']).as('auth.login').use(loginThrottle)
+    router.post('/registar-se', [controllers.Auth, 'register']).as('auth.store').use(throttle)
+    router
+      .post('/esqueceu-palavra-passe', [controllers.Auth, 'forgotPassword'])
+      .as('auth.forgot-password')
+      .use(throttle)
+    router
+      .post('/resetar-palavra-passe', [controllers.Auth, 'resetPassword'])
+      .as('auth.reset-password')
+      .use(throttle)
+  })
+  .use(middleware.guest())
+
+router.get('/logout', [controllers.Auth, 'logout']).as('auth.logout').use(middleware.auth())
+router
+  .get('/verificar-email', [controllers.Auth, 'verifyEmail'])
+  .as('auth.verifyEmail')
+  .use(throttle)
+router
+  .get('/reenviar-email-verificacao', [controllers.Auth, 'resendVerificationEmail'])
+  .as('auth.resendVerificationEmail')
+  .use([middleware.auth(), throttle])
+
+/*
+|--------------------------------------------------------------------------
+| Painel de administração
+|--------------------------------------------------------------------------
+|
+| O middleware "auth" só garante que existe sessão; quem pode fazer o quê é
+| decidido pelas policies do Bouncer dentro de cada controller.
+|
+*/
+router
+  .group(() => {
+    router.get('/', [controllers.Dashboard, 'index']).as('dashboard.index')
+    router.get('/kwanza-hoje', [controllers.Dashboard, 'exchangeRate']).as('dashboard.kz')
+
+    router.resource('categorias', controllers.Categories).as('categories').except(['show'])
+    router.resource('recargas', controllers.Refills).as('refills').except(['show'])
+    router.resource('/:refillId/pacotes', controllers.Packages).as('packages').except(['show'])
+    router.resource('consumidores', controllers.Users).as('users').except(['show'])
+    router.resource('pagamentos', controllers.Payments).as('payments').only(['index'])
+    router.resource('blog', controllers.Posts).as('blog').except(['show'])
   })
   .prefix('dashboard')
   .use(middleware.auth())
-
-// Eventos
-router
-  .get('/reenviar-email-verificacao', async ({ request, auth }) => {
-    await SendEmailVerification.dispatch(
-      { email: auth.getUserOrFail().email },
-      { queueName: 'mail' }
-    )
-    request.ctx?.session.flash('notification', {
-      type: 'success',
-      message: 'Verifique a sua caixa do email e clique no link para confirmar o email.',
-    })
-    request.ctx?.response.redirect().toRoute('web.profile')
-  })
-  .use(middleware.auth())
-  .as('auth.resendVerificationEmail')
-
-router.get('/verificar-email', [AuthController, 'verifyEmail']).as('auth.verifyEmail')
-
-if (env.get('NODE_ENV') === 'development') {
-  router.jobs('/my-jobs-dashboard')
-}

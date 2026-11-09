@@ -4,8 +4,8 @@
 @slot('main')
 @include('partials/navbar')
 <div class="my-20 max-w-7xl  mx-auto lg:px-0 px-4">
-  <section class=" antialiased dark:bg-gray-900">
-    <div class="mx-auto   2xl:px-0">
+  <section class="antialiased dark:bg-gray-900">
+    <div class="mx-auto 2xl:px-0">
 
       <h2
         class="mb-4 text-start text-4xl leading-none font-extrabold tracking-tight text-gray-900 md:text-5xl lg:text-5xl dark:text-white">
@@ -16,12 +16,12 @@
         <div class="mb-4 grid gap-4 sm:grid-cols-2 sm:gap-8 lg:gap-16">
           <div class="space-y-4">
             <div class="flex space-x-4">
-              <img class="h-16 w-16 rounded-lg" src="{{ auth.user.avatarUrl }}" alt="{{ auth.user.fullName }}" />
+              <img class="h-16 w-16 rounded-md-lg" src="{{ auth.user.avatarUrl }}" alt="{{ auth.user.fullName }}" />
 
 
               <div>
                 <span
-                  class="mb-5 inline-block rounded bg-green-500 px-2.5 py-0.5 text-xs font-medium text-green-800 dark:bg-green-900 dark:text-green-300">
+                  class="mb-5 inline-block rounded-md bg-green-500 px-2.5 py-0.5 text-xs font-medium text-green-800 dark:bg-green-900 dark:text-green-300">
                   {{ auth.user.isAdmin ? "Admin" : "Consumidor" }} </span>
                 <h2 class="flex items-center text-xl font-bold leading-none text-gray-900 dark:text-white sm:text-2xl">
                   {{ auth.user.fullName }}</h2>
@@ -38,7 +38,7 @@
             </dl>
             <dl>
               <dt class="font-semibold text-gray-900 dark:text-white">Estado da conta</dt>
-              <dd class="mb-5 inline-block rounded px-2.5 py-0.5 text-xs font-medium
+              <dd class="mb-5 inline-block rounded-md px-2.5 py-0.5 text-xs font-medium
                   {{ !auth.user.isBlocked
                   ? 'bg-green-500 text-green-800 dark:bg-green-900 dark:text-green-300'
                   : 'bg-red-200 text-red-800 dark:bg-red-900 dark:text-red-300' }}">
@@ -56,9 +56,9 @@
               <dd class="mt-1">
                 @if(auth.user.isEmailVerified)
                 <span
-                  class="bg-success-soft text-fg-success-strong text-xs font-medium px-1.5 py-0.5 rounded">Verificado</span>
+                  class="bg-success-soft text-fg-success-strong text-xs font-medium px-1.5 py-0.5 rounded-md">Verificado</span>
                 @else
-                <span class="bg-warning-soft text-fg-warning text-xs font-medium px-1.5 py-0.5 rounded">Não
+                <span class="bg-warning-soft text-fg-warning text-xs font-medium px-1.5 py-0.5 rounded-md">Não
                   verificado</span>
                 @end
                 @if(!auth.user.isEmailVerified)
@@ -76,9 +76,9 @@
 
                 @if(auth.user.isPhoneVerified)
                 <span
-                  class="bg-success-soft text-fg-success-strong text-xs font-medium px-1.5 py-0.5 rounded">Verificado</span>
+                  class="bg-success-soft text-fg-success-strong text-xs font-medium px-1.5 py-0.5 rounded-md">Verificado</span>
                 @else
-                <span class="bg-warning-soft text-fg-warning text-xs font-medium px-1.5 py-0.5 rounded">Não
+                <span class="bg-warning-soft text-fg-warning text-xs font-medium px-1.5 py-0.5 rounded-md">Não
                   verificado</span>
                 @end
               </dd>
@@ -86,12 +86,12 @@
           </div>
         </div>
         <button type="button" data-modal-target="accountInformationModal2" data-modal-toggle="accountInformationModal2"
-          class="w-full rounded-full bg-white bg-linear-to-r from-violet-500 via-[#9938CA] to-[#E0724A] px-5 py-3 text-center text-sm font-semibold text-white transition-all duration-200 hover:bg-green-200 hover:opacity-90 active:scale-95 sm:w-auto dark:bg-green-900/30 dark:hover:bg-green-800/50">
+          class="w-full rounded-md-full bg-white bg-linear-to-r from-violet-500 via-[#9938CA] to-[#E0724A] px-5 py-3 text-center text-sm font-semibold text-white transition-all duration-200 hover:bg-green-200 hover:opacity-90 active:scale-95 sm:w-auto dark:bg-green-900/30 dark:hover:bg-green-800/50">
 
           Editar dados da conta
         </button>
       </div>
-      <div class="rounded-lg border border-gray-200 bg-gray-50 p-4 dark:border-gray-700 dark:bg-gray-800 md:p-8">
+      <div class="rounded-md-lg border border-gray-200 bg-gray-50 p-4 dark:border-gray-700 dark:bg-gray-800 md:p-8">
         <h3 class="mb-4 text-xl font-semibold text-gray-900 dark:text-white">Últimas compras</h3>
         @if(payments.length > 0)
         @each(payment in payments)
@@ -120,7 +120,7 @@
           <!-- Estado -->
           <dl class="w-1/2 sm:w-1/4 sm:flex-1 lg:w-auto">
             <dt class="text-base font-medium text-gray-500 dark:text-gray-400">Estado:</dt>
-            <dd class="mt-1.5 inline-flex items-center rounded px-2.5 py-0.5 text-xs font-medium
+            <dd class="mt-1.5 inline-flex items-center rounded-md px-2.5 py-0.5 text-xs font-medium
                   {{ payment.status === 'PAID' ? 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-300' :
                   payment.status === 'PENDING' ? 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-300' :
                   payment.status === 'CANCELED' ? 'bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-300' :
@@ -168,7 +168,7 @@
 
             <li>
               <a href="{{ anchor.url }}"
-                class="flex items-center  rounded-full justify-center text-body bg-neutral-secondary-medium border border-default-medium hover:bg-neutral-tertiary-medium hover:text-heading shadow-xs font-medium leading-5 text-sm w-9 h-9 focus:outline-none">{{
+                class="flex items-center  rounded-md-full justify-center text-body bg-neutral-secondary-medium border border-default-medium hover:bg-neutral-tertiary-medium hover:text-heading shadow-xs font-medium leading-5 text-sm w-9 h-9 focus:outline-none">{{
                 anchor.page }}</a>
             </li>
 

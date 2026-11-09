@@ -1,97 +1,66 @@
-import { isAdmin } from '#abilities/main'
-import User from '#models/user'
-import { createUserValidator, updateUserValidator } from '#validators/user'
+import { inject } from '@adonisjs/core'
 import type { HttpContext } from '@adonisjs/core/http'
+import { urlFor } from '@adonisjs/core/services/url_builder'
+import UserService from '#services/user_service'
+import { notify } from '#utils/flash'
+import { pageParams } from '#utils/pagination'
+import { createUserValidator, updateUserValidator } from '#validators/user'
 
+@inject()
 export default class UsersController {
-  /**
-   * Display a list of resource
-   */
-  async index({ request }: HttpContext) {
-    const page = request.input('page', 1)
-    const limit = request.input('limit', 20)
-    if (await request.ctx?.bouncer.denies(isAdmin)) {
-      return request.ctx?.response.forbidden()
-    }
-    const users = await User.query().orderBy('createdAt', 'desc').paginate(page, limit)
-    users.baseUrl('/dashboard/consumidores')
-    return request.ctx?.view.render('pages/private/usr/index', { users })
+  constructor(protected users: UserService) {}
+
+  async index({ bouncer, request, view }: HttpContext) {
+    await bouncer.with('UserPolicy').authorize('viewList')
+
+    const users = await this.users.paginate(pageParams(request))
+    users.baseUrl(urlFor('users.index'))
+
+    return view.render('pages/private/usr/index', { users })
   }
 
-  /**
-   * Display form to create a new record
-   */
-  async create({ view }: HttpContext) {
+  async create({ bouncer, view }: HttpContext) {
+    await bouncer.with('UserPolicy').authorize('create')
     return view.render('pages/private/usr/create')
   }
 
-  /**
-   * Handle form submission for the create action
-   */
-  async store({ request }: HttpContext) {
-    const { passwordConfirmation, ...rest } = await request.validateUsing(createUserValidator)
-    if (await request.ctx?.bouncer.denies(isAdmin)) {
-      return request.ctx?.response.forbidden()
-    }
-    await User.create({ ...rest })
-    request.ctx?.session.flash('notification', {
-      type: 'success',
-      message: 'Consumidor adicionado com sucesso',
-    })
-    return request.ctx?.response.redirect().toRoute('users.index')
+  async store({ bouncer, request, response, session }: HttpContext) {
+    await bouncer.with('UserPolicy').authorize('create')
+
+    const payload = await request.validateUsing(createUserValidator)
+    await this.users.create(payload)
+
+    notify(session, 'success', 'Consumidor adicionado com sucesso')
+    return response.redirect().toRoute('users.index')
   }
 
-  /**
-   * Show individual record
-   */
-  async show({ params, request }: HttpContext) {
-    if (await request.ctx?.bouncer.denies(isAdmin)) {
-      return request.ctx?.response.forbidden()
-    }
-    return await User.findByOrFail('id', params.id)
-  }
+  async edit({ bouncer, params, view }: HttpContext) {
+    await bouncer.with('UserPolicy').authorize('update')
 
-  /**
-   * Edit individual record
-   */
-  async edit({ params, view }: HttpContext) {
-    const user = await User.findByOrFail('id', params.id)
+    const user = await this.users.findOrFail(params.id)
     return view.render('pages/private/usr/edit', { user })
   }
 
-  /**
-   * Handle form submission for the edit action
-   */
-  async update({ params, request }: HttpContext) {
-    const payload = await request.validateUsing(updateUserValidator)
-    const user = await User.findByOrFail('id', params.id)
-    if (await request.ctx?.bouncer.denies(isAdmin)) {
-      return request.ctx?.response.forbidden()
-    }
-    user.merge(payload)
-    await user.save()
-    request.ctx?.session.flash('notification', {
-      type: 'success',
-      message: 'Consumidor actualizado com sucesso',
-    })
-    return request.ctx?.response.redirect().toRoute('users.index')
+  async update({ auth, bouncer, params, request, response, session }: HttpContext) {
+    await bouncer.with('UserPolicy').authorize('update')
+
+    const user = await this.users.findOrFail(params.id)
+    const payload = await request.validateUsing(updateUserValidator, { meta: { userId: user.id } })
+    await this.users.update(auth.getUserOrFail(), user, payload)
+
+    notify(session, 'success', 'Consumidor actualizado com sucesso')
+    return response.redirect().toRoute('users.index')
   }
 
-  /**
-   * Delete record
-   */
-  async destroy({ params, request }: HttpContext) {
-    const user = await User.findByOrFail('id', params.id)
-    if (await request.ctx?.bouncer.denies(isAdmin)) {
-      return request.ctx?.response.forbidden()
-    }
-    await user.delete()
+  async destroy({ bouncer, params, response, session }: HttpContext) {
+    // Primeiro a regra geral (só admins); depois a regra que depende do alvo
+    await bouncer.with('UserPolicy').authorize('viewList')
 
-    request.ctx?.session.flash('notification', {
-      type: 'success',
-      message: 'Consumidor apagado com sucesso',
-    })
+    const user = await this.users.findOrFail(params.id)
+    await bouncer.with('UserPolicy').authorize('delete', user)
+    await this.users.delete(user)
 
-    return request.ctx?.response.redirect().toRoute('users.index')
+    notify(session, 'success', 'Consumidor apagado com sucesso')
+    return response.redirect().toRoute('users.index')
   }
 }

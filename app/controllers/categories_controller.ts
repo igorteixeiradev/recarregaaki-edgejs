@@ -1,102 +1,66 @@
-import { isAdmin } from '#abilities/main'
-import Category from '#models/category'
-import { createCategoryValidator, updateCategoryValidator } from '#validators/category'
+import { inject } from '@adonisjs/core'
 import type { HttpContext } from '@adonisjs/core/http'
+import { urlFor } from '@adonisjs/core/services/url_builder'
+import CategoryService from '#services/category_service'
+import { notify } from '#utils/flash'
+import { pageParams } from '#utils/pagination'
+import { createCategoryValidator, updateCategoryValidator } from '#validators/category'
 
+@inject()
 export default class CategoriesController {
-  /**
-   * Display a list of resource
-   */
-  async index({ request, view }: HttpContext) {
-    const page = request.input('page', 1)
-    const limit = request.input('limit', 20)
-    const categories = await Category.query()
-      .orderBy('createdAt', 'desc')
-      .preload('refills')
-      .paginate(page, limit)
+  constructor(protected categories: CategoryService) {}
 
-    categories.baseUrl('/dashboard/categorias')
-    if (await request.ctx?.bouncer.denies(isAdmin)) {
-      return request.ctx?.response.forbidden()
-    }
+  async index({ bouncer, request, view }: HttpContext) {
+    await bouncer.with('CategoryPolicy').authorize('viewList')
+
+    const categories = await this.categories.paginate(pageParams(request))
+    categories.baseUrl(urlFor('categories.index'))
+
     return view.render('pages/private/categories/index', { categories })
   }
 
-  /**
-   * Display form to create a new record
-   */
-  async create({ view }: HttpContext) {
+  async create({ bouncer, view }: HttpContext) {
+    await bouncer.with('CategoryPolicy').authorize('create')
     return view.render('pages/private/categories/create')
   }
 
-  /**
-   * Handle form submission for the create action
-   */
-  async store({ request }: HttpContext) {
+  async store({ bouncer, request, response, session }: HttpContext) {
+    await bouncer.with('CategoryPolicy').authorize('create')
+
     const payload = await request.validateUsing(createCategoryValidator)
-    if (await request.ctx?.bouncer.denies(isAdmin)) {
-      return request.ctx?.response.forbidden()
-    }
-    await Category.create(payload)
-    request.ctx?.session.flash('notification', {
-      type: 'success',
-      message: 'Categoria adicionada com sucesso',
-    })
+    await this.categories.create(payload)
 
-    return request.ctx?.response.redirect().toRoute('categories.index')
+    notify(session, 'success', 'Categoria adicionada com sucesso')
+    return response.redirect().toRoute('categories.index')
   }
 
-  /**
-   * Show individual record
-   */
-  async show({ params, request }: HttpContext) {
-    if (await request.ctx?.bouncer.denies(isAdmin)) {
-      return request.ctx?.response.forbidden()
-    }
-    return await Category.findOrFail(params.id)
-  }
+  async edit({ bouncer, params, view }: HttpContext) {
+    await bouncer.with('CategoryPolicy').authorize('update')
 
-  /**
-   * Edit individual record
-   */
-  async edit({ params, view }: HttpContext) {
-    const category = await Category.findOrFail(params.id)
+    const category = await this.categories.findOrFail(params.id)
     return view.render('pages/private/categories/edit', { category })
   }
 
-  /**
-   * Handle form submission for the edit action
-   */
-  async update({ params, request }: HttpContext) {
-    const payload = await request.validateUsing(updateCategoryValidator)
-    const category = await Category.findByOrFail('id', params.id)
-    if (await request.ctx?.bouncer.denies(isAdmin)) {
-      return request.ctx?.response.forbidden()
-    }
-    category.merge(payload)
-    await category.save()
+  async update({ bouncer, params, request, response, session }: HttpContext) {
+    await bouncer.with('CategoryPolicy').authorize('update')
 
-    request.ctx?.session.flash('notification', {
-      type: 'success',
-      message: 'Categoria actualizada com sucesso',
+    const category = await this.categories.findOrFail(params.id)
+    const payload = await request.validateUsing(updateCategoryValidator, {
+      meta: { categoryId: category.id },
     })
+    await this.categories.update(category, payload)
 
-    return request.ctx?.response.redirect().toRoute('categories.index')
+    notify(session, 'success', 'Categoria actualizada com sucesso')
+    return response.redirect().toRoute('categories.index')
   }
 
-  /**
-   * Delete record
-   */
-  async destroy({ params, request }: HttpContext) {
-    const category = await Category.findByOrFail('id', params.id)
-    if (await request.ctx?.bouncer.denies(isAdmin)) {
-      return request.ctx?.response.forbidden()
-    }
-    await category.delete()
-    request.ctx?.session.flash('notification', {
-      type: 'success',
-      message: 'Categoria com sucesso',
-    })
-    return request.ctx?.response.redirect().toRoute('categories.index')
+  async destroy({ bouncer, params, response, session }: HttpContext) {
+    await bouncer.with('CategoryPolicy').authorize('delete')
+
+    const category = await this.categories.findOrFail(params.id)
+    await this.categories.delete(category)
+
+    notify(session, 'success', 'Categoria apagada com sucesso')
+    return response.redirect().toRoute('categories.index')
   }
 }

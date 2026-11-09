@@ -1,28 +1,8 @@
-import { DateTime } from 'luxon'
-import { BaseModel, beforeCreate, column } from '@adonisjs/lucid/orm'
-import { randomUUID } from 'node:crypto'
+import { compose } from '@adonisjs/core/helpers'
+import { VerificationTokenSchema } from '#database/schema'
+import { withUuid } from '#models/mixins/with_uuid'
+import type { VerificationTokenType } from '#enums/verification_token_type'
 
-export default class VerificationToken extends BaseModel {
-  @column({ isPrimary: true })
-  declare id: string
-
-  @column()
-  declare email: string
-
-  @column()
-  declare token: string
-
-  @column.dateTime()
-  declare expiresAt: DateTime
-
-  @column.dateTime({ autoCreate: true })
-  declare createdAt: DateTime
-
-  @column.dateTime({ autoCreate: true, autoUpdate: true })
-  declare updatedAt: DateTime
-
-  @beforeCreate()
-  static assignUuid(verification_token: VerificationToken) {
-    verification_token.id = randomUUID()
-  }
+export default class VerificationToken extends compose(VerificationTokenSchema, withUuid()) {
+  declare type: VerificationTokenType
 }

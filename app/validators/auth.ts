@@ -1,44 +1,46 @@
 import vine from '@vinejs/vine'
-import { Infer } from '@vinejs/vine/types'
+import type { Infer } from '@vinejs/vine/types'
 
 /**
- * Validates the email and password creation action
+ * Registo público: o utilizador nunca escolhe permissões nem estados
+ * (admin, bloqueado, email verificado...).
  */
+export const registerValidator = vine.create({
+  fullName: vine.string().trim().minLength(3).maxLength(254),
+  email: vine
+    .string()
+    .trim()
+    .email()
+    .maxLength(254)
+    .normalizeEmail()
+    .unique({ table: 'users', column: 'email' }),
+  password: vine
+    .string()
+    .minLength(8)
+    .maxLength(32)
+    .confirmed({ confirmationField: 'passwordConfirmation' }),
+})
 
-export const createEmailAndPasswordValidator = vine.compile(
-  vine.object({
-    email: vine.string().trim().email().maxLength(254).normalizeEmail(),
-    password: vine.string().trim().minLength(8).maxLength(32),
-  })
-)
+export const loginValidator = vine.create({
+  email: vine.string().trim().email().maxLength(254).normalizeEmail(),
+  password: vine.string().minLength(8).maxLength(32),
+})
 
 /**
- * Validates the email creation action
+ * Não verificamos se o email existe: assim este formulário não serve para
+ * descobrir quais os emails registados.
  */
+export const forgotPasswordValidator = vine.create({
+  email: vine.string().trim().email().maxLength(254).normalizeEmail(),
+})
 
-export const createEmailValidator = vine.compile(
-  vine.object({
-    email: vine
-      .string()
-      .trim()
-      .email()
-      .normalizeEmail()
-      .exists({ table: 'users', column: 'email' }),
-  })
-)
+export const resetPasswordValidator = vine.create({
+  token: vine.string().trim().minLength(1).maxLength(100),
+  password: vine
+    .string()
+    .minLength(8)
+    .maxLength(32)
+    .confirmed({ confirmationField: 'passwordConfirmation' }),
+})
 
-/**
- * Validates the password creation action
- */
-
-export const createPasswordValidator = vine.compile(
-  vine.object({
-    token: vine.string().trim().minLength(1).maxLength(100),
-    password: vine.string().trim().minLength(8).maxLength(32),
-    passwordConfirmation: vine.string().trim().minLength(8).maxLength(32).sameAs('password'),
-  })
-)
-
-export type CreatePasswordPayload = Infer<typeof createPasswordValidator>
-export type CreateEmailAndPasswordPayload = Infer<typeof createEmailAndPasswordValidator>
-export type CreateEmailPayload = Infer<typeof createEmailValidator>
+export type RegisterPayload = Infer<typeof registerValidator>

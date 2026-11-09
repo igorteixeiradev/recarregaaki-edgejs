@@ -9,10 +9,10 @@
 
   <section class=" mx-auto flex w-full flex-col-reverse items-center justify-between gap-10 md:flex-row md:gap-0 mb-5">
     <div class="flex flex-col items-center text-center md:items-start md:text-left">
-      <a class="mt-10 mb-6 flex items-center space-x-2 rounded-full border border-green-600 px-4 py-2 pr-1.5 text-xs text-green-600 transition hover:bg-green-50 dark:hover:bg-green-900/20"
+      <a class="mt-10 mb-6 flex items-center space-x-2 rounded-md border border-green-600 px-4 py-2 pr-1.5 text-xs text-green-600 transition hover:bg-green-50 dark:hover:bg-green-900/20"
         href="{{route('web.shop')}}">
         <span>Recargas instantâneas com segurança.</span>
-        <span class="flex size-6 items-center justify-center rounded-full bg-green-600 p-1">
+        <span class="flex size-6 items-center justify-center rounded-md bg-green-600 p-1">
           <svg width="14" height="11" viewBox="0 0 16 13" fill="none">
             <path d="M1 6.5h14M9.5 1 15 6.5 9.5 12" stroke="#fff" strokeWidth="1.5" strokeLinecap="round"
               strokeLinejoin="round" />
@@ -36,7 +36,7 @@
       </p>
 
       <div class="mt-8 flex w-full flex-col items-stretch gap-4 sm:flex-row sm:items-center sm:gap-3">
-        <a class="flex w-full items-center justify-center space-x-2 rounded-full bg-white bg-linear-to-r from-violet-500 via-[#9938CA] to-[#E0724A] px-6 py-3 pr-2.5 text-center text-sm font-semibold text-white transition-all duration-200 hover:bg-green-700 hover:opacity-90 active:scale-95 sm:w-auto"
+        <a class="flex w-full items-center justify-center space-x-2 rounded-md bg-white bg-linear-to-r from-violet-500 via-[#9938CA] to-[#E0724A] px-6 py-3 pr-2.5 text-center text-sm font-semibold text-white transition-all duration-200 hover:bg-green-700 hover:opacity-90 active:scale-95 sm:w-auto"
           href="{{route('web.shop')}}">
           <span>Ver opções na loja</span>
           <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
@@ -49,7 +49,7 @@
 
         @else
         <a href="{{route('auth.register.view')}}"
-          class="w-full rounded-full bg-white bg-linear-to-r from-violet-500 via-[#9938CA] to-[#E0724A] px-5 py-3 text-center text-sm font-semibold text-white transition-all duration-200 hover:bg-green-200 hover:opacity-90 active:scale-95 sm:w-auto dark:bg-green-900/30 dark:hover:bg-green-800/50">
+          class="w-full rounded-md bg-white bg-linear-to-r from-violet-500 via-[#9938CA] to-[#E0724A] px-5 py-3 text-center text-sm font-semibold text-white transition-all duration-200 hover:bg-green-200 hover:opacity-90 active:scale-95 sm:w-auto dark:bg-green-900/30 dark:hover:bg-green-800/50">
           Criar conta grátis
         </a>
         @end
@@ -57,7 +57,7 @@
     </div>
 
     <div class="hidden w-full md:block">
-      <img class="w-full rounded-2xl object-contain" src="images/4.png" alt="Imagem do hero" />
+      <img class="w-full rounded-2xl object-contai" src="images/4.png" alt="Imagem do hero" />
     </div>
   </section>
 
@@ -76,7 +76,7 @@
   <section>
     <div class="py-8 px-4 mx-auto  text-center lg:py-16">
       <div class="mx-auto mb-8 max-w-screen-sm lg:mb-16">
-        <h2 class="mb-4 text-4xl tracking-tight font-extrabold text-gray-900 dark:text-white">
+        <h2 class="mb-4 lg:text-4xl text-2xl tracking-tight font-extrabold text-gray-900 dark:text-white">
           Comentários dos nossos clientes
         </h2>
         <p class="font-light text-gray-500 sm:text-xl dark:text-gray-400">
@@ -87,7 +87,60 @@
 
 
 
-
+        <div class="grid mb-8 bg-neutral-primary-soft border border-default rounded-base shadow-xs md:mb-12 md:grid-cols-2">
+            <figure class="flex flex-col items-center justify-center p-8 text-center border-b border-default rounded-t-base md:rounded-t-none md:rounded-ss-base md:border-e">
+                <blockquote class="max-w-2xl mx-auto mb-4 text-body lg:mb-8">
+                    <h3 class="text-lg font-semibold text-heading">Recarga em menos de 1 minuto</h3>
+                    <p class="my-4">Comprei 1.000 UC no PUBG Mobile e caiu na conta em segundos. Nunca mais volto a comprar em outro lugar.</p>
+                </blockquote>
+                <figcaption class="flex items-center justify-center">
+                    <img class="rounded-full w-9 h-9" src="https://flowbite.s3.amazonaws.com/blocks/marketing-ui/avatars/karen-nelson.png" alt="Foto de perfil de Lucas Mendes">
+                    <div class="space-y-0.5 text-left rtl:text-right ms-2">
+                        <div class="leading-tight text-base text-heading font-medium mb-0.5">Lucas Mendes</div>
+                        <div class="text-sm text-body">Jogador de PUBG Mobile</div>
+                    </div>
+                </figcaption>    
+            </figure>
+            <figure class="flex flex-col items-center justify-center p-8 text-center border-b border-default md:rounded-se-base">
+                <blockquote class="max-w-2xl mx-auto mb-4 text-body lg:mb-8">
+                    <h3 class="text-lg font-semibold text-heading">Preços que cabem no bolso</h3>
+                    <p class="my-4">Os valores da RecarregaAki são os melhores que já vi. Recarrego meus diamantes no Free Fire toda semana e sempre saio no lucro.</p>
+                </blockquote>
+                <figcaption class="flex items-center justify-center ">
+                    <img class="rounded-full w-9 h-9" src="https://flowbite.s3.amazonaws.com/blocks/marketing-ui/avatars/roberta-casas.png" alt="Foto de perfil de Bianca Rocha">
+                    <div class="space-y-0.5 text-left rtl:text-right ms-2">
+                        <div class="leading-tight text-base text-heading font-medium mb-0.5">Bianca Rocha</div>
+                        <div class="text-sm text-body">Streamer de Free Fire</div>
+                    </div>
+                </figcaption>    
+            </figure>
+            <figure class="flex flex-col items-center justify-center p-8 text-center border-b border-default md:rounded-es-base md:border-b-0 md:border-e">
+                <blockquote class="max-w-2xl mx-auto mb-4 text-body lg:mb-8">
+                    <h3 class="text-lg font-semibold text-heading">Pagamento seguro e instantâneo</h3>
+                    <p class="my-4">Paguei via Pix e recebi minhas V-Bucks na hora. Processo 100% seguro, sem dor de cabeça e sem taxa escondida.</p>
+                </blockquote>
+                <figcaption class="flex items-center justify-center ">
+                    <img class="rounded-full w-9 h-9" src="https://flowbite.s3.amazonaws.com/blocks/marketing-ui/avatars/jese-leos.png" alt="Foto de perfil de Diego Almeida">
+                    <div class="space-y-0.5 text-left rtl:text-right ms-2">
+                        <div class="leading-tight text-base text-heading font-medium mb-0.5">Diego Almeida</div>
+                        <div class="text-sm text-body">Jogador de Fortnite</div>
+                    </div>
+                </figcaption>    
+            </figure>
+            <figure class="flex flex-col items-center justify-center p-8 text-center border-default rounded-b-base md:rounded-se-base">
+                <blockquote class="max-w-2xl mx-auto mb-4 text-body lg:mb-8">
+                    <h3 class="text-lg font-semibold text-heading">Suporte que resolve na hora</h3>
+                    <p class="my-4">Tive uma dúvida no meio da madrugada e o atendimento respondeu em minutos. É a plataforma mais confiável de recarga que já usei.</p>
+                </blockquote>
+                <figcaption class="flex items-center justify-center ">
+                    <img class="rounded-full w-9 h-9" src="https://flowbite.s3.amazonaws.com/blocks/marketing-ui/avatars/joseph-mcfall.png" alt="Foto de perfil de Rafael Souza">
+                    <div class="space-y-0.5 text-left rtl:text-right ms-2">
+                        <div class="leading-tight text-base text-heading font-medium mb-0.5">Rafael Souza</div>
+                        <div class="text-sm text-body">Jogador de Genshin Impact</div>
+                    </div>
+                </figcaption>    
+            </figure>
+        </div>
     </div>
   </section>
 
